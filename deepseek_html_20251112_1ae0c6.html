@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giai Điệu Giấc Ngủ | Ứng dụng âm nhạc thư giãn</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS giữ nguyên như trước */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1DB954;
+            --secondary-color: #1ed760;
+            --accent-color: #1ed760;
+            --dark-color: #121212;
+            --darker-color: #000000;
+            --light-color: #ffffff;
+            --gray-color: #b3b3b3;
+            --card-color: #181818;
+            --hover-color: #1a1a1a;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 400px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: var(--dark-color);
+        }
+
+        /* Background với hình ảnh đẹp */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            transition: all 1.5s ease;
+        }
+
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            transition: opacity 1s ease;
+            filter: blur(8px) brightness(0.7);
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(18, 18, 18, 0.9), rgba(0, 0, 0, 0.95));
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            background: linear-gradient(135deg, rgba(30, 215, 96, 0.1), rgba(29, 185, 84, 0.05));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-subtitle {
+            font-size: 14px;
+            color: var(--gray-color);
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .premium-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        /* Content */
+        .content {
+            padding: 20px;
+            padding-bottom: 120px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: var(--light-color);
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Now Playing */
+        .now-playing {
+            background: rgba(40, 40, 40, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .now-playing::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient);
+        }
+
+        .now-playing-title {
+            color: var(--gray-color);
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .now-playing-name {
+            color: var(--light-color);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .now-playing-artist {
+            color: var(--gray-color);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .album-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            margin: 0 auto 20px;
+            background: var(--card-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .album-art-placeholder {
+            font-size: 40px;
+            color: var(--gray-color);
+        }
+
+        .equalizer-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            padding: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .control-button {
+            margin: 0 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .control-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .control-button i {
+            font-size: 20px;
+            color: var(--light-color);
+        }
+
+        .play-button {
+            background: var(--primary-color);
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+        }
+
+        .play-button:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        .play-button i {
+            font-size: 24px;
+            color: white;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 25px;
+        }
+
+        .volume-slider {
+            flex: 1;
+            margin: 0 10px;
+            -webkit-appearance: none;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 20px 0 10px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+
+        .progress-handle {
+            width: 16px;
+            height: 16px;
+            background: var(--light-color);
+            border-radius: 50%;
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .progress-container:hover .progress-handle {
+            opacity: 1;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--gray-color);
+            margin-top: 8px;
+        }
+
+        /* Timer */
+        .timer-container {
+            background: rgba(40, 40, 40, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient);
+        }
+
+        .timer-text {
+            color: var(--light-color);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timer-slider {
+            width: 100%;
+            margin-bottom: 20px;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .timer-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .timer-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .timer-button.active {
+            background: var(--gradient);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Background Section */
+        .backgrounds-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 5px 0 15px;
+            scrollbar-width: none;
+        }
+
+        .backgrounds-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .background-item {
+            flex: 0 0 auto;
+            width: 140px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .background-item.active {
+            transform: scale(1.05);
+        }
+
+        .background-image-preview {
+            width: 100%;
+            height: 90px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .background-item.active .background-image-preview {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(29, 185, 84, 0.4);
+        }
+
+        .background-title {
+            color: var(--light-color);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Postcards Section */
+        .postcards-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .postcard-item {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .postcard-item.active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(29, 185, 84, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .postcard-item:hover {
+            transform: translateY(-2px);
+            background: rgba(50, 50, 50, 0.9);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .postcard-info {
+            padding: 12px;
+        }
+
+        .postcard-title {
+            color: var(--light-color);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .postcard-duration {
+            color: var(--gray-color);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .postcard-item:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .play-overlay i {
+            font-size: 30px;
+            color: var(--light-color);
+        }
+
+        /* Playlist */
+        .playlist-container {
+            margin-top: 10px;
+        }
+
+        .playlist-item {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .playlist-item:hover {
+            background: rgba(50, 50, 50, 0.9);
+            transform: translateX(5px);
+        }
+
+        .playlist-item.active {
+            background: rgba(29, 185, 84, 0.15);
+            border-left-color: var(--primary-color);
+        }
+
+        .playlist-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--gradient);
+        }
+
+        .track-number {
+            width: 24px;
+            text-align: center;
+            color: var(--gray-color);
+            font-size: 14px;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        .playlist-info {
+            flex: 1;
+        }
+
+        .playlist-name {
+            color: var(--light-color);
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .playlist-artist {
+            color: var(--gray-color);
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .playlist-duration {
+            color: var(--gray-color);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Sounds Grid */
+        .sounds-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .sound-item {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sound-item:hover {
+            background: rgba(50, 50, 50, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .sound-item.active {
+            background: rgba(29, 185, 84, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .sound-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .sound-item:hover .sound-icon {
+            transform: scale(1.1);
+        }
+
+        .sound-title {
+            color: var(--light-color);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sound-type {
+            color: var(--gray-color);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 100;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: var(--gray-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 8px 12px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .nav-button.active {
+            color: var(--primary-color);
+            background: rgba(29, 185, 84, 0.1);
+        }
+
+        .nav-button i {
+            font-size: 20px;
+            margin-bottom: 5px;
+            transition: transform 0.3s;
+        }
+
+        .nav-button.active i {
+            transform: scale(1.1);
+        }
+
+        .nav-button span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Settings */
+        .settings-panel {
+            background: rgba(40, 40, 40, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 10px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .setting-label {
+            color: var(--light-color);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--gradient);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Sections */
+        .section-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Equalizer Animation */
+        .equalizer {
+            display: flex;
+            align-items: end;
+            height: 20px;
+            gap: 3px;
+        }
+
+        .equalizer-bar {
+            width: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            animation: equalizer 1.5s ease infinite;
+        }
+
+        .equalizer-bar:nth-child(1) { animation-delay: 0s; height: 8px; }
+        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; height: 12px; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; height: 16px; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
+        .equalizer-bar:nth-child(5) { animation-delay: 0.4s; height: 8px; }
+
+        @keyframes equalizer {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1); }
+        }
+
+        /* Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+
+        /* Download Button */
+        .download-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Background với hình ảnh -->
+        <div class="background-container">
+            <img src="https://images.unsplash.com/photo-1505506874110-6a7a69069a08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Background" class="background-image" id="backgroundImage">
+            <div class="background-overlay"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="app-title">Giai Điệu Giấc Ngủ</h1>
+            <p class="app-subtitle">Âm nhạc thư giãn cho giấc ngủ sâu</p>
+            <div class="premium-badge">Premium</div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Now Playing -->
+            <div class="now-playing" id="nowPlaying" style="display: none;">
+                <div class="now-playing-title" id="nowPlayingTitle">Đang phát</div>
+                <div class="now-playing-name" id="nowPlayingName">Bài hát</div>
+                <div class="now-playing-artist" id="nowPlayingArtist">Nghệ sĩ</div>
+                
+                <div class="album-art" id="albumArt">
+                    <div class="album-art-placeholder">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="equalizer-overlay">
+                        <div class="equalizer" id="equalizer">
+                            <div class="equalizer-bar"></div>
+                            <div class="equalizer-bar"></div>
+                            <div class="equalizer-bar"></div>
+                            <div class="equalizer-bar"></div>
+                            <div class="equalizer-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loading Spinner -->
+                <div class="loading-spinner" id="loadingSpinner"></div>
+                <div class="error-message" id="errorMessage"></div>
+                
+                <!-- Progress Bar -->
+                <div class="progress-container" onclick="seekAudio(event)">
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-handle"></div>
+                    </div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-button" onclick="playPreviousTrack()">
+                        <i class="fas fa-step-backward"></i>
+                    </div>
+                    <div class="control-button play-button" onclick="togglePlayPause()">
+                        <i class="fas fa-play" id="playPauseIcon"></i>
+                    </div>
+                    <div class="control-button" onclick="playNextTrack()">
+                        <i class="fas fa-step-forward"></i>
+                    </div>
+                </div>
+                <div class="volume-container">
+                    <i class="fas fa-volume-down"></i>
+                    <input type="range" min="0" max="1" step="0.01" value="0.7" class="volume-slider" id="volumeSlider" oninput="changeVolume(this.value)">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+            </div>
+
+            <!-- Home Section -->
+            <div class="section-content active" id="homeSection">
+                <!-- Sleep Timer -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-hourglass-half"></i>
+                        HẸN GIỜ TẮT
+                    </div>
+                    <div class="timer-container">
+                        <div class="timer-text" id="timerText">30 phút</div>
+                        <input type="range" min="5" max="180" step="5" value="30" class="timer-slider" id="timerSlider" oninput="updateTimer(this.value)">
+                        <button class="timer-button" id="timerButton" onclick="toggleTimer()">BẬT HẸN GIỜ</button>
+                    </div>
+                </div>
+
+                <!-- Background Section -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-image"></i>
+                        KHUNG CẢNH THƯ GIÃN
+                    </div>
+                    <div class="backgrounds-container" id="backgroundsContainer">
+                        <!-- Background items will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Postcards Section -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-video"></i>
+                        POSTCARD THƯ GIÃN
+                    </div>
+                    <div class="postcards-container" id="postcardsContainer">
+                        <!-- Video postcards will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        THỐNG KÊ NGHE NHẠC
+                    </div>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalPlays">0</div>
+                            <div class="stat-label">Lượt nghe</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalTime">0h</div>
+                            <div class="stat-label">Thời gian</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Music Section -->
+            <div class="section-content" id="musicSection">
+                <!-- Chill Playlist Việt Nam & Thế Giới -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-music"></i>
+                        CHILL TREND 2025
+                    </div>
+                    <div class="playlist-container" id="playlistContainer">
+                        <!-- Playlist items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sounds Section -->
+            <div class="section-content" id="soundsSection">
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-water"></i>
+                        ÂM THANH THIÊN NHIÊN
+                    </div>
+                    <div class="sounds-grid" id="soundsGrid">
+                        <!-- Sound items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="section-content" id="settingsSection">
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-cog"></i>
+                        CÀI ĐẶT
+                    </div>
+                    <div class="settings-panel">
+                        <div class="setting-item">
+                            <span class="setting-label">Tự động chuyển bài</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoPlay" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Lặp lại playlist</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="loopPlaylist" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Hiệu ứng âm thanh</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="soundEffects" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Chất lượng cao</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="highQuality" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <button class="nav-button active" onclick="showSection('home')">
+                <i class="fas fa-home"></i>
+                <span>Trang chủ</span>
+            </button>
+            <button class="nav-button" onclick="showSection('music')">
+                <i class="fas fa-music"></i>
+                <span>Nhạc</span>
+            </button>
+            <button class="nav-button" onclick="showSection('sounds')">
+                <i class="fas fa-water"></i>
+                <span>Âm thanh</span>
+            </button>
+            <button class="nav-button" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span>Cài đặt</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Data cho ứng dụng
+        const backgrounds = [
+            {
+                id: 1,
+                name: "Biển Đêm",
+                image: "https://images.unsplash.com/photo-1505506874110-6a7a69069a08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                desc: "Sóng biển êm đềm"
+            },
+            {
+                id: 2,
+                name: "Rừng Xanh",
+                image: "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                desc: "Rừng cây tĩnh lặng"
+            }
+        ];
+
+        const videoPostcards = [
+            {
+                id: 1,
+                title: "Dành cho những ngày cậu chẳng biết đi về đâu",
+                youtubeId: "NAOBo3I96yc",
+                thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                audioUrl: "muahe0trolai.mp3",
+                type: "Postcard",
+                duration: "10:00"
+            },
+            {
+                id: 2,
+                title: "Có những mùa hè không bao giờ trở lại....",
+                youtubeId: "4CAQ4odYfhI",
+                thumbnail: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                audioUrl: "muahe0trolai.mp3",
+                type: "Postcard",
+                duration: "11:14"
+            },
+            {
+                id: 3,
+                title: "Postcard Thiên Nhiên - Tiếng Chim Hót",
+                youtubeId: "YOUTUBE_ID_3",
+                thumbnail: "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                type: "birds",
+                duration: "12:15"
+            },
+            {
+                id: 4,
+                title: "Postcard Thư Giãn - Tiếng Suối Chảy",
+                youtubeId: "YOUTUBE_ID_4",
+                thumbnail: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                type: "stream",
+                duration: "15:00"
+            }
+        ];
+
+        const playlist = [
+            {
+                id: 1,
+                name: "Phía Sau Em ",
+                artist: "SOOBIN & Hoàng Duyên",
+                duration: "4:00",
+                audioUrl: "phiasauem.mp3",
+                image: "https://images.unsplash.com/photo-1571974599782-87624638275f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                type: "music"
+            },
+            {
+                id: 2,
+                name: "Ghé Qua",
+                artist: "Dick, Tofu & PC",
+                duration: "4:20",
+                audioUrl: "ghequa.mp3",
+                image: "https://lyrics3s.com/wp-content/uploads/2021/10/loi-bai-hat-ghe-qua.jpeg",
+                type: "music"
+            },
+            {
+                id: 3,
+                name: "Lời tâm sự số 3",
+                artist: "Lãng",
+                duration: "3:53",
+                audioUrl: "loitamsuso3.mp3",
+                image: "https://f.hoatieu.vn/data/image/2023/07/25/loi-bai-hat-loi-tam-su-so-3-mike-700.jpg",
+                type: "music"
+            },
+            {
+                id: 4,
+                name: "Chìm Sâu",
+                artist: "MCK & Trung Trần",
+                duration: "5:15",
+                audioUrl: "chimsau.mp3",
+                image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                type: "music"
+            },
+            {
+                id: 5,
+                name: "An Thần",
+                artist: "Thắng & Low G",
+                duration: "4:08",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                type: "music"
+            },
+            {
+                id: 6,
+                name: "Tình Yêu Ngủ Quên",
+                artist: "Hoàng Dũng",
+                duration: "3:55",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                image: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                type: "music"
+            },
+            {
+                id: 7,
+                name: "Mellow Piano Chill",
+                artist: "Piano Dreams",
+                duration: "4:32",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                image: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                type: "music"
+            },
+            {
+                id: 8,
+                name: "Vườn Thiền Zen",
+                artist: "Meditation Sounds",
+                duration: "6:20",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                image: "https://images.unsplash.com/photo-1548516173-3cabfa4607e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                type: "music"
+            },
+            {
+                id: 9,
+                name: "Gió Đêm Sao",
+                artist: "Cosmic Sounds",
+                duration: "5:02",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                image: "https://images.unsplash.com/photo-1532978379173-523e16f77100?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                type: "music"
+            },
+            {
+                id: 10,
+                name: "Bước ra đi xa",
+                artist: "Wxrdie",
+                duration: "2:49",
+                audioUrl: "Buocradixa.mp3",
+                image: "https://static.qobuz.com/images/covers/ya/68/rmdmie0fo68ya_600.jpg",
+                type: "music"
+            },
+            {
+                id: 11,
+                name: "Tháng 12 Có anh",
+                artist: "Kidz 0muonngheothemlannua",
+                duration: "1:39",
+                audioUrl: "thang12anhco.mp3",
+                image: "https://i.ytimg.com/vi/EXN87UjM6C4/maxresdefault.jpg",
+                type: "music"
+            }
+        ];
+
+        const sounds = [
+            {
+                id: 1,
+                name: "Mưa Rơi",
+                type: "Thiên nhiên",
+                icon: "fas fa-cloud-rain",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+            },
+            {
+                id: 2,
+                name: "Sóng Biển",
+                type: "Đại dương",
+                icon: "fas fa-water",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+            },
+            {
+                id: 3,
+                name: "Tiếng Chim",
+                type: "Rừng núi",
+                icon: "fas fa-dove",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"
+            },
+            {
+                id: 4,
+                name: "Lửa Cháy",
+                type: "Lò sưởi",
+                icon: "fas fa-fire",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
+            },
+            {
+                id: 5,
+                name: "Tiếng Gió",
+                type: "Thiên nhiên",
+                icon: "fas fa-wind",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+            },
+            {
+                id: 6,
+                name: "Suối Chảy",
+                type: "Nước",
+                icon: "fas fa-stream",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3"
+            }
+        ];
+
+        // Biến toàn cục
+        let currentTrack = null;
+        let isPlaying = false;
+        let audioElement = new Audio();
+        let currentTimer = null;
+        let timerActive = false;
+        let totalPlays = 0;
+        let totalTime = 0;
+        let currentPlaylist = [];
+        let currentTrackIndex = -1;
+
+        // Khởi tạo ứng dụng
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBackgrounds();
+            loadPostcards();
+            loadPlaylist();
+            loadSounds();
+            loadStats();
+            setupAudioPlayer();
+        });
+
+        // Tải danh sách backgrounds
+        function loadBackgrounds() {
+            const container = document.getElementById('backgroundsContainer');
+            backgrounds.forEach(bg => {
+                const bgItem = document.createElement('div');
+                bgItem.className = 'background-item';
+                bgItem.innerHTML = `
+                    <img src="${bg.image}" alt="${bg.name}" class="background-image-preview">
+                    <div class="background-title">${bg.name}</div>
+                `;
+                bgItem.addEventListener('click', () => changeBackground(bg));
+                container.appendChild(bgItem);
+            });
+        }
+
+        // Tải danh sách postcards
+        function loadPostcards() {
+            const container = document.getElementById('postcardsContainer');
+            videoPostcards.forEach(postcard => {
+                const postcardItem = document.createElement('div');
+                postcardItem.className = 'postcard-item';
+                postcardItem.innerHTML = `
+                    <div class="play-overlay">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <img src="${postcard.thumbnail}" alt="${postcard.title}" class="video-thumbnail">
+                    <div class="postcard-info">
+                        <div class="postcard-title">${postcard.title}</div>
+                        <div class="postcard-duration">${postcard.duration}</div>
+                    </div>
+                `;
+                postcardItem.addEventListener('click', () => playPostcard(postcard));
+                container.appendChild(postcardItem);
+            });
+        }
+
+        // Tải danh sách nhạc
+        function loadPlaylist() {
+            const container = document.getElementById('playlistContainer');
+            playlist.forEach((track, index) => {
+                const trackItem = document.createElement('div');
+                trackItem.className = 'playlist-item';
+                trackItem.innerHTML = `
+                    <div class="track-number">${index + 1}</div>
+                    <div class="playlist-info">
+                        <div class="playlist-name">${track.name}</div>
+                        <div class="playlist-artist">${track.artist}</div>
+                    </div>
+                    <div class="playlist-duration">${track.duration}</div>
+                `;
+                trackItem.addEventListener('click', () => {
+                    currentPlaylist = playlist;
+                    currentTrackIndex = index;
+                    playTrack(track);
+                });
+                container.appendChild(trackItem);
+            });
+        }
+
+        // Tải danh sách âm thanh
+        function loadSounds() {
+            const container = document.getElementById('soundsGrid');
+            sounds.forEach(sound => {
+                const soundItem = document.createElement('div');
+                soundItem.className = 'sound-item';
+                soundItem.innerHTML = `
+                    <div class="sound-icon">
+                        <i class="${sound.icon}"></i>
+                    </div>
+                    <div class="sound-title">${sound.name}</div>
+                    <div class="sound-type">${sound.type}</div>
+                `;
+                soundItem.addEventListener('click', () => playSound(sound));
+                container.appendChild(soundItem);
+            });
+        }
+
+        // Tải thống kê
+        function loadStats() {
+            const savedPlays = localStorage.getItem('totalPlays');
+            const savedTime = localStorage.getItem('totalTime');
+            
+            totalPlays = savedPlays ? parseInt(savedPlays) : 0;
+            totalTime = savedTime ? parseInt(savedTime) : 0;
+            
+            document.getElementById('totalPlays').textContent = totalPlays;
+            document.getElementById('totalTime').textContent = Math.floor(totalTime / 60) + 'h';
+        }
+
+        // Thiết lập audio player
+        function setupAudioPlayer() {
+            audioElement.volume = 0.7;
+            
+            audioElement.addEventListener('loadedmetadata', function() {
+                document.getElementById('duration').textContent = formatTime(audioElement.duration);
+                hideLoading();
+            });
+            
+            audioElement.addEventListener('timeupdate', function() {
+                const progress = (audioElement.currentTime / audioElement.duration) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+                document.getElementById('currentTime').textContent = formatTime(audioElement.currentTime);
+                
+                // Cập nhật tổng thời gian nghe
+                if (isPlaying) {
+                    totalTime++;
+                    if (totalTime % 60 === 0) {
+                        document.getElementById('totalTime').textContent = Math.floor(totalTime / 60) + 'h';
+                        localStorage.setItem('totalTime', totalTime);
+                    }
+                }
+            });
+            
+            audioElement.addEventListener('ended', function() {
+                playNextTrack();
+            });
+            
+            audioElement.addEventListener('error', function(e) {
+                console.error("Lỗi khi tải audio:", e);
+                showError("Không thể tải bài hát. Vui lòng thử lại.");
+                hideLoading();
+            });
+            
+            audioElement.addEventListener('canplay', function() {
+                hideLoading();
+            });
+        }
+
+        // Hiển thị loading
+        function showLoading() {
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Ẩn loading
+        function hideLoading() {
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
+
+        // Hiển thị lỗi
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+
+        // Phát audio
+        function playAudio() {
+            showLoading();
+            audioElement.play().then(() => {
+                document.getElementById('playPauseIcon').className = 'fas fa-pause';
+                isPlaying = true;
+                hideLoading();
+                
+                // Hiển thị equalizer animation
+                document.querySelectorAll('.equalizer-bar').forEach(bar => {
+                    bar.style.animationPlayState = 'running';
+                });
+            }).catch(error => {
+                console.error("Lỗi khi phát audio:", error);
+                showError("Không thể phát bài hát. Vui lòng thử lại.");
+            });
+        }
+
+        // Tạm dừng audio
+        function pauseAudio() {
+            audioElement.pause();
+            document.getElementById('playPauseIcon').className = 'fas fa-play';
+            isPlaying = false;
+            
+            // Dừng equalizer animation
+            document.querySelectorAll('.equalizer-bar').forEach(bar => {
+                bar.style.animationPlayState = 'paused';
+            });
+        }
+
+        // Phát bài hát
+        function playTrack(track) {
+            currentTrack = track;
+            audioElement.src = track.audioUrl;
+            
+            document.getElementById('nowPlayingName').textContent = track.name;
+            document.getElementById('nowPlayingArtist').textContent = track.artist;
+            document.getElementById('nowPlayingTitle').textContent = 'Đang phát';
+            
+            // Cập nhật hình ảnh album
+            const albumArt = document.getElementById('albumArt');
+            albumArt.innerHTML = `
+                <img src="${track.image}" alt="${track.name}">
+                <div class="equalizer-overlay">
+                    <div class="equalizer" id="equalizer">
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Hiển thị now playing
+            document.getElementById('nowPlaying').style.display = 'block';
+            
+            // Phát nhạc
+            playAudio();
+            
+            // Cập nhật thống kê
+            totalPlays++;
+            document.getElementById('totalPlays').textContent = totalPlays;
+            localStorage.setItem('totalPlays', totalPlays);
+        }
+
+        // Phát âm thanh
+        function playSound(sound) {
+            currentTrack = sound;
+            audioElement.src = sound.audioUrl;
+            
+            document.getElementById('nowPlayingName').textContent = sound.name;
+            document.getElementById('nowPlayingArtist').textContent = sound.type;
+            document.getElementById('nowPlayingTitle').textContent = 'Âm thanh thiên nhiên';
+            
+            // Cập nhật hình ảnh album
+            const albumArt = document.getElementById('albumArt');
+            albumArt.innerHTML = `
+                <div class="album-art-placeholder">
+                    <i class="${sound.icon}"></i>
+                </div>
+                <div class="equalizer-overlay">
+                    <div class="equalizer" id="equalizer">
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Hiển thị now playing
+            document.getElementById('nowPlaying').style.display = 'block';
+            
+            // Phát nhạc
+            playAudio();
+        }
+
+        // Phát postcard
+        function playPostcard(postcard) {
+            currentTrack = postcard;
+            audioElement.src = postcard.audioUrl;
+            
+            document.getElementById('nowPlayingName').textContent = postcard.title;
+            document.getElementById('nowPlayingArtist').textContent = 'Postcard thư giãn';
+            document.getElementById('nowPlayingTitle').textContent = 'Video thư giãn';
+            
+            // Cập nhật hình ảnh album
+            const albumArt = document.getElementById('albumArt');
+            albumArt.innerHTML = `
+                <img src="${postcard.thumbnail}" alt="${postcard.title}">
+                <div class="equalizer-overlay">
+                    <div class="equalizer" id="equalizer">
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                        <div class="equalizer-bar"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Hiển thị now playing
+            document.getElementById('nowPlaying').style.display = 'block';
+            
+            // Phát nhạc
+            playAudio();
+        }
+
+        // Play/Pause
+        function togglePlayPause() {
+            if (!currentTrack) return;
+            
+            if (isPlaying) {
+                pauseAudio();
+            } else {
+                playAudio();
+            }
+        }
+
+        // Bài tiếp theo
+        function playNextTrack() {
+            if (!currentTrack || currentPlaylist.length === 0) return;
+            
+            // Logic chuyển bài tiếp theo
+            if (currentTrack.type === 'music') {
+                currentTrackIndex = (currentTrackIndex + 1) % currentPlaylist.length;
+                playTrack(currentPlaylist[currentTrackIndex]);
+            }
+        }
+
+        // Bài trước đó
+        function playPreviousTrack() {
+            if (!currentTrack || currentPlaylist.length === 0) return;
+            
+            // Logic chuyển bài trước đó
+            if (currentTrack.type === 'music') {
+                currentTrackIndex = (currentTrackIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
+                playTrack(currentPlaylist[currentTrackIndex]);
+            }
+        }
+
+        // Thay đổi volume
+        function changeVolume(volume) {
+            audioElement.volume = volume;
+        }
+
+        // Seek audio
+        function seekAudio(event) {
+            if (!audioElement.duration) return;
+            
+            const progressContainer = event.currentTarget;
+            const clickPosition = event.offsetX;
+            const containerWidth = progressContainer.offsetWidth;
+            const seekTime = (clickPosition / containerWidth) * audioElement.duration;
+            
+            audioElement.currentTime = seekTime;
+        }
+
+        // Định dạng thời gian
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Thay đổi background
+        function changeBackground(background) {
+            document.getElementById('backgroundImage').src = background.image;
+            
+            // Cập nhật trạng thái active
+            document.querySelectorAll('.background-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        // Cập nhật timer
+        function updateTimer(value) {
+            document.getElementById('timerText').textContent = value + ' phút';
+        }
+
+        // Bật/tắt timer
+        function toggleTimer() {
+            const timerButton = document.getElementById('timerButton');
+            const timerValue = document.getElementById('timerSlider').value;
+            
+            if (timerActive) {
+                // Tắt timer
+                clearTimeout(currentTimer);
+                timerButton.textContent = 'BẬT HẸN GIỜ';
+                timerButton.classList.remove('active');
+                timerActive = false;
+            } else {
+                // Bật timer
+                timerButton.textContent = 'ĐÃ BẬT - ' + timerValue + ' PHÚT';
+                timerButton.classList.add('active');
+                timerActive = true;
+                
+                // Thiết lập timer
+                currentTimer = setTimeout(() => {
+                    audioElement.pause();
+                    isPlaying = false;
+                    document.getElementById('playPauseIcon').className = 'fas fa-play';
+                    timerButton.textContent = 'BẬT HẸN GIỜ';
+                    timerButton.classList.remove('active');
+                    timerActive = false;
+                    
+                    // Hiển thị thông báo
+                    alert('Hẹn giờ đã kết thúc. Ứng dụng sẽ tắt nhạc.');
+                }, timerValue * 60 * 1000);
+            }
+        }
+
+        // Hiển thị section
+        function showSection(section) {
+            // Ẩn tất cả sections
+            document.querySelectorAll('.section-content').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            
+            // Ẩn tất cả nav buttons
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Hiển thị section được chọn
+            document.getElementById(section + 'Section').classList.add('active');
+            
+            // Kích hoạt nav button
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
