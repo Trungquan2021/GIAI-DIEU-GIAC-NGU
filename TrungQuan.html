@@ -1,0 +1,4998 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giai Điệu Giấc Ngủ | Ứng dụng âm nhạc thư giãn</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & VARIABLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1DB954;
+            --secondary-color: #1ed760;
+            --accent-color: #1ed760;
+            --dark-color: #121212;
+            --darker-color: #000000;
+            --light-color: #ffffff;
+            --gray-color: #b3b3b3;
+            --card-color: #181818;
+            --hover-color: #1a1a1a;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --ai-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --night-mode-bg: #0a0a0a;
+            --night-mode-card: #111111;
+            --sidebar-width: 240px;
+            --player-height: 90px;
+            --header-height: 60px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.night-mode {
+            background: var(--night-mode-bg);
+            color: #e0e0e0;
+        }
+
+        /* APP LAYOUT */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--darker-color);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 10px;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        body.night-mode .sidebar {
+            background: var(--night-mode-bg);
+        }
+
+        .sidebar-header {
+            padding: 0 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .app-logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-logo i {
+            font-size: 28px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray-color);
+        }
+
+        .nav-item:hover {
+            background: var(--hover-color);
+            color: var(--light-color);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+        }
+
+        body.night-mode .nav-item.active {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item span {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .sidebar-playlists {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .playlist-item {
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray-color);
+            font-size: 14px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-item:hover {
+            color: var(--light-color);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-footer {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding-bottom: var(--player-height);
+            min-height: 100vh;
+        }
+
+        .header {
+            height: var(--header-height);
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.night-mode .header {
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-button {
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px 5px 5px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-menu:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 5px;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: calc(100vh - var(--header-height) - var(--player-height));
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light-color);
+        }
+
+        body.night-mode .section-title {
+            color: #e0e0e0;
+        }
+
+        .section-link {
+            color: var(--gray-color);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .section-link:hover {
+            color: var(--light-color);
+            text-decoration: underline;
+        }
+
+        /* MUSIC PLAYER */
+        .music-player {
+            position: fixed;
+            bottom: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: var(--player-height);
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        body.night-mode .music-player {
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        .player-left {
+            display: flex;
+            align-items: center;
+            width: 30%;
+        }
+
+        .player-center {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .player-right {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .track-image {
+            width: 56px;
+            height: 56px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .track-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--light-color);
+            margin-bottom: 4px;
+        }
+
+        body.night-mode .track-name {
+            color: #e0e0e0;
+        }
+
+        .track-artist {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+
+        .track-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .action-btn:hover {
+            color: var(--light-color);
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--gray-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .control-btn:hover {
+            color: var(--light-color);
+        }
+
+        .play-btn {
+            background: var(--light-color);
+            color: var(--dark-color);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            background: var(--light-color);
+            color: var(--dark-color);
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .progress-time {
+            font-size: 12px;
+            color: var(--gray-color);
+            min-width: 40px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        body.night-mode .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .progress-handle {
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--light-color);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .progress-bar:hover .progress-handle {
+            opacity: 1;
+        }
+
+        .volume-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volume-bar {
+            width: 100px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        body.night-mode .volume-bar {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .volume-level {
+            height: 100%;
+            background: var(--light-color);
+            border-radius: 2px;
+            width: 70%;
+        }
+
+        /* SPOTIFY-LIKE PLAYLIST */
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .playlist-card {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.night-mode .playlist-card {
+            background: rgba(40, 40, 40, 0.8);
+        }
+
+        .playlist-card:hover {
+            background: rgba(40, 40, 40, 0.9);
+            transform: translateY(-5px);
+        }
+
+        body.night-mode .playlist-card:hover {
+            background: rgba(50, 50, 50, 0.9);
+        }
+
+        .playlist-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            object-fit: cover;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .playlist-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--light-color);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body.night-mode .playlist-card-title {
+            color: #e0e0e0;
+        }
+
+        .playlist-card-description {
+            font-size: 14px;
+            color: var(--gray-color);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .play-play-btn {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            width: 48px;
+            height: 48px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .playlist-card:hover .play-play-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .play-play-btn i {
+            color: var(--darker-color);
+            font-size: 20px;
+        }
+
+        /* TRACK LIST */
+        .track-list {
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        body.night-mode .track-list {
+            background: rgba(40, 40, 40, 0.5);
+        }
+
+        .track-list-header {
+            display: grid;
+            grid-template-columns: 50px 1fr 1fr 100px 80px;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-color);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .track-item {
+            display: grid;
+            grid-template-columns: 50px 1fr 1fr 100px 80px;
+            padding: 12px 16px;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .track-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .track-item.active {
+            background: rgba(29, 185, 84, 0.1);
+        }
+
+        .track-number {
+            color: var(--gray-color);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .track-item:hover .track-number {
+            color: transparent;
+        }
+
+        .track-item:hover .track-play {
+            display: block;
+        }
+
+        .track-play {
+            display: none;
+            color: var(--light-color);
+            text-align: center;
+        }
+
+        .track-info-list {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .track-image-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .track-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-name-list {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--light-color);
+            margin-bottom: 4px;
+        }
+
+        body.night-mode .track-name-list {
+            color: #e0e0e0;
+        }
+
+        .track-artist-list {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+
+        .track-album {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+
+        .track-date {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+
+        .track-duration {
+            font-size: 14px;
+            color: var(--gray-color);
+            text-align: right;
+        }
+
+        .track-actions-list {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* LYRIC DISPLAY */
+        .lyric-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .lyric-container.active {
+            display: flex;
+        }
+
+        .lyric-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lyric-track-info {
+            margin-bottom: 40px;
+        }
+
+        .lyric-track-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--light-color);
+        }
+
+        .lyric-track-artist {
+            font-size: 16px;
+            color: var(--gray-color);
+        }
+
+        .lyric-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .lyric-line {
+            font-size: 24px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--gray-color);
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .lyric-line.active {
+            color: var(--light-color);
+            font-size: 28px;
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        .lyric-close {
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* PROFILE SECTION */
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .profile-avatar-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+        }
+
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .avatar-upload-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .avatar-upload-btn i {
+            color: var(--darker-color);
+            font-size: 18px;
+        }
+
+        .avatar-upload-input {
+            display: none;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--light-color);
+        }
+
+        body.night-mode .profile-name {
+            color: #e0e0e0;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .profile-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .profile-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            color: var(--light-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.night-mode .profile-action-btn {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        body.night-mode .profile-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-action-btn.primary {
+            background: var(--primary-color);
+            color: var(--darker-color);
+        }
+
+        .profile-action-btn.primary:hover {
+            background: var(--secondary-color);
+        }
+
+        /* ENHANCED FEATURES */
+        .search-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            font-size: 16px;
+            outline: none;
+        }
+
+        body.night-mode .search-input {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-color);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .filter-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: var(--light-color);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        body.night-mode .filter-tab {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .filter-tab.active {
+            background: var(--primary-color);
+            color: var(--darker-color);
+        }
+
+        .filter-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.night-mode .filter-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* MOBILE RESPONSIVE */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .music-player {
+                left: 0;
+                padding: 0 10px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .player-left, .player-right {
+                width: 25%;
+            }
+            
+            .player-center {
+                width: 50%;
+            }
+            
+            .track-info {
+                display: none;
+            }
+            
+            .playlist-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .track-list-header, .track-item {
+                grid-template-columns: 40px 1fr 80px;
+            }
+            
+            .track-album, .track-date {
+                display: none;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+            
+            .header {
+                padding: 0 15px;
+            }
+            
+            .search-container {
+                width: 200px;
+            }
+            
+            .user-name {
+                display: none;
+            }
+            
+            .user-menu {
+                padding: 5px;
+            }
+            
+            .volume-controls {
+                display: none;
+            }
+            
+            .lyric-container {
+                padding: 20px 15px;
+            }
+            
+            .lyric-track-name {
+                font-size: 20px;
+            }
+            
+            .lyric-line {
+                font-size: 18px;
+            }
+            
+            .lyric-line.active {
+                font-size: 22px;
+            }
+            
+            .profile-section {
+                padding: 20px 10px;
+            }
+            
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .profile-name {
+                font-size: 24px;
+            }
+            
+            .profile-stats {
+                gap: 20px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
+            }
+            
+            .profile-actions {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .profile-action-btn {
+                justify-content: center;
+            }
+            
+            .ai-chat-container {
+                height: 350px;
+            }
+            
+            .message-bubble {
+                max-width: 90%;
+            }
+            
+            .timer-display {
+                font-size: 24px;
+            }
+            
+            .sleep-timer {
+                padding: 15px;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* SCROLLBAR STYLING */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* NIGHT MODE TOGGLE */
+        .night-mode-toggle {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .night-mode-btn {
+            background: var(--primary-color);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--darker-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .night-mode-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* EQUALIZER ANIMATION */
+        .equalizer {
+            display: flex;
+            align-items: end;
+            height: 20px;
+            gap: 3px;
+        }
+
+        .equalizer-bar {
+            width: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            animation: equalizer 1.5s ease infinite;
+        }
+
+        .equalizer-bar:nth-child(1) { animation-delay: 0s; height: 8px; }
+        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; height: 12px; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; height: 16px; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
+        .equalizer-bar:nth-child(5) { animation-delay: 0.4s; height: 8px; }
+
+        @keyframes equalizer {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1); }
+        }
+
+        /* LOADING SPINNER */
+        .loading-spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* SLEEP TIMER */
+        .sleep-timer {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        body.night-mode .sleep-timer {
+            background: rgba(40, 40, 40, 0.8);
+        }
+
+        .timer-display {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .timer-slider {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: var(--light-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        body.night-mode .timer-btn {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .timer-btn.active {
+            background: var(--primary-color);
+            color: var(--darker-color);
+        }
+
+        .timer-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.night-mode .timer-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* AI CHAT */
+        .ai-chat-container {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.night-mode .ai-chat-container {
+            background: rgba(40, 40, 40, 0.8);
+        }
+
+        .ai-chat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--ai-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .ai-logo i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .ai-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--light-color);
+        }
+
+        body.night-mode .ai-name {
+            color: #e0e0e0;
+        }
+
+        .ai-status {
+            font-size: 12px;
+            color: var(--primary-color);
+            margin-left: auto;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.ai {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.ai .message-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom-left-radius: 5px;
+            color: var(--light-color);
+        }
+
+        body.night-mode .message.ai .message-bubble {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+        }
+
+        .message.user .message-bubble {
+            background: var(--gradient);
+            border-bottom-right-radius: 5px;
+            color: white;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: var(--gray-color);
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .ai-chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light-color);
+            outline: none;
+        }
+
+        body.night-mode .ai-input {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .ai-send-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ai-send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .mood-suggestions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .mood-suggestion {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light-color);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        body.night-mode .mood-suggestion {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .mood-suggestion:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.night-mode .mood-suggestion:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* PODCASTS & SOUNDS */
+        .podcasts-grid, .sounds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .podcast-card, .sound-card {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.night-mode .podcast-card, body.night-mode .sound-card {
+            background: rgba(40, 40, 40, 0.8);
+        }
+
+        .podcast-card:hover, .sound-card:hover {
+            background: rgba(40, 40, 40, 0.9);
+            transform: translateY(-5px);
+        }
+
+        body.night-mode .podcast-card:hover, body.night-mode .sound-card:hover {
+            background: rgba(50, 50, 50, 0.9);
+        }
+
+        .podcast-image, .sound-icon {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+
+        .sound-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 40px;
+            color: var(--primary-color);
+        }
+
+        .podcast-title, .sound-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--light-color);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body.night-mode .podcast-title, body.night-mode .sound-title {
+            color: #e0e0e0;
+        }
+
+        .podcast-description, .sound-type {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+
+        /* CREATE PLAYLIST MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card-color);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        body.night-mode .modal {
+            background: var(--night-mode-card);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--light-color);
+        }
+
+        body.night-mode .modal-title {
+            color: #e0e0e0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray-color);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .modal-close:hover {
+            color: var(--light-color);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--light-color);
+        }
+
+        body.night-mode .form-label {
+            color: #e0e0e0;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light-color);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        body.night-mode .form-input {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+        }
+
+        body.night-mode .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.night-mode .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--darker-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+
+        /* LIBRARY SECTION */
+        .library-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .library-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: var(--light-color);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        body.night-mode .library-tab {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .library-tab.active {
+            background: var(--primary-color);
+            color: var(--darker-color);
+        }
+
+        .library-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.night-mode .library-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .library-content {
+            display: none;
+        }
+
+        .library-content.active {
+            display: block;
+        }
+
+        /* REPEAT STATES */
+        .repeat-off {
+            color: var(--gray-color);
+        }
+
+        .repeat-playlist {
+            color: var(--primary-color);
+        }
+
+        .repeat-track {
+            color: var(--primary-color);
+        }
+
+        .repeat-track .fas {
+            position: relative;
+        }
+
+        .repeat-track .fas::after {
+            content: "1";
+            position: absolute;
+            top: 0;
+            right: -5px;
+            font-size: 8px;
+            background: var(--primary-color);
+            color: var(--dark-color);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SECTION CONTENT */
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        /* NEW FEATURES */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            color: var(--light-color);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stats-section {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-card-title {
+            font-size: 14px;
+            color: var(--gray-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .mood-based-recommendations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .mood-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            min-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .mood-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .mood-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .mood-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .mood-description {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="app-logo">
+                    <i class="fas fa-moon"></i>
+                    <span>Giai Điệu Giấc Ngủ</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item active" data-section="home">
+                    <i class="fas fa-home"></i>
+                    <span>Trang Chủ</span>
+                </div>
+                <div class="nav-item" data-section="search">
+                    <i class="fas fa-search"></i>
+                    <span>Tìm Kiếm</span>
+                </div>
+                <div class="nav-item" data-section="library">
+                    <i class="fas fa-book"></i>
+                    <span>Thư Viện</span>
+                </div>
+                <div class="nav-item" data-section="playlists">
+                    <i class="fas fa-list"></i>
+                    <span>Playlist</span>
+                </div>
+                <div class="nav-item" data-section="podcasts">
+                    <i class="fas fa-podcast"></i>
+                    <span>Podcast</span>
+                </div>
+                <div class="nav-item" data-section="sounds">
+                    <i class="fas fa-water"></i>
+                    <span>Âm Thanh</span>
+                </div>
+                <div class="nav-item" data-section="ai">
+                    <i class="fas fa-robot"></i>
+                    <span>Giấc Ngủ Tuyệt Vời</span>
+                </div>
+                <div class="nav-item" data-section="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Hồ Sơ</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-playlists">
+                <div class="section-title" style="font-size: 16px; margin-bottom: 15px;">Playlist Của Bạn</div>
+                <div id="userPlaylists">
+                    <!-- User playlists will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Cài Đặt</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="nav-buttons">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="nav-button">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="nav-button">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="search-container" style="width: 300px;">
+                    <input type="text" class="search-input" placeholder="Tìm kiếm bài hát, nghệ sĩ, podcast...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <div class="user-menu" id="userMenu">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Avatar" class="user-avatar" id="userAvatar">
+                    <span class="user-name" id="userName">Nguyễn Văn A</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="content">
+                <!-- Home Section -->
+                <div class="section-content active" id="homeSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Chào buổi tối</h2>
+                        </div>
+                        
+                        <div class="quick-actions">
+                            <button class="quick-action-btn" onclick="playPlaylist('chill')">
+                                <i class="fas fa-bed"></i> Ngủ ngon
+                            </button>
+                            <button class="quick-action-btn" onclick="playPlaylist('focus')">
+                                <i class="fas fa-brain"></i> Tập trung
+                            </button>
+                            <button class="quick-action-btn" onclick="playPlaylist('vietnam')">
+                                <i class="fas fa-music"></i> Nhạc Việt
+                            </button>
+                            <button class="quick-action-btn" onclick="showSection('ai')">
+                                <i class="fas fa-robot"></i> Tâm sự với AI
+                            </button>
+                        </div>
+                        
+                        <div class="stats-section">
+                            <div class="stat-card">
+                                <div class="stat-card-title">Thời gian nghe hôm nay</div>
+                                <div class="stat-card-value">42 phút</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-card-title">Bài hát đã nghe</div>
+                                <div class="stat-card-value">12</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-card-title">Tâm trạng phổ biến</div>
+                                <div class="stat-card-value">Thư giãn</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Dành riêng cho bạn</h2>
+                            <span class="section-link">Xem tất cả</span>
+                        </div>
+                        
+                        <div class="playlist-grid">
+                            <div class="playlist-card" onclick="playPlaylist('chill')">
+                                <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Chill Vibes" class="playlist-image">
+                                <div class="playlist-card-title">Chill Vibes</div>
+                                <div class="playlist-card-description">Những giai điệu thư giãn nhất cho tâm hồn</div>
+                                <div class="play-play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="playlist-card" onclick="playPlaylist('sleep')">
+                                <img src="https://images.unsplash.com/photo-1505506874110-6a7a69069a08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ngủ Ngon" class="playlist-image">
+                                <div class="playlist-card-title">Ngủ Ngon</div>
+                                <div class="playlist-card-description">Âm nhạc nhẹ nhàng cho giấc ngủ sâu</div>
+                                <div class="play-play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="playlist-card" onclick="playPlaylist('vietnam')">
+                                <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Nhạc Việt" class="playlist-image">
+                                <div class="playlist-card-title">Nhạc Việt</div>
+                                <div class="playlist-card-description">Tuyển tập nhạc Việt Nam hay nhất</div>
+                                <div class="play-play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="playlist-card" onclick="playPlaylist('world')">
+                                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Nhạc Quốc Tế" class="playlist-image">
+                                <div class="playlist-card-title">Nhạc Quốc Tế</div>
+                                <div class="playlist-card-description">Những bản hit quốc tế đình đám</div>
+                                <div class="play-play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Nghe gần đây</h2>
+                            <span class="section-link">Xem tất cả</span>
+                        </div>
+                        
+                        <div class="track-list">
+                            <div class="track-list-header">
+                                <div>#</div>
+                                <div>BÀI HÁT</div>
+                                <div>ALBUM</div>
+                                <div>NGÀY THÊM</div>
+                                <div></div>
+                            </div>
+                            
+                            <div class="track-item" onclick="playTrack(0)">
+                                <div class="track-number">1</div>
+                                <div class="track-play"><i class="fas fa-play"></i></div>
+                                <div class="track-info-list">
+                                    <img src="https://images.unsplash.com/photo-1571974599782-87624638275f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Phía Sau Em" class="track-image-small">
+                                    <div class="track-details">
+                                        <div class="track-name-list">Phía Sau Em</div>
+                                        <div class="track-artist-list">SOOBIN & Hoàng Duyên</div>
+                                    </div>
+                                </div>
+                                <div class="track-album">Phía Sau Em</div>
+                                <div class="track-date">2 ngày trước</div>
+                                <div class="track-duration">4:00</div>
+                            </div>
+                            
+                            <div class="track-item" onclick="playTrack(1)">
+                                <div class="track-number">2</div>
+                                <div class="track-play"><i class="fas fa-play"></i></div>
+                                <div class="track-info-list">
+                                    <img src="https://lyrics3s.com/wp-content/uploads/2021/10/loi-bai-hat-ghe-qua.jpeg" alt="Ghé Qua" class="track-image-small">
+                                    <div class="track-details">
+                                        <div class="track-name-list">Ghé Qua</div>
+                                        <div class="track-artist-list">Dick, Tofu & PC</div>
+                                    </div>
+                                </div>
+                                <div class="track-album">Ghé Qua</div>
+                                <div class="track-date">1 tuần trước</div>
+                                <div class="track-duration">4:20</div>
+                            </div>
+                            
+                            <div class="track-item" onclick="playTrack(2)">
+                                <div class="track-number">3</div>
+                                <div class="track-play"><i class="fas fa-play"></i></div>
+                                <div class="track-info-list">
+                                    <img src="https://f.hoatieu.vn/data/image/2023/07/25/loi-bai-hat-loi-tam-su-so-3-mike-700.jpg" alt="Lời tâm sự số 3" class="track-image-small">
+                                    <div class="track-details">
+                                        <div class="track-name-list">Lời tâm sự số 3</div>
+                                        <div class="track-artist-list">Lãng</div>
+                                    </div>
+                                </div>
+                                <div class="track-album">Lời tâm sự số 3</div>
+                                <div class="track-date">3 tuần trước</div>
+                                <div class="track-duration">3:53</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sleep Timer -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Hẹn giờ tắt</h2>
+                        </div>
+                        <div class="sleep-timer">
+                            <div class="timer-display" id="timerDisplay">30 phút</div>
+                            <input type="range" min="5" max="180" step="5" value="30" class="timer-slider" id="timerSlider" oninput="updateTimer(this.value)">
+                            <div class="timer-controls">
+                                <button class="timer-btn" id="timerButton" onclick="toggleTimer()">BẬT HẸN GIỜ</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendation Section -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Dựa trên tâm trạng của bạn</h2>
+                        </div>
+                        <div class="mood-based-recommendations">
+                            <div class="mood-card" onclick="playPlaylist('chill')">
+                                <div class="mood-icon">😌</div>
+                                <div class="mood-title">Thư giãn</div>
+                                <div class="mood-description">Nhạc nhẹ nhàng, êm dịu</div>
+                            </div>
+                            <div class="mood-card" onclick="playPlaylist('focus')">
+                                <div class="mood-icon">🧠</div>
+                                <div class="mood-title">Tập trung</div>
+                                <div class="mood-description">Nhạc không lời, tăng hiệu suất</div>
+                            </div>
+                            <div class="mood-card" onclick="playPlaylist('sleep')">
+                                <div class="mood-icon">😴</div>
+                                <div class="mood-title">Ngủ ngon</div>
+                                <div class="mood-description">Âm thanh ru ngủ, sóng não</div>
+                            </div>
+                            <div class="mood-card" onclick="playPlaylist('vietnam')">
+                                <div class="mood-icon">🎵</div>
+                                <div class="mood-title">Nhạc Việt</div>
+                                <div class="mood-description">Nhạc Việt Nam sâu lắng</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Section -->
+                <div class="section-content" id="searchSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Tìm Kiếm</h2>
+                        </div>
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="Tìm kiếm bài hát, nghệ sĩ, podcast..." id="globalSearch">
+                            <i class="fas fa-search search-icon"></i>
+                        </div>
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-filter="all">Tất Cả</button>
+                            <button class="filter-tab" data-filter="songs">Bài Hát</button>
+                            <button class="filter-tab" data-filter="playlists">Playlist</button>
+                            <button class="filter-tab" data-filter="podcasts">Podcast</button>
+                            <button class="filter-tab" data-filter="sounds">Âm Thanh</button>
+                        </div>
+                        <div class="search-results" id="searchResults">
+                            <!-- Search results will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Library Section -->
+                <div class="section-content" id="librarySection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Thư Viện Của Bạn</h2>
+                        </div>
+                        <div class="library-tabs">
+                            <button class="library-tab active" data-library="recent">Nghe Gần Đây</button>
+                            <button class="library-tab" data-library="favorites">Yêu Thích</button>
+                            <button class="library-tab" data-library="music">Âm Nhạc</button>
+                            <button class="library-tab" data-library="playlists">Playlist</button>
+                            <button class="library-tab" data-library="podcasts">Podcast</button>
+                            <button class="library-tab" data-library="sounds">Âm Thanh</button>
+                        </div>
+                        
+                        <div class="library-content active" id="recentLibrary">
+                            <div class="track-list">
+                                <div class="track-list-header">
+                                    <div>#</div>
+                                    <div>BÀI HÁT</div>
+                                    <div>ALBUM</div>
+                                    <div>NGÀY THÊM</div>
+                                    <div></div>
+                                </div>
+                                <!-- Recent tracks will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="library-content" id="favoritesLibrary">
+                            <div class="playlist-grid">
+                                <!-- Favorite tracks will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <!-- THÊM PHẦN ÂM NHẠC MỚI -->
+                        <div class="library-content" id="musicLibrary">
+                            <div class="track-list">
+                                <div class="track-list-header">
+                                    <div>#</div>
+                                    <div>BÀI HÁT</div>
+                                    <div>ALBUM</div>
+                                    <div>NGÀY THÊM</div>
+                                    <div></div>
+                                </div>
+                                <!-- Music tracks will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="library-content" id="playlistsLibrary">
+                            <div class="playlist-grid">
+                                <!-- User playlists will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="library-content" id="podcastsLibrary">
+                            <div class="podcasts-grid">
+                                <!-- Podcasts will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="library-content" id="soundsLibrary">
+                            <div class="sounds-grid">
+                                <!-- Sounds will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Playlists Section -->
+                <div class="section-content" id="playlistsSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Playlist Của Bạn</h2>
+                            <button class="profile-action-btn" onclick="showCreatePlaylistModal()">
+                                <i class="fas fa-plus"></i> Tạo Playlist Mới
+                            </button>
+                        </div>
+                        <div class="playlist-grid" id="userPlaylistsGrid">
+                            <!-- User playlists will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Podcasts Section -->
+                <div class="section-content" id="podcastsSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Podcast Thư Giãn</h2>
+                        </div>
+                        <div class="podcasts-grid" id="podcastsGrid">
+                            <!-- Podcast items will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sounds Section -->
+                <div class="section-content" id="soundsSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Âm Thanh Thiên Nhiên</h2>
+                        </div>
+                        <div class="sounds-grid" id="soundsGrid">
+                            <!-- Sound items will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Section -->
+                <div class="section-content" id="aiSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Giấc Ngủ Tuyệt Vời</h2>
+                        </div>
+                        <div class="ai-chat-container">
+                            <div class="ai-chat-header">
+                                <div class="ai-logo">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                                <div class="ai-name">Giấc Ngủ Tuyệt Vời</div>
+                                <div class="ai-status">Đang trực tuyến</div>
+                            </div>
+                            <div class="ai-chat-messages" id="aiChatMessages">
+                                <div class="message ai">
+                                    <div class="message-bubble">
+                                        Xin chào! Tôi là Giấc Ngủ Tuyệt Vời, trợ lý âm nhạc và tâm lý của bạn. Hãy chia sẻ tâm trạng, cảm xúc của bạn và tôi sẽ gợi ý những bài hát phù hợp hoặc đơn giản là lắng nghe bạn!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mood-suggestions">
+                                <button class="mood-suggestion" onclick="sendMoodSuggestion('Hôm nay tôi cảm thấy hạnh phúc')">😊 Hạnh phúc</button>
+                                <button class="mood-suggestion" onclick="sendMoodSuggestion('Tôi đang cảm thấy buồn')">😔 Buồn bã</button>
+                                <button class="mood-suggestion" onclick="sendMoodSuggestion('Tôi cần thư giãn')">😌 Thư giãn</button>
+                                <button class="mood-suggestion" onclick="sendMoodSuggestion('Tôi cảm thấy cô đơn')">😥 Cô đơn</button>
+                                <button class="mood-suggestion" onclick="sendMoodSuggestion('Tôi đang lo lắng')">😰 Lo lắng</button>
+                                <button class="mood-suggestion" onclick="sendMoodSuggestion('Tôi muốn ngủ ngon')">😴 Muốn ngủ</button>
+                            </div>
+                            <div class="ai-chat-input">
+                                <input type="text" class="ai-input" id="aiInput" placeholder="Chia sẻ tâm trạng, cảm xúc của bạn...">
+                                <button class="ai-send-btn" onclick="sendAIMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Section -->
+                <div class="section-content" id="profileSection">
+                    <div class="profile-section">
+                        <div class="profile-avatar-container">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Avatar" class="profile-avatar" id="profileAvatar">
+                            <div class="avatar-upload-btn" onclick="document.getElementById('avatarUpload').click()">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <input type="file" id="avatarUpload" class="avatar-upload-input" accept="image/*">
+                        </div>
+                        
+                        <h1 class="profile-name" id="profileName">Nguyễn Văn A</h1>
+                        <p class="profile-card-description" id="profileEmail">user@example.com</p>
+                        
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="stat-value" id="profilePlays">128</div>
+                                <div class="stat-label">Lượt nghe</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="stat-value" id="profileTime">42h</div>
+                                <div class="stat-label">Thời gian</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="stat-value" id="profilePlaylists">5</div>
+                                <div class="stat-label">Playlist</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button class="profile-action-btn" onclick="showEditProfileModal()">
+                                <i class="fas fa-edit"></i> Chỉnh sửa hồ sơ
+                            </button>
+                            <button class="profile-action-btn primary">
+                                <i class="fas fa-user-plus"></i> Chia sẻ hồ sơ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Music Player -->
+        <div class="music-player">
+            <div class="player-left">
+                <div class="now-playing">
+                    <img src="https://images.unsplash.com/photo-1571974599782-87624638275f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Now Playing" class="track-image" id="nowPlayingImage">
+                    <div class="track-info">
+                        <div class="track-name" id="nowPlayingName">Phía Sau Em</div>
+                        <div class="track-artist" id="nowPlayingArtist">SOOBIN & Hoàng Duyên</div>
+                    </div>
+                    <div class="track-actions">
+                        <button class="action-btn" id="favoriteBtn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="action-btn" onclick="toggleLyricDisplay()">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="player-center">
+                <div class="player-controls">
+                    <button class="control-btn" onclick="toggleShuffle()" id="shuffleBtn">
+                        <i class="fas fa-random"></i>
+                    </button>
+                    <button class="control-btn" onclick="playPreviousTrack()">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button class="control-btn play-btn" onclick="togglePlayPause()" id="playPauseBtn">
+                        <i class="fas fa-play" id="playPauseIcon"></i>
+                    </button>
+                    <button class="control-btn" onclick="playNextTrack()">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                    <button class="control-btn repeat-off" onclick="toggleRepeat()" id="repeatBtn">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+                
+                <div class="progress-container">
+                    <span class="progress-time" id="currentTime">0:00</span>
+                    <div class="progress-bar" onclick="seekAudio(event)">
+                        <div class="progress" id="progress"></div>
+                        <div class="progress-handle"></div>
+                    </div>
+                    <span class="progress-time" id="duration">4:00</span>
+                </div>
+            </div>
+            
+            <div class="player-right">
+                <div class="volume-controls">
+                    <button class="control-btn" id="queueBtn">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="control-btn">
+                        <i class="fas fa-laptop"></i>
+                    </button>
+                    <button class="control-btn">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <div class="volume-bar">
+                        <div class="volume-level"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lyric Display -->
+        <div class="lyric-container" id="lyricContainer">
+            <div class="lyric-header">
+                <button class="lyric-close" onclick="toggleLyricDisplay()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="lyric-track-info">
+                <div class="lyric-track-name" id="lyricTrackName">Phía Sau Em</div>
+                <div class="lyric-track-artist" id="lyricTrackArtist">SOOBIN & Hoàng Duyên</div>
+            </div>
+            
+            <div class="lyric-content" id="lyricContent">
+                <div class="lyric-line">Đang tải lời bài hát...</div>
+            </div>
+        </div>
+        
+        <!-- Create Playlist Modal -->
+        <div class="modal-overlay" id="createPlaylistModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Tạo Playlist Mới</h3>
+                    <button class="modal-close" onclick="hideCreatePlaylistModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="playlistName">Tên playlist</label>
+                        <input type="text" class="form-input" id="playlistName" placeholder="Nhập tên playlist">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="playlistDescription">Mô tả</label>
+                        <input type="text" class="form-input" id="playlistDescription" placeholder="Mô tả playlist (tùy chọn)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="hideCreatePlaylistModal()">Hủy</button>
+                    <button class="btn btn-primary" onclick="createPlaylist()">Tạo</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Night Mode Toggle -->
+        <div class="night-mode-toggle">
+            <button class="night-mode-btn" id="nightModeBtn">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Data cho ứng dụng với 50 bài hát
+        const playlists = {
+            'chill': [
+                {
+                    id: 1,
+                    name: "Phía Sau Em",
+                    artist: "SOOBIN & Hoàng Duyên",
+                    duration: "4:00",
+                    audioUrl: "phiasauem.mp3",
+                    image: "https://images.unsplash.com/photo-1571974599782-87624638275f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: [
+                        { time: 0, text: "Có những đêm dài" },
+                        { time: 5, text: "Em một mình bước đi" },
+                        { time: 10, text: "Trong thành phố vắng" },
+                        { time: 15, text: "Chợt nhớ đến anh" },
+                        { time: 20, text: "Người đã xa rồi" },
+                        { time: 25, text: "Để lại nỗi cô đơn" },
+                        { time: 30, text: "Trong tim em mãi" }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Ghé Qua",
+                    artist: "Dick, Tofu & PC",
+                    duration: "4:20",
+                    audioUrl: "ghequa.mp3",
+                    image: "https://lyrics3s.com/wp-content/uploads/2021/10/loi-bai-hat-ghe-qua.jpeg",
+                    lyrics: [
+                        { time: 0, text: "Anh chỉ muốn ghé qua" },
+                        { time: 5, text: "Để ngắm nhìn em thôi" },
+                        { time: 10, text: "Dù biết rằng em đã" },
+                        { time: 15, text: "Có người thương mất rồi" },
+                        { time: 20, text: "Nhưng lòng anh vẫn cứ" },
+                        { time: 25, text: "Yêu em nhiều đến thế" },
+                        { time: 30, text: "Chẳng thể nào quên được" }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "An Thần",
+                    artist: "Thắng & Low G",
+                    duration: "4:08",
+                    audioUrl: "anthan.mp3",
+                    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 26,
+                    name: "Crystal Clear",
+                    artist: "Kygo",
+                    duration: "3:50",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 27,
+                    name: "Sunset Lover",
+                    artist: "Petit Biscuit",
+                    duration: "3:58",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                }
+            ],
+            'sleep': [
+                {
+                    id: 4,
+                    name: "Gió Đêm Sao",
+                    artist: "Cosmic Sounds",
+                    duration: "5:02",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    image: "https://images.unsplash.com/photo-1532978379173-523e16f77100?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: [
+                        { time: 0, text: "Không lời" }
+                    ]
+                },
+                {
+                    id: 9,
+                    name: "Gió Đêm Sao",
+                    artist: "Cosmic Sounds",
+                    duration: "5:02",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    image: "https://images.unsplash.com/photo-1532978379173-523e16f77100?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                }
+            ],
+            'vietnam': [
+                {
+                    id: 3,
+                    name: "Lời tâm sự số 3",
+                    artist: "Lãng",
+                    duration: "3:53",
+                    audioUrl: "loitamsuso3.mp3",
+                    image: "https://f.hoatieu.vn/data/image/2023/07/25/loi-bai-hat-loi-tam-su-so-3-mike-700.jpg",
+                    lyrics: [
+                        { time: 0, text: "Đêm nay lại một mình" },
+                        { time: 5, text: "Ngồi nhìn màn hình điện thoại" },
+                        { time: 10, text: "Chờ tin nhắn từ ai" },
+                        { time: 15, text: "Nhưng chẳng có gì cả" },
+                        { time: 20, text: "Chỉ là cô đơn thôi" },
+                        { time: 25, text: "Vây quanh lấy tâm hồn" },
+                        { time: 30, text: "Một mình với đêm dài" }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Chìm Sâu",
+                    artist: "MCK & Trung Trần",
+                    duration: "5:15",
+                    audioUrl: "chimsau.mp3",
+                    image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 6,
+                    name: "Tình Yêu Ngủ Quên",
+                    artist: "Hoàng Dũng",
+                    duration: "3:55",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    image: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 7,
+                    name: "Mơ",
+                    artist: "Vũ Cát Tường",
+                    duration: "4:30",
+                    audioUrl: "mơ.mp3",
+                    image: "https://avatar-ex-swe.nixcdn.com/song/2019/05/12/a/9/0/c/1557598580220_640.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 8,
+                    name: "Sống cho hết đời thanh xuân 1",
+                    artist: "Dick & Xám",
+                    duration: "5:01",
+                    audioUrl: "schdtx1.mp3",
+                    image: "https://i.ytimg.com/vi/lUKyQoyugfM/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 10,
+                    name: "Bước ra đi xa",
+                    artist: "Wxrdie",
+                    duration: "2:49",
+                    audioUrl: "Buocradixa.mp3",
+                    image: "https://static.qobuz.com/images/covers/ya/68/rmdmie0fo68ya_600.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 11,
+                    name: "Tháng 12 Có anh",
+                    artist: "Kidz 0muonngheothemlannua",
+                    duration: "1:39",
+                    audioUrl: "thang12anhco.mp3",
+                    image: "https://i.ytimg.com/vi/EXN87UjM6C4/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 12,
+                    name: "Có Chàng Trai Viết Lên Cây",
+                    artist: "Phan Mạnh Quỳnh",
+                    duration: "4:15",
+                    audioUrl: "cochangtraivietlencay.mp3",
+                    image: "https://avatar-ex-swe.nixcdn.com/song/2020/07/30/2/6/8/0/1596089783835_640.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 13,
+                    name: "Anh cũng đâu có muốn tin",
+                    artist: "Dab",
+                    duration: "3:27",
+                    audioUrl: "acdcmt.mp3",
+                    image: "https://lh3.googleusercontent.com/3Zj3mnINa30shaLM-kMB9riXMaLK7T_FiQ5ph7qhTTnRTBQY2JOfu5M8HJEFQ-2MacY0I02ztABVrTJB",
+                    lyrics: []
+                },
+                {
+                    id: 15,
+                    name: "Nàng thơ",
+                    artist: "Hoàng Dũng",
+                    duration: "5:05",
+                    audioUrl: "nangtho.mp3",
+                    image: "https://images.genius.com/33e97cd93834978191b2e1e792c37e27.1000x1000x1.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 16,
+                    name: "Nơi Này Có Anh",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "4:15",
+                    audioUrl: "noinaycoanh.mp3",
+                    image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 17,
+                    name: "Em Của Ngày Hôm Qua",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "3:50",
+                    audioUrl: "emcuangayhomqua.mp3",
+                    image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 18,
+                    name: "Buông Đôi Tay Nhau Ra",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "3:45",
+                    audioUrl: "buongtay.mp3",
+                    image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 19,
+                    name: "Chạy Ngay Đi",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "3:50",
+                    audioUrl: "chayngaydi.mp3",
+                    image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 20,
+                    name: "Hãy Trao Cho Anh",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "3:50",
+                    audioUrl: "haytraochoanh.mp3",
+                    image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 21,
+                    name: "Cơn Mưa Ngang Qua",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "4:10",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 22,
+                    name: "Lạc Trôi",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "3:55",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 23,
+                    name: "Chúng Ta Của Hiện Tại",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "5:00",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 24,
+                    name: "Muộn Rồi Mà Sao Còn",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "4:20",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 25,
+                    name: "Thích Em Hơi Nhiều",
+                    artist: "Sơn Tùng M-TP",
+                    duration: "3:45",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                }
+            ],
+            'world': [
+                {
+                    id: 14,
+                    name: "10 ngàn năm",
+                    artist: "PC",
+                    duration: "3:59",
+                    audioUrl: "10ngannam.mp3",
+                    image: "https://i.ytimg.com/vi/2-zSSzg8i3Y/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 28,
+                    name: "Closer",
+                    artist: "The Chainsmokers",
+                    duration: "4:04",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 29,
+                    name: "Something Just Like This",
+                    artist: "The Chainsmokers & Coldplay",
+                    duration: "4:07",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 30,
+                    name: "Don't Let Me Down",
+                    artist: "The Chainsmokers",
+                    duration: "3:28",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 31,
+                    name: "Riverside",
+                    artist: "Sidney Samson",
+                    duration: "2:53",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 32,
+                    name: "Lean On",
+                    artist: "Major Lazer & DJ Snake",
+                    duration: "2:56",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 33,
+                    name: "Wake Me Up",
+                    artist: "Avicii",
+                    duration: "4:09",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 34,
+                    name: "Levels",
+                    artist: "Avicii",
+                    duration: "5:38",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 35,
+                    name: "Summer",
+                    artist: "Calvin Harris",
+                    duration: "3:42",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 36,
+                    name: "This Is What You Came For",
+                    artist: "Calvin Harris & Rihanna",
+                    duration: "3:42",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 37,
+                    name: "Titanium",
+                    artist: "David Guetta & Sia",
+                    duration: "4:05",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 38,
+                    name: "Memories",
+                    artist: "David Guetta & Kid Cudi",
+                    duration: "3:30",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 39,
+                    name: "Don't You Worry Child",
+                    artist: "Swedish House Mafia",
+                    duration: "3:32",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 40,
+                    name: "Save The World",
+                    artist: "Swedish House Mafia",
+                    duration: "3:33",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 41,
+                    name: "Midnight City",
+                    artist: "M83",
+                    duration: "4:04",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 42,
+                    name: "Starboy",
+                    artist: "The Weeknd & Daft Punk",
+                    duration: "3:50",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 43,
+                    name: "Blinding Lights",
+                    artist: "The Weeknd",
+                    duration: "3:20",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 44,
+                    name: "Save Your Tears",
+                    artist: "The Weeknd",
+                    duration: "3:35",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 45,
+                    name: "Levitating",
+                    artist: "Dua Lipa",
+                    duration: "3:23",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 46,
+                    name: "Don't Start Now",
+                    artist: "Dua Lipa",
+                    duration: "3:03",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 47,
+                    name: "Physical",
+                    artist: "Dua Lipa",
+                    duration: "3:13",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 48,
+                    name: "Break My Heart",
+                    artist: "Dua Lipa",
+                    duration: "3:41",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 49,
+                    name: "Love Again",
+                    artist: "Dua Lipa",
+                    duration: "4:18",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 50,
+                    name: "Cool",
+                    artist: "Dua Lipa",
+                    duration: "3:29",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                    lyrics: []
+                }
+            ]
+        };
+
+        // THÊM DỮ LIỆU CHO PHẦN ÂM NHẠC
+        const musicLibrary = [
+            {
+                id: 101,
+                name: "Phía Sau Em",
+                artist: "SOOBIN & Hoàng Duyên",
+                duration: "4:00",
+                audioUrl: "phiasauem.mp3",
+                image: "https://images.unsplash.com/photo-1571974599782-87624638275f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Phía Sau Em",
+                dateAdded: "2 ngày trước",
+                lyrics: [
+                    { time: 0, text: "Có những đêm dài" },
+                    { time: 5, text: "Em một mình bước đi" },
+                    { time: 10, text: "Trong thành phố vắng" },
+                    { time: 15, text: "Chợt nhớ đến anh" },
+                    { time: 20, text: "Người đã xa rồi" },
+                    { time: 25, text: "Để lại nỗi cô đơn" },
+                    { time: 30, text: "Trong tim em mãi" }
+                ]
+            },
+            {
+                id: 102,
+                name: "Ghé Qua",
+                artist: "Dick, Tofu & PC",
+                duration: "4:20",
+                audioUrl: "ghequa.mp3",
+                image: "https://lyrics3s.com/wp-content/uploads/2021/10/loi-bai-hat-ghe-qua.jpeg",
+                album: "Ghé Qua",
+                dateAdded: "1 tuần trước",
+                lyrics: [
+                    { time: 0, text: "Anh chỉ muốn ghé qua" },
+                    { time: 5, text: "Để ngắm nhìn em thôi" },
+                    { time: 10, text: "Dù biết rằng em đã" },
+                    { time: 15, text: "Có người thương mất rồi" },
+                    { time: 20, text: "Nhưng lòng anh vẫn cứ" },
+                    { time: 25, text: "Yêu em nhiều đến thế" },
+                    { time: 30, text: "Chẳng thể nào quên được" }
+                ]
+            },
+            {
+                id: 103,
+                name: "Lời tâm sự số 3",
+                artist: "Lãng",
+                duration: "3:53",
+                audioUrl: "loitamsuso3.mp3",
+                image: "https://f.hoatieu.vn/data/image/2023/07/25/loi-bai-hat-loi-tam-su-so-3-mike-700.jpg",
+                album: "Lời tâm sự số 3",
+                dateAdded: "3 tuần trước",
+                lyrics: [
+                    { time: 0, text: "Đêm nay lại một mình" },
+                    { time: 5, text: "Ngồi nhìn màn hình điện thoại" },
+                    { time: 10, text: "Chờ tin nhắn từ ai" },
+                    { time: 15, text: "Nhưng chẳng có gì cả" },
+                    { time: 20, text: "Chỉ là cô đơn thôi" },
+                    { time: 25, text: "Vây quanh lấy tâm hồn" },
+                    { time: 30, text: "Một mình với đêm dài" }
+                ]
+            },
+            {
+                id: 104,
+                name: "Chìm Sâu",
+                artist: "MCK & Trung Trần",
+                duration: "5:15",
+                audioUrl: "chimsau.mp3",
+                image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Chìm Sâu",
+                dateAdded: "1 tháng trước",
+                lyrics: []
+            },
+            {
+                id: 105,
+                name: "An Thần",
+                artist: "Thắng & Low G",
+                duration: "4:08",
+                audioUrl: "anthan.mp3",
+                image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "An Thần",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 106,
+                name: "Tình Yêu Ngủ Quên",
+                artist: "Hoàng Dũng",
+                duration: "3:55",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                image: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Tình Yêu Ngủ Quên",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 107,
+                name: "Mơ",
+                artist: "Vũ Cát Tường",
+                duration: "4:30",
+                audioUrl: "mơ.mp3",
+                image: "https://avatar-ex-swe.nixcdn.com/song/2019/05/12/a/9/0/c/1557598580220_640.jpg",
+                album: "Mơ",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 108,
+                name: "Sống cho hết đời thanh xuân 1",
+                artist: "Dick & Xám",
+                duration: "5:01",
+                audioUrl: "schdtx1.mp3",
+                image: "https://i.ytimg.com/vi/lUKyQoyugfM/maxresdefault.jpg",
+                album: "Sống cho hết đời thanh xuân 1",
+                dateAdded: "2 tháng trước",
+                lyrics: []
+            },
+            {
+                id: 109,
+                name: "Gió Đêm Sao",
+                artist: "Cosmic Sounds",
+                duration: "5:02",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                image: "https://images.unsplash.com/photo-1532978379173-523e16f77100?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Gió Đêm Sao",
+                dateAdded: "1 tuần trước",
+                lyrics: [
+                    { time: 0, text: "Không lời" }
+                ]
+            },
+            {
+                id: 110,
+                name: "Bước ra đi xa",
+                artist: "Wxrdie",
+                duration: "2:49",
+                audioUrl: "Buocradixa.mp3",
+                image: "https://static.qobuz.com/images/covers/ya/68/rmdmie0fo68ya_600.jpg",
+                album: "Bước ra đi xa",
+                dateAdded: "4 ngày trước",
+                lyrics: []
+            },
+            // Thêm 40 bài hát nữa để đủ 50 bài
+            {
+                id: 111,
+                name: "Tháng 12 Có anh",
+                artist: "Kidz 0muonngheothemlannua",
+                duration: "1:39",
+                audioUrl: "thang12anhco.mp3",
+                image: "https://i.ytimg.com/vi/EXN87UjM6C4/maxresdefault.jpg",
+                album: "Tháng 12 Có anh",
+                dateAdded: "5 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 112,
+                name: "Có Chàng Trai Viết Lên Cây",
+                artist: "Phan Mạnh Quỳnh",
+                duration: "4:15",
+                audioUrl: "cochangtraivietlencay.mp3",
+                image: "https://avatar-ex-swe.nixcdn.com/song/2020/07/30/2/6/8/0/1596089783835_640.jpg",
+                album: "Có Chàng Trai Viết Lên Cây",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 113,
+                name: "Anh cũng đâu có muốn tin",
+                artist: "Dab",
+                duration: "3:27",
+                audioUrl: "acdcmt.mp3",
+                image: "https://lh3.googleusercontent.com/3Zj3mnINa30shaLM-kMB9riXMaLK7T_FiQ5ph7qhTTnRTBQY2JOfu5M8HJEFQ-2MacY0I02ztABVrTJB",
+                album: "Anh cũng đâu có muốn tin",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 114,
+                name: "10 ngàn năm",
+                artist: "PC",
+                duration: "3:59",
+                audioUrl: "10ngannam.mp3",
+                image: "https://i.ytimg.com/vi/2-zSSzg8i3Y/maxresdefault.jpg",
+                album: "10 ngàn năm",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 115,
+                name: "Nàng thơ",
+                artist: "Hoàng Dũng",
+                duration: "5:05",
+                audioUrl: "nangtho.mp3",
+                image: "https://images.genius.com/33e97cd93834978191b2e1e792c37e27.1000x1000x1.jpg",
+                album: "Nàng thơ",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 116,
+                name: "Nơi Này Có Anh",
+                artist: "Sơn Tùng M-TP",
+                duration: "4:15",
+                audioUrl: "noinaycoanh.mp3",
+                image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                album: "Nơi Này Có Anh",
+                dateAdded: "1 tháng trước",
+                lyrics: []
+            },
+            {
+                id: 117,
+                name: "Em Của Ngày Hôm Qua",
+                artist: "Sơn Tùng M-TP",
+                duration: "3:50",
+                audioUrl: "emcuangayhomqua.mp3",
+                image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                album: "Em Của Ngày Hôm Qua",
+                dateAdded: "3 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 118,
+                name: "Buông Đôi Tay Nhau Ra",
+                artist: "Sơn Tùng M-TP",
+                duration: "3:45",
+                audioUrl: "buongtay.mp3",
+                image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                album: "Buông Đôi Tay Nhau Ra",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 119,
+                name: "Chạy Ngay Đi",
+                artist: "Sơn Tùng M-TP",
+                duration: "3:50",
+                audioUrl: "chayngaydi.mp3",
+                image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                album: "Chạy Ngay Đi",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 120,
+                name: "Hãy Trao Cho Anh",
+                artist: "Sơn Tùng M-TP",
+                duration: "3:50",
+                audioUrl: "haytraochoanh.mp3",
+                image: "https://avatar-ex-swe.nixcdn.com/song/2017/02/23/2/8/1/8/1487830233543_640.jpg",
+                album: "Hãy Trao Cho Anh",
+                dateAdded: "5 ngày trước",
+                lyrics: []
+            },
+            // Thêm 30 bài hát nữa
+            {
+                id: 121,
+                name: "Cơn Mưa Ngang Qua",
+                artist: "Sơn Tùng M-TP",
+                duration: "4:10",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Cơn Mưa Ngang Qua",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 122,
+                name: "Lạc Trôi",
+                artist: "Sơn Tùng M-TP",
+                duration: "3:55",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Lạc Trôi",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 123,
+                name: "Chúng Ta Của Hiện Tại",
+                artist: "Sơn Tùng M-TP",
+                duration: "5:00",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Chúng Ta Của Hiện Tại",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 124,
+                name: "Muộn Rồi Mà Sao Còn",
+                artist: "Sơn Tùng M-TP",
+                duration: "4:20",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Muộn Rồi Mà Sao Còn",
+                dateAdded: "4 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 125,
+                name: "Thích Em Hơi Nhiều",
+                artist: "Sơn Tùng M-TP",
+                duration: "3:45",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Thích Em Hơi Nhiều",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 126,
+                name: "Crystal Clear",
+                artist: "Kygo",
+                duration: "3:50",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Crystal Clear",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 127,
+                name: "Sunset Lover",
+                artist: "Petit Biscuit",
+                duration: "3:58",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Sunset Lover",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 128,
+                name: "Closer",
+                artist: "The Chainsmokers",
+                duration: "4:04",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Closer",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 129,
+                name: "Something Just Like This",
+                artist: "The Chainsmokers & Coldplay",
+                duration: "4:07",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Something Just Like This",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 130,
+                name: "Don't Let Me Down",
+                artist: "The Chainsmokers",
+                duration: "3:28",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Don't Let Me Down",
+                dateAdded: "5 ngày trước",
+                lyrics: []
+            },
+            // Thêm 20 bài hát nữa
+            {
+                id: 131,
+                name: "Riverside",
+                artist: "Sidney Samson",
+                duration: "2:53",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Riverside",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 132,
+                name: "Lean On",
+                artist: "Major Lazer & DJ Snake",
+                duration: "2:56",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Lean On",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 133,
+                name: "Wake Me Up",
+                artist: "Avicii",
+                duration: "4:09",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Wake Me Up",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 134,
+                name: "Levels",
+                artist: "Avicii",
+                duration: "5:38",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Levels",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 135,
+                name: "Summer",
+                artist: "Calvin Harris",
+                duration: "3:42",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Summer",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 136,
+                name: "This Is What You Came For",
+                artist: "Calvin Harris & Rihanna",
+                duration: "3:42",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "This Is What You Came For",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 137,
+                name: "Titanium",
+                artist: "David Guetta & Sia",
+                duration: "4:05",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Titanium",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 138,
+                name: "Memories",
+                artist: "David Guetta & Kid Cudi",
+                duration: "3:30",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Memories",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 139,
+                name: "Don't You Worry Child",
+                artist: "Swedish House Mafia",
+                duration: "3:32",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Don't You Worry Child",
+                dateAdded: "5 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 140,
+                name: "Save The World",
+                artist: "Swedish House Mafia",
+                duration: "3:33",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Save The World",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            // Thêm 10 bài hát nữa
+            {
+                id: 141,
+                name: "Midnight City",
+                artist: "M83",
+                duration: "4:04",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Midnight City",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 142,
+                name: "Starboy",
+                artist: "The Weeknd & Daft Punk",
+                duration: "3:50",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Starboy",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 143,
+                name: "Blinding Lights",
+                artist: "The Weeknd",
+                duration: "3:20",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Blinding Lights",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 144,
+                name: "Save Your Tears",
+                artist: "The Weeknd",
+                duration: "3:35",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Save Your Tears",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 145,
+                name: "Levitating",
+                artist: "Dua Lipa",
+                duration: "3:23",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Levitating",
+                dateAdded: "3 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 146,
+                name: "Don't Start Now",
+                artist: "Dua Lipa",
+                duration: "3:03",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Don't Start Now",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 147,
+                name: "Physical",
+                artist: "Dua Lipa",
+                duration: "3:13",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Physical",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 148,
+                name: "Break My Heart",
+                artist: "Dua Lipa",
+                duration: "3:41",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Break My Heart",
+                dateAdded: "5 ngày trước",
+                lyrics: []
+            },
+            {
+                id: 149,
+                name: "Love Again",
+                artist: "Dua Lipa",
+                duration: "4:18",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Love Again",
+                dateAdded: "1 tuần trước",
+                lyrics: []
+            },
+            {
+                id: 150,
+                name: "Cool",
+                artist: "Dua Lipa",
+                duration: "3:29",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                album: "Cool",
+                dateAdded: "2 tuần trước",
+                lyrics: []
+            }
+        ];
+
+        const podcasts = [
+            {
+                id: 1,
+                title: "Dành cho những ngày cậu chẳng biết đi về đâu",
+                thumbnail: "https://bigone.vn/uploads/images/nhung-cau-noi-hay-ve-co-gang-no-luc-trong-cuoc-song-1.jpeg",
+                audioUrl: "nhungduatrechangbietdivedau.mp3",
+                duration: "10:00"
+            },
+            {
+                id: 2,
+                title: "Có những mùa hè không bao giờ trở lại....",
+                thumbnail: "https://i.pinimg.com/originals/05/05/58/0505585afd9809d222e794bca5af75a3.jpg",
+                audioUrl: "muahe0trolai.mp3",
+                duration: "11:14"
+            },
+            {
+                id: 3,
+                title: "Khoảng khắc nhận ra mình đã trưởng thành",
+                thumbnail: "https://media.loveitopcdn.com/2071/thumb/truong-thanh.jpg",
+                audioUrl: "nhanraminhdatruongthanh.mp3",
+                duration: "34:37"
+            }
+        ];
+
+        const sounds = [
+            {
+                id: 1,
+                name: "Mưa Rơi",
+                type: "Thiên nhiên",
+                icon: "fas fa-cloud-rain",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+            },
+            {
+                id: 2,
+                name: "Sóng Biển",
+                type: "Đại dương",
+                icon: "fas fa-water",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+            },
+            {
+                id: 3,
+                name: "Tiếng Chim",
+                type: "Rừng núi",
+                icon: "fas fa-dove",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"
+            },
+            {
+                id: 4,
+                name: "Lửa Cháy",
+                type: "Lò sưởi",
+                icon: "fas fa-fire",
+                audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
+            }
+        ];
+
+        const aiResponses = {
+            "hạnh phúc": {
+                response: "Thật tuyệt vời khi bạn đang cảm thấy hạnh phúc! Âm nhạc vui tươi sẽ giúp bạn duy trì tâm trạng tích cực này.",
+                recommendations: [1, 2, 5, 16, 17, 21, 22, 25]
+            },
+            "buồn": {
+                response: "Tôi hiểu rằng bạn đang cảm thấy buồn. Đôi khi âm nhạc nhẹ nhàng có thể giúp xoa dịu tâm hồn và mang lại sự bình yên.",
+                recommendations: [3, 6, 7, 15, 23, 24]
+            },
+            "thư giãn": {
+                response: "Thật tốt khi bạn dành thời gian để thư giãn. Những giai điệu nhẹ nhàng sẽ giúp tâm trí bạn thư thái hơn.",
+                recommendations: [2, 5, 9, 10, 26, 27]
+            },
+            "cô đơn": {
+                response: "Tôi hiểu cảm giác cô đơn có thể khó khăn. Âm nhạc có thể là người bạn đồng hành tuyệt vời trong những lúc như thế này.",
+                recommendations: [3, 7, 8, 11, 15, 23]
+            },
+            "lo lắng": {
+                response: "Lo lắng là cảm xúc tự nhiên. Âm nhạc nhẹ nhàng và tiếng ồn trắng có thể giúp bạn bình tĩnh hơn.",
+                recommendations: [4, 9, 10, 12, 13, 14]
+            },
+            "muốn ngủ": {
+                response: "Chuẩn bị cho một giấc ngủ ngon là điều quan trọng. Hãy thử những âm thanh nhẹ nhàng và nhạc không lời để giúp bạn chìm vào giấc ngủ.",
+                recommendations: [4, 9, 10, 12, 13, 14]
+            },
+            "default": {
+                response: "Cảm ơn bạn đã chia sẻ tâm trạng. Dựa trên những gì bạn mô tả, tôi nghĩ những bài hát này có thể phù hợp với bạn.",
+                recommendations: [1, 2, 3, 4, 5, 6, 7, 8]
+            }
+        };
+
+        // Biến toàn cục
+        let currentTrack = null;
+        let currentPlaylist = null;
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        let isShuffled = false;
+        let repeatMode = 0; // 0: off, 1: playlist, 2: track
+        let audioElement = new Audio();
+        let currentLyrics = [];
+        let currentLyricIndex = 0;
+        let isNightMode = false;
+        let currentTimer = null;
+        let timerActive = false;
+        let aiChatHistory = [];
+        let userPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
+        let favoriteTracks = JSON.parse(localStorage.getItem('favoriteTracks')) || [];
+        let recentTracks = JSON.parse(localStorage.getItem('recentTracks')) || [];
+
+        // Khởi tạo ứng dụng
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            loadUserData();
+            loadPodcasts();
+            loadSounds();
+            loadUserPlaylists();
+            loadLibraryContent();
+        });
+
+        // Khởi tạo ứng dụng
+        function initializeApp() {
+            // Thiết lập audio element
+            audioElement.volume = 0.7;
+            
+            // Thiết lập sự kiện audio
+            audioElement.addEventListener('loadedmetadata', function() {
+                updateDurationDisplay();
+            });
+            
+            audioElement.addEventListener('timeupdate', function() {
+                updateProgressBar();
+                updateCurrentTimeDisplay();
+                updateLyrics();
+            });
+            
+            audioElement.addEventListener('ended', function() {
+                handleTrackEnd();
+            });
+            
+            // Thiết lập playlist mặc định
+            currentPlaylist = playlists.chill;
+            
+            // Cập nhật giao diện
+            updatePlayerDisplay();
+        }
+
+        // Xử lý khi bài hát kết thúc
+        function handleTrackEnd() {
+            if (repeatMode === 2) {
+                // Lặp lại bài hát hiện tại
+                audioElement.currentTime = 0;
+                audioElement.play();
+            } else {
+                playNextTrack();
+            }
+        }
+
+        // Thiết lập event listeners
+        function setupEventListeners() {
+            // Navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                    
+                    // Cập nhật active state
+                    document.querySelectorAll('.nav-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // User menu
+            document.getElementById('userMenu').addEventListener('click', function() {
+                showSection('profile');
+                
+                // Cập nhật active state
+                document.querySelectorAll('.nav-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                document.querySelector('.nav-item[data-section="profile"]').classList.add('active');
+            });
+            
+            // Mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
+            
+            // Night mode toggle
+            document.getElementById('nightModeBtn').addEventListener('click', toggleNightMode);
+            
+            // Avatar upload
+            document.getElementById('avatarUpload').addEventListener('change', handleAvatarUpload);
+            
+            // Search
+            document.getElementById('globalSearch').addEventListener('input', handleSearch);
+            
+            // Filter tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    handleSearchFilter(filter);
+                });
+            });
+            
+            // Library tabs
+            document.querySelectorAll('.library-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const library = this.getAttribute('data-library');
+                    showLibraryContent(library);
+                });
+            });
+            
+            // Favorite button
+            document.getElementById('favoriteBtn').addEventListener('click', toggleFavorite);
+        }
+
+        // Tải dữ liệu người dùng
+        function loadUserData() {
+            // Tải avatar từ localStorage
+            const savedAvatar = localStorage.getItem('userAvatar');
+            if (savedAvatar) {
+                document.getElementById('userAvatar').src = savedAvatar;
+                document.getElementById('profileAvatar').src = savedAvatar;
+            }
+            
+            // Tải chế độ tối từ localStorage
+            const savedNightMode = localStorage.getItem('nightMode');
+            if (savedNightMode === 'true') {
+                toggleNightMode();
+            }
+            
+            // Tải tên người dùng từ localStorage
+            const savedName = localStorage.getItem('userName');
+            if (savedName) {
+                document.getElementById('userName').textContent = savedName;
+                document.getElementById('profileName').textContent = savedName;
+            }
+        }
+
+        // Tải podcasts
+        function loadPodcasts() {
+            const container = document.getElementById('podcastsGrid');
+            container.innerHTML = '';
+            
+            podcasts.forEach(podcast => {
+                const podcastCard = document.createElement('div');
+                podcastCard.className = 'podcast-card';
+                podcastCard.onclick = () => playPodcast(podcast);
+                
+                podcastCard.innerHTML = `
+                    <img src="${podcast.thumbnail}" alt="${podcast.title}" class="podcast-image">
+                    <div class="podcast-title">${podcast.title}</div>
+                    <div class="podcast-description">${podcast.duration}</div>
+                `;
+                
+                container.appendChild(podcastCard);
+            });
+        }
+
+        // Tải sounds
+        function loadSounds() {
+            const container = document.getElementById('soundsGrid');
+            container.innerHTML = '';
+            
+            sounds.forEach(sound => {
+                const soundCard = document.createElement('div');
+                soundCard.className = 'sound-card';
+                soundCard.onclick = () => playSound(sound);
+                
+                soundCard.innerHTML = `
+                    <div class="sound-icon">
+                        <i class="${sound.icon}"></i>
+                    </div>
+                    <div class="sound-title">${sound.name}</div>
+                    <div class="sound-type">${sound.type}</div>
+                `;
+                
+                container.appendChild(soundCard);
+            });
+        }
+
+        // Tải user playlists
+        function loadUserPlaylists() {
+            const sidebarContainer = document.getElementById('userPlaylists');
+            const mainContainer = document.getElementById('userPlaylistsGrid');
+            
+            sidebarContainer.innerHTML = '';
+            mainContainer.innerHTML = '';
+            
+            if (userPlaylists.length === 0) {
+                sidebarContainer.innerHTML = '<div class="playlist-item">Chưa có playlist</div>';
+                mainContainer.innerHTML = '<p>Bạn chưa tạo playlist nào. Hãy tạo playlist đầu tiên của bạn!</p>';
+                return;
+            }
+            
+            userPlaylists.forEach(playlist => {
+                // Sidebar
+                const sidebarItem = document.createElement('div');
+                sidebarItem.className = 'playlist-item';
+                sidebarItem.textContent = playlist.name;
+                sidebarItem.onclick = () => playUserPlaylist(playlist);
+                sidebarContainer.appendChild(sidebarItem);
+                
+                // Main content
+                const playlistCard = document.createElement('div');
+                playlistCard.className = 'playlist-card';
+                playlistCard.onclick = () => playUserPlaylist(playlist);
+                
+                playlistCard.innerHTML = `
+                    <div class="playlist-image" style="background: var(--gradient); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-music" style="font-size: 40px; color: white;"></i>
+                    </div>
+                    <div class="playlist-card-title">${playlist.name}</div>
+                    <div class="playlist-card-description">${playlist.description || 'Playlist của bạn'}</div>
+                    <div class="play-play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                `;
+                
+                mainContainer.appendChild(playlistCard);
+            });
+        }
+
+        // Tải nội dung thư viện
+        function loadLibraryContent() {
+            loadRecentTracks();
+            loadFavoriteTracks();
+            loadMusicLibrary(); // THÊM HÀM TẢI ÂM NHẠC
+            loadLibraryPlaylists();
+            loadLibraryPodcasts();
+            loadLibrarySounds();
+        }
+
+        // Tải bài hát trong phần Âm nhạc
+        function loadMusicLibrary() {
+            const container = document.getElementById('musicLibrary');
+            const trackList = container.querySelector('.track-list');
+            
+            if (musicLibrary.length === 0) {
+                trackList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có bài hát nào</div>';
+                return;
+            }
+            
+            let tracksHTML = `
+                <div class="track-list-header">
+                    <div>#</div>
+                    <div>BÀI HÁT</div>
+                    <div>ALBUM</div>
+                    <div>NGÀY THÊM</div>
+                    <div></div>
+                </div>
+            `;
+            
+            musicLibrary.forEach((track, index) => {
+                tracksHTML += `
+                    <div class="track-item" onclick="playTrackFromMusicLibrary(${index})">
+                        <div class="track-number">${index + 1}</div>
+                        <div class="track-play"><i class="fas fa-play"></i></div>
+                        <div class="track-info-list">
+                            <img src="${track.image}" alt="${track.name}" class="track-image-small">
+                            <div class="track-details">
+                                <div class="track-name-list">${track.name}</div>
+                                <div class="track-artist-list">${track.artist}</div>
+                            </div>
+                        </div>
+                        <div class="track-album">${track.album || 'Single'}</div>
+                        <div class="track-date">${track.dateAdded || 'Không xác định'}</div>
+                        <div class="track-duration">${track.duration}</div>
+                    </div>
+                `;
+            });
+            
+            trackList.innerHTML = tracksHTML;
+        }
+
+        // Phát bài hát từ phần Âm nhạc
+        function playTrackFromMusicLibrary(index) {
+            const track = musicLibrary[index];
+            
+            if (track) {
+                currentTrack = track;
+                
+                // Cập nhật giao diện
+                updatePlayerDisplay();
+                
+                // Phát audio
+                audioElement.src = track.audioUrl;
+                audioElement.play().then(() => {
+                    isPlaying = true;
+                    updatePlayPauseButton();
+                }).catch(error => {
+                    console.error('Lỗi phát nhạc:', error);
+                });
+                
+                // Tải lời bài hát
+                loadLyrics(track.lyrics || []);
+                
+                // Cập nhật nút yêu thích
+                updateFavoriteButton();
+                
+                // Thêm vào lịch sử nghe gần đây
+                addToRecentTracks(track);
+            }
+        }
+
+        // Tải bài hát nghe gần đây
+        function loadRecentTracks() {
+            const container = document.getElementById('recentLibrary');
+            const trackList = container.querySelector('.track-list');
+            
+            if (recentTracks.length === 0) {
+                trackList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có bài hát nào được nghe gần đây</div>';
+                return;
+            }
+            
+            let tracksHTML = `
+                <div class="track-list-header">
+                    <div>#</div>
+                    <div>BÀI HÁT</div>
+                    <div>ALBUM</div>
+                    <div>NGÀY THÊM</div>
+                    <div></div>
+                </div>
+            `;
+            
+            recentTracks.forEach((track, index) => {
+                tracksHTML += `
+                    <div class="track-item" onclick="playTrackFromLibrary(${index}, 'recent')">
+                        <div class="track-number">${index + 1}</div>
+                        <div class="track-play"><i class="fas fa-play"></i></div>
+                        <div class="track-info-list">
+                            <img src="${track.image}" alt="${track.name}" class="track-image-small">
+                            <div class="track-details">
+                                <div class="track-name-list">${track.name}</div>
+                                <div class="track-artist-list">${track.artist}</div>
+                            </div>
+                        </div>
+                        <div class="track-album">${track.album || 'Single'}</div>
+                        <div class="track-date">${track.dateAdded || 'Không xác định'}</div>
+                        <div class="track-duration">${track.duration}</div>
+                    </div>
+                `;
+            });
+            
+            trackList.innerHTML = tracksHTML;
+        }
+
+        // Tải bài hát yêu thích
+        function loadFavoriteTracks() {
+            const container = document.getElementById('favoritesLibrary');
+            
+            if (favoriteTracks.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có bài hát yêu thích</div>';
+                return;
+            }
+            
+            let tracksHTML = '';
+            
+            favoriteTracks.forEach(track => {
+                tracksHTML += `
+                    <div class="playlist-card" onclick="playTrackFromFavorites('${track.id}')">
+                        <img src="${track.image}" alt="${track.name}" class="playlist-image">
+                        <div class="playlist-card-title">${track.name}</div>
+                        <div class="playlist-card-description">${track.artist}</div>
+                        <div class="play-play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = tracksHTML;
+        }
+
+        // Tải playlists trong thư viện
+        function loadLibraryPlaylists() {
+            const container = document.getElementById('playlistsLibrary');
+            
+            if (userPlaylists.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có playlist</div>';
+                return;
+            }
+            
+            let playlistsHTML = '';
+            
+            userPlaylists.forEach(playlist => {
+                playlistsHTML += `
+                    <div class="playlist-card" onclick="playUserPlaylist(${JSON.stringify(playlist).replace(/"/g, '&quot;')})">
+                        <div class="playlist-image" style="background: var(--gradient); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-music" style="font-size: 40px; color: white;"></i>
+                        </div>
+                        <div class="playlist-card-title">${playlist.name}</div>
+                        <div class="playlist-card-description">${playlist.description || 'Playlist của bạn'}</div>
+                        <div class="play-play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = playlistsHTML;
+        }
+
+        // Tải podcasts trong thư viện
+        function loadLibraryPodcasts() {
+            const container = document.getElementById('podcastsLibrary');
+            
+            if (podcasts.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có podcast</div>';
+                return;
+            }
+            
+            let podcastsHTML = '';
+            
+            podcasts.forEach(podcast => {
+                podcastsHTML += `
+                    <div class="podcast-card" onclick="playPodcast(${JSON.stringify(podcast).replace(/"/g, '&quot;')})">
+                        <img src="${podcast.thumbnail}" alt="${podcast.title}" class="podcast-image">
+                        <div class="podcast-title">${podcast.title}</div>
+                        <div class="podcast-description">${podcast.duration}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = podcastsHTML;
+        }
+
+        // Tải sounds trong thư viện
+        function loadLibrarySounds() {
+            const container = document.getElementById('soundsLibrary');
+            
+            if (sounds.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có âm thanh</div>';
+                return;
+            }
+            
+            let soundsHTML = '';
+            
+            sounds.forEach(sound => {
+                soundsHTML += `
+                    <div class="sound-card" onclick="playSound(${JSON.stringify(sound).replace(/"/g, '&quot;')})">
+                        <div class="sound-icon">
+                            <i class="${sound.icon}"></i>
+                        </div>
+                        <div class="sound-title">${sound.name}</div>
+                        <div class="sound-type">${sound.type}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = soundsHTML;
+        }
+
+        // Hiển thị section
+        function showSection(sectionName) {
+            // Ẩn tất cả sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Hiển thị section được chọn
+            document.getElementById(sectionName + 'Section').classList.add('active');
+            
+            // Đóng sidebar trên mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        }
+
+        // Hiển thị nội dung thư viện
+        function showLibraryContent(libraryName) {
+            // Ẩn tất cả nội dung thư viện
+            document.querySelectorAll('.library-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Hiển thị nội dung được chọn
+            document.getElementById(libraryName + 'Library').classList.add('active');
+            
+            // Cập nhật tab active
+            document.querySelectorAll('.library-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.library-tab[data-library="${libraryName}"]`).classList.add('active');
+        }
+
+        // Phát playlist
+        function playPlaylist(playlistId) {
+            if (playlists[playlistId]) {
+                currentPlaylist = playlists[playlistId];
+                currentTrackIndex = 0;
+                playTrack(currentTrackIndex);
+            }
+        }
+
+        // Phát user playlist
+        function playUserPlaylist(playlist) {
+            currentPlaylist = playlist.tracks || [];
+            currentTrackIndex = 0;
+            
+            if (currentPlaylist.length > 0) {
+                playTrack(currentTrackIndex);
+            } else {
+                alert('Playlist này chưa có bài hát nào!');
+            }
+        }
+
+        // Phát bài hát
+        function playTrack(index) {
+            if (!currentPlaylist || index < 0 || index >= currentPlaylist.length) return;
+            
+            currentTrackIndex = index;
+            currentTrack = currentPlaylist[index];
+            
+            // Thêm vào lịch sử nghe gần đây
+            addToRecentTracks(currentTrack);
+            
+            // Cập nhật giao diện
+            updatePlayerDisplay();
+            
+            // Phát audio
+            audioElement.src = currentTrack.audioUrl;
+            audioElement.play().then(() => {
+                isPlaying = true;
+                updatePlayPauseButton();
+            }).catch(error => {
+                console.error('Lỗi phát nhạc:', error);
+            });
+            
+            // Tải lời bài hát
+            loadLyrics(currentTrack.lyrics);
+            
+            // Cập nhật trạng thái active trong danh sách
+            updateActiveTrack();
+            
+            // Cập nhật nút yêu thích
+            updateFavoriteButton();
+        }
+
+        // Phát bài hát từ thư viện
+        function playTrackFromLibrary(index, type) {
+            let track;
+            
+            if (type === 'recent') {
+                track = recentTracks[index];
+            }
+            
+            if (track) {
+                currentTrack = track;
+                
+                // Cập nhật giao diện
+                updatePlayerDisplay();
+                
+                // Phát audio
+                audioElement.src = track.audioUrl;
+                audioElement.play().then(() => {
+                    isPlaying = true;
+                    updatePlayPauseButton();
+                }).catch(error => {
+                    console.error('Lỗi phát nhạc:', error);
+                });
+                
+                // Tải lời bài hát
+                loadLyrics(track.lyrics || []);
+                
+                // Cập nhật nút yêu thích
+                updateFavoriteButton();
+            }
+        }
+
+        // Phát bài hát từ danh sách yêu thích
+        function playTrackFromFavorites(trackId) {
+            const track = favoriteTracks.find(t => t.id === trackId);
+            
+            if (track) {
+                currentTrack = track;
+                
+                // Cập nhật giao diện
+                updatePlayerDisplay();
+                
+                // Phát audio
+                audioElement.src = track.audioUrl;
+                audioElement.play().then(() => {
+                    isPlaying = true;
+                    updatePlayPauseButton();
+                }).catch(error => {
+                    console.error('Lỗi phát nhạc:', error);
+                });
+                
+                // Tải lời bài hát
+                loadLyrics(track.lyrics || []);
+                
+                // Cập nhật nút yêu thích
+                updateFavoriteButton();
+            }
+        }
+
+        // Phát podcast
+        function playPodcast(podcast) {
+            currentTrack = {
+                id: podcast.id,
+                name: podcast.title,
+                artist: "Podcast",
+                duration: podcast.duration,
+                audioUrl: podcast.audioUrl,
+                image: podcast.thumbnail,
+                lyrics: []
+            };
+            
+            // Thêm vào lịch sử nghe gần đây
+            addToRecentTracks(currentTrack);
+            
+            // Cập nhật giao diện
+            updatePlayerDisplay();
+            
+            // Phát audio
+            audioElement.src = podcast.audioUrl;
+            audioElement.play().then(() => {
+                isPlaying = true;
+                updatePlayPauseButton();
+            }).catch(error => {
+                console.error('Lỗi phát podcast:', error);
+            });
+            
+            // Tải lời bài hát (rỗng cho podcast)
+            loadLyrics([]);
+            
+            // Cập nhật nút yêu thích
+            updateFavoriteButton();
+        }
+
+        // Phát âm thanh
+        function playSound(sound) {
+            currentTrack = {
+                id: sound.id,
+                name: sound.name,
+                artist: "Âm thanh thiên nhiên",
+                duration: "∞",
+                audioUrl: sound.audioUrl,
+                image: "",
+                lyrics: []
+            };
+            
+            // Thêm vào lịch sử nghe gần đây
+            addToRecentTracks(currentTrack);
+            
+            // Cập nhật giao diện
+            updatePlayerDisplay();
+            
+            // Phát audio
+            audioElement.src = sound.audioUrl;
+            audioElement.play().then(() => {
+                isPlaying = true;
+                updatePlayPauseButton();
+            }).catch(error => {
+                console.error('Lỗi phát âm thanh:', error);
+            });
+            
+            // Tải lời bài hát (rỗng cho âm thanh)
+            loadLyrics([]);
+            
+            // Cập nhật nút yêu thích
+            updateFavoriteButton();
+        }
+
+        // Thêm bài hát vào danh sách nghe gần đây
+        function addToRecentTracks(track) {
+            // Kiểm tra xem bài hát đã có trong danh sách chưa
+            const existingIndex = recentTracks.findIndex(t => t.id === track.id);
+            
+            if (existingIndex !== -1) {
+                // Xóa bài hát cũ
+                recentTracks.splice(existingIndex, 1);
+            }
+            
+            // Thêm bài hát mới vào đầu danh sách
+            recentTracks.unshift({
+                ...track,
+                dateAdded: new Date().toLocaleDateString('vi-VN')
+            });
+            
+            // Giới hạn danh sách tối đa 50 bài hát
+            if (recentTracks.length > 50) {
+                recentTracks = recentTracks.slice(0, 50);
+            }
+            
+            // Lưu vào localStorage
+            localStorage.setItem('recentTracks', JSON.stringify(recentTracks));
+            
+            // Cập nhật giao diện nếu đang ở phần thư viện
+            if (document.getElementById('librarySection').classList.contains('active')) {
+                loadRecentTracks();
+            }
+        }
+
+        // Cập nhật hiển thị player
+        function updatePlayerDisplay() {
+            if (!currentTrack) return;
+            
+            document.getElementById('nowPlayingImage').src = currentTrack.image;
+            document.getElementById('nowPlayingName').textContent = currentTrack.name;
+            document.getElementById('nowPlayingArtist').textContent = currentTrack.artist;
+            
+            document.getElementById('lyricTrackName').textContent = currentTrack.name;
+            document.getElementById('lyricTrackArtist').textContent = currentTrack.artist;
+        }
+
+        // Toggle phát/dừng
+        function togglePlayPause() {
+            if (!currentTrack) {
+                // Nếu không có bài hát nào đang được chọn, phát bài đầu tiên
+                if (currentPlaylist && currentPlaylist.length > 0) {
+                    playTrack(0);
+                }
+                return;
+            }
+            
+            if (isPlaying) {
+                audioElement.pause();
+                isPlaying = false;
+            } else {
+                audioElement.play().then(() => {
+                    isPlaying = true;
+                }).catch(error => {
+                    console.error('Lỗi phát nhạc:', error);
+                });
+            }
+            
+            updatePlayPauseButton();
+        }
+
+        // Cập nhật nút play/pause
+        function updatePlayPauseButton() {
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            playPauseIcon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+        }
+
+        // Phát bài tiếp theo
+        function playNextTrack() {
+            if (!currentPlaylist) return;
+            
+            let nextIndex = currentTrackIndex + 1;
+            if (nextIndex >= currentPlaylist.length) {
+                if (repeatMode === 1) {
+                    nextIndex = 0; // Quay lại bài đầu tiên nếu đang repeat playlist
+                } else {
+                    // Dừng phát nếu không repeat
+                    audioElement.pause();
+                    isPlaying = false;
+                    updatePlayPauseButton();
+                    return;
+                }
+            }
+            playTrack(nextIndex);
+        }
+
+        // Phát bài trước đó
+        function playPreviousTrack() {
+            if (!currentPlaylist) return;
+            
+            let prevIndex = currentTrackIndex - 1;
+            if (prevIndex < 0) {
+                if (repeatMode === 1) {
+                    prevIndex = currentPlaylist.length - 1; // Quay lại bài cuối nếu đang repeat playlist
+                } else {
+                    // Quay lại đầu bài hát nếu đang ở bài đầu tiên
+                    audioElement.currentTime = 0;
+                    return;
+                }
+            }
+            playTrack(prevIndex);
+        }
+
+        // Bật/tắt shuffle
+        function toggleShuffle() {
+            isShuffled = !isShuffled;
+            const shuffleBtn = document.getElementById('shuffleBtn');
+            
+            if (isShuffled) {
+                shuffleBtn.style.color = 'var(--primary-color)';
+            } else {
+                shuffleBtn.style.color = 'var(--gray-color)';
+            }
+        }
+
+        // Bật/tắt repeat
+        function toggleRepeat() {
+            const repeatBtn = document.getElementById('repeatBtn');
+            
+            repeatMode = (repeatMode + 1) % 3;
+            
+            if (repeatMode === 0) {
+                // Không lặp
+                repeatBtn.className = 'control-btn repeat-off';
+                repeatBtn.title = 'Không lặp lại';
+            } else if (repeatMode === 1) {
+                // Lặp lại playlist
+                repeatBtn.className = 'control-btn repeat-playlist';
+                repeatBtn.title = 'Lặp lại playlist';
+            } else {
+                // Lặp lại bài hát
+                repeatBtn.className = 'control-btn repeat-track';
+                repeatBtn.title = 'Lặp lại bài hát';
+            }
+        }
+
+        // Cập nhật thanh tiến trình
+        function updateProgressBar() {
+            if (!audioElement.duration) return;
+            
+            const progressPercent = (audioElement.currentTime / audioElement.duration) * 100;
+            document.getElementById('progress').style.width = `${progressPercent}%`;
+        }
+
+        // Cập nhật thời gian hiện tại
+        function updateCurrentTimeDisplay() {
+            const currentTime = formatTime(audioElement.currentTime);
+            document.getElementById('currentTime').textContent = currentTime;
+        }
+
+        // Cập nhật thời lượng
+        function updateDurationDisplay() {
+            const duration = formatTime(audioElement.duration);
+            document.getElementById('duration').textContent = duration;
+        }
+
+        // Định dạng thời gian (giây -> phút:giây)
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Tua đến vị trí cụ thể
+        function seekAudio(event) {
+            if (!audioElement.duration) return;
+            
+            const progressBar = event.currentTarget;
+            const clickPosition = event.offsetX;
+            const containerWidth = progressBar.offsetWidth;
+            const seekTime = (clickPosition / containerWidth) * audioElement.duration;
+            
+            audioElement.currentTime = seekTime;
+        }
+
+        // Tải lời bài hát
+        function loadLyrics(lyrics) {
+            currentLyrics = lyrics || [];
+            currentLyricIndex = 0;
+            
+            const lyricContent = document.getElementById('lyricContent');
+            lyricContent.innerHTML = '';
+            
+            if (currentLyrics.length === 0) {
+                lyricContent.innerHTML = '<div class="lyric-line">Không có lời bài hát</div>';
+                return;
+            }
+            
+            currentLyrics.forEach((line, index) => {
+                const lineElement = document.createElement('div');
+                lineElement.className = 'lyric-line';
+                lineElement.textContent = line.text;
+                lineElement.dataset.index = index;
+                lyricContent.appendChild(lineElement);
+            });
+        }
+
+        // Cập nhật lời bài hát theo thời gian
+        function updateLyrics() {
+            if (currentLyrics.length === 0) return;
+            
+            const currentTime = audioElement.currentTime;
+            let newIndex = -1;
+            
+            // Tìm dòng lời bài hát hiện tại
+            for (let i = 0; i < currentLyrics.length; i++) {
+                if (currentTime >= currentLyrics[i].time) {
+                    newIndex = i;
+                } else {
+                    break;
+                }
+            }
+            
+            // Cập nhật nếu có thay đổi
+            if (newIndex !== currentLyricIndex && newIndex !== -1) {
+                // Xóa active từ dòng cũ
+                const oldLine = document.querySelector(`.lyric-line[data-index="${currentLyricIndex}"]`);
+                if (oldLine) {
+                    oldLine.classList.remove('active');
+                }
+                
+                // Thêm active cho dòng mới
+                const newLine = document.querySelector(`.lyric-line[data-index="${newIndex}"]`);
+                if (newLine) {
+                    newLine.classList.add('active');
+                    
+                    // Cuộn đến dòng đang active
+                    newLine.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+                
+                currentLyricIndex = newIndex;
+            }
+        }
+
+        // Bật/tắt hiển thị lời bài hát
+        function toggleLyricDisplay() {
+            const lyricContainer = document.getElementById('lyricContainer');
+            lyricContainer.classList.toggle('active');
+        }
+
+        // Xử lý upload avatar
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarUrl = e.target.result;
+                    
+                    // Cập nhật avatar trên giao diện
+                    document.getElementById('userAvatar').src = avatarUrl;
+                    document.getElementById('profileAvatar').src = avatarUrl;
+                    
+                    // Lưu vào localStorage
+                    localStorage.setItem('userAvatar', avatarUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Bật/tắt chế độ tối
+        function toggleNightMode() {
+            isNightMode = !isNightMode;
+            document.body.classList.toggle('night-mode', isNightMode);
+            localStorage.setItem('nightMode', isNightMode);
+            
+            const nightModeBtn = document.getElementById('nightModeBtn');
+            if (isNightMode) {
+                nightModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                nightModeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+
+        // Cập nhật bộ hẹn giờ
+        function updateTimer(value) {
+            document.getElementById('timerDisplay').textContent = `${value} phút`;
+        }
+
+        // Bật/tắt hẹn giờ
+        function toggleTimer() {
+            const timerButton = document.getElementById('timerButton');
+            const timerValue = parseInt(document.getElementById('timerSlider').value);
+            
+            if (!timerActive) {
+                // Bật hẹn giờ
+                timerActive = true;
+                timerButton.textContent = 'TẮT HẸN GIỜ';
+                timerButton.classList.add('active');
+                
+                // Thiết lập bộ hẹn giờ
+                currentTimer = setTimeout(() => {
+                    audioElement.pause();
+                    isPlaying = false;
+                    updatePlayPauseButton();
+                    timerActive = false;
+                    timerButton.textContent = 'BẬT HẸN GIỜ';
+                    timerButton.classList.remove('active');
+                    alert('Hẹn giờ đã tắt nhạc');
+                }, timerValue * 60 * 1000);
+            } else {
+                // Tắt hẹn giờ
+                timerActive = false;
+                timerButton.textContent = 'BẬT HẸN GIỜ';
+                timerButton.classList.remove('active');
+                
+                if (currentTimer) {
+                    clearTimeout(currentTimer);
+                    currentTimer = null;
+                }
+            }
+        }
+
+        // Xử lý tìm kiếm
+        function handleSearch() {
+            const query = document.getElementById('globalSearch').value.toLowerCase();
+            const filter = document.querySelector('.filter-tab.active').getAttribute('data-filter');
+            
+            if (query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<p style="text-align: center; color: var(--gray-color); padding: 20px;">Nhập từ khóa để tìm kiếm</p>';
+                return;
+            }
+            
+            let results = [];
+            
+            // Tìm kiếm bài hát trong musicLibrary
+            if (filter === 'all' || filter === 'songs') {
+                musicLibrary.forEach(track => {
+                    if (track.name.toLowerCase().includes(query) || track.artist.toLowerCase().includes(query)) {
+                        results.push({
+                            type: 'song',
+                            data: track
+                        });
+                    }
+                });
+            }
+            
+            // Tìm kiếm bài hát trong playlists
+            if (filter === 'all' || filter === 'songs') {
+                Object.values(playlists).forEach(playlist => {
+                    playlist.forEach(track => {
+                        if (track.name.toLowerCase().includes(query) || track.artist.toLowerCase().includes(query)) {
+                            results.push({
+                                type: 'song',
+                                data: track
+                            });
+                        }
+                    });
+                });
+            }
+            
+            // Tìm kiếm playlist
+            if (filter === 'all' || filter === 'playlists') {
+                Object.keys(playlists).forEach(key => {
+                    const playlist = playlists[key];
+                    if (playlist.length > 0 && playlist[0].name.toLowerCase().includes(query)) {
+                        results.push({
+                            type: 'playlist',
+                            data: {
+                                name: key === 'chill' ? 'Chill Vibes' : 
+                                      key === 'sleep' ? 'Ngủ Ngon' : 
+                                      key === 'vietnam' ? 'Nhạc Việt' : 
+                                      key === 'world' ? 'Nhạc Quốc Tế' : 'Playlist',
+                                description: playlist[0].description,
+                                image: playlist[0].image
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // Tìm kiếm podcast
+            if (filter === 'all' || filter === 'podcasts') {
+                podcasts.forEach(podcast => {
+                    if (podcast.title.toLowerCase().includes(query)) {
+                        results.push({
+                            type: 'podcast',
+                            data: podcast
+                        });
+                    }
+                });
+            }
+            
+            // Tìm kiếm âm thanh
+            if (filter === 'all' || filter === 'sounds') {
+                sounds.forEach(sound => {
+                    if (sound.name.toLowerCase().includes(query) || sound.type.toLowerCase().includes(query)) {
+                        results.push({
+                            type: 'sound',
+                            data: sound
+                        });
+                    }
+                });
+            }
+            
+            displaySearchResults(results);
+        }
+
+        // Xử lý bộ lọc tìm kiếm
+        function handleSearchFilter(filter) {
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.filter-tab[data-filter="${filter}"]`).classList.add('active');
+            
+            handleSearch();
+        }
+
+        // Hiển thị kết quả tìm kiếm
+        function displaySearchResults(results) {
+            const container = document.getElementById('searchResults');
+            
+            if (results.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--gray-color); padding: 20px;">Không tìm thấy kết quả phù hợp</p>';
+                return;
+            }
+            
+            let resultsHTML = '';
+            
+            results.forEach(result => {
+                if (result.type === 'song') {
+                    resultsHTML += `
+                        <div class="track-item" onclick="playSearchResult('song', ${JSON.stringify(result.data).replace(/"/g, '&quot;')})">
+                            <div class="track-number"><i class="fas fa-music"></i></div>
+                            <div class="track-play"><i class="fas fa-play"></i></div>
+                            <div class="track-info-list">
+                                <img src="${result.data.image}" alt="${result.data.name}" class="track-image-small">
+                                <div class="track-details">
+                                    <div class="track-name-list">${result.data.name}</div>
+                                    <div class="track-artist-list">${result.data.artist}</div>
+                                </div>
+                            </div>
+                            <div class="track-album">Bài hát</div>
+                            <div class="track-date"></div>
+                            <div class="track-duration">${result.data.duration}</div>
+                        </div>
+                    `;
+                } else if (result.type === 'playlist') {
+                    resultsHTML += `
+                        <div class="playlist-card" onclick="playSearchResult('playlist', '${result.data.name.toLowerCase()}')">
+                            <img src="${result.data.image}" alt="${result.data.name}" class="playlist-image">
+                            <div class="playlist-card-title">${result.data.name}</div>
+                            <div class="playlist-card-description">${result.data.description}</div>
+                            <div class="play-play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    `;
+                } else if (result.type === 'podcast') {
+                    resultsHTML += `
+                        <div class="podcast-card" onclick="playSearchResult('podcast', ${JSON.stringify(result.data).replace(/"/g, '&quot;')})">
+                            <img src="${result.data.thumbnail}" alt="${result.data.title}" class="podcast-image">
+                            <div class="podcast-title">${result.data.title}</div>
+                            <div class="podcast-description">${result.data.duration}</div>
+                        </div>
+                    `;
+                } else if (result.type === 'sound') {
+                    resultsHTML += `
+                        <div class="sound-card" onclick="playSearchResult('sound', ${JSON.stringify(result.data).replace(/"/g, '&quot;')})">
+                            <div class="sound-icon">
+                                <i class="${result.data.icon}"></i>
+                            </div>
+                            <div class="sound-title">${result.data.name}</div>
+                            <div class="sound-type">${result.data.type}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            container.innerHTML = resultsHTML;
+        }
+
+        // Phát kết quả tìm kiếm
+        function playSearchResult(type, data) {
+            if (type === 'song') {
+                currentTrack = data;
+                
+                // Cập nhật giao diện
+                updatePlayerDisplay();
+                
+                // Phát audio
+                audioElement.src = data.audioUrl;
+                audioElement.play().then(() => {
+                    isPlaying = true;
+                    updatePlayPauseButton();
+                }).catch(error => {
+                    console.error('Lỗi phát nhạc:', error);
+                });
+                
+                // Tải lời bài hát
+                loadLyrics(data.lyrics || []);
+                
+                // Cập nhật nút yêu thích
+                updateFavoriteButton();
+            } else if (type === 'playlist') {
+                playPlaylist(data);
+            } else if (type === 'podcast') {
+                playPodcast(data);
+            } else if (type === 'sound') {
+                playSound(data);
+            }
+        }
+
+        // Bật/tắt yêu thích
+        function toggleFavorite() {
+            if (!currentTrack) return;
+            
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            const isFavorite = favoriteTracks.some(track => track.id === currentTrack.id);
+            
+            if (isFavorite) {
+                // Xóa khỏi danh sách yêu thích
+                favoriteTracks = favoriteTracks.filter(track => track.id !== currentTrack.id);
+                favoriteBtn.innerHTML = '<i class="far fa-heart"></i>';
+            } else {
+                // Thêm vào danh sách yêu thích
+                favoriteTracks.push({
+                    ...currentTrack,
+                    dateAdded: new Date().toLocaleDateString('vi-VN')
+                });
+                favoriteBtn.innerHTML = '<i class="fas fa-heart" style="color: var(--primary-color);"></i>';
+            }
+            
+            // Lưu vào localStorage
+            localStorage.setItem('favoriteTracks', JSON.stringify(favoriteTracks));
+            
+            // Cập nhật giao diện nếu đang ở phần thư viện
+            if (document.getElementById('librarySection').classList.contains('active')) {
+                loadFavoriteTracks();
+            }
+        }
+
+        // Cập nhật nút yêu thích
+        function updateFavoriteButton() {
+            if (!currentTrack) return;
+            
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            const isFavorite = favoriteTracks.some(track => track.id === currentTrack.id);
+            
+            if (isFavorite) {
+                favoriteBtn.innerHTML = '<i class="fas fa-heart" style="color: var(--primary-color);"></i>';
+            } else {
+                favoriteBtn.innerHTML = '<i class="far fa-heart"></i>';
+            }
+        }
+
+        // Hiển thị modal tạo playlist
+        function showCreatePlaylistModal() {
+            document.getElementById('createPlaylistModal').classList.add('active');
+        }
+
+        // Ẩn modal tạo playlist
+        function hideCreatePlaylistModal() {
+            document.getElementById('createPlaylistModal').classList.remove('active');
+            document.getElementById('playlistName').value = '';
+            document.getElementById('playlistDescription').value = '';
+        }
+
+        // Tạo playlist mới
+        function createPlaylist() {
+            const name = document.getElementById('playlistName').value.trim();
+            const description = document.getElementById('playlistDescription').value.trim();
+            
+            if (!name) {
+                alert('Vui lòng nhập tên playlist');
+                return;
+            }
+            
+            const newPlaylist = {
+                id: Date.now().toString(),
+                name: name,
+                description: description,
+                tracks: [],
+                created: new Date().toLocaleDateString('vi-VN')
+            };
+            
+            userPlaylists.push(newPlaylist);
+            localStorage.setItem('userPlaylists', JSON.stringify(userPlaylists));
+            
+            hideCreatePlaylistModal();
+            loadUserPlaylists();
+            
+            // Nếu đang ở phần playlist, chuyển đến phần đó
+            if (document.getElementById('playlistsSection').classList.contains('active')) {
+                showSection('playlists');
+            }
+        }
+
+        // Gửi tin nhắn AI
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Thêm tin nhắn của người dùng
+            addAIMessage(message, 'user');
+            input.value = '';
+            
+            // Phản hồi của AI
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addAIMessage(response, 'ai');
+            }, 1000);
+        }
+
+        // Gửi gợi ý tâm trạng
+        function sendMoodSuggestion(mood) {
+            document.getElementById('aiInput').value = mood;
+            sendAIMessage();
+        }
+
+        // Thêm tin nhắn vào cuộc trò chuyện AI
+        function addAIMessage(message, sender) {
+            const chatMessages = document.getElementById('aiChatMessages');
+            
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender}`;
+            
+            const now = new Date();
+            const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            messageElement.innerHTML = `
+                <div class="message-bubble">${message}</div>
+                <div class="message-time">${timeString}</div>
+            `;
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Lưu lịch sử trò chuyện
+            aiChatHistory.push({ sender, message, time: timeString });
+        }
+
+        // Tạo phản hồi AI
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Tìm phản hồi phù hợp
+            for (const [key, value] of Object.entries(aiResponses)) {
+                if (lowerMessage.includes(key)) {
+                    // Thêm đề xuất bài hát
+                    const recommendations = value.recommendations.map(id => {
+                        // Tìm bài hát trong tất cả các playlist
+                        for (const playlist of Object.values(playlists)) {
+                            const track = playlist.find(t => t.id === id);
+                            if (track) return track.name;
+                        }
+                        return '';
+                    }).filter(name => name);
+                    
+                    return `${value.response} Tôi gợi ý bạn nghe: ${recommendations.join(', ')}`;
+                }
+            }
+            
+            // Phản hồi mặc định
+            return aiResponses.default.response;
+        }
+
+        // Cập nhật trạng thái active của bài hát
+        function updateActiveTrack() {
+            document.querySelectorAll('.track-item').forEach((item, index) => {
+                if (index === currentTrackIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Thêm hiệu ứng fade-in cho các phần tử
+        function addFadeInEffect() {
+            const elements = document.querySelectorAll('.playlist-card, .track-item, .podcast-card, .sound-card');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+                element.classList.add('fade-in');
+            });
+        }
+
+        // Gọi hàm thêm hiệu ứng
+        setTimeout(addFadeInEffect, 500);
+    </script>
+</body>
+</html>
