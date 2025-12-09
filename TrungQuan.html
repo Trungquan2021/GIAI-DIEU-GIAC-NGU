@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giai Điệu Giấc Ngủ | Ứng dụng âm nhạc thư giãn</title>
-    <link rel="icon" href="Gemini_Generated_Image_auhwsdauhwsdauhw (1).png" type="image/png">
+    <link rel="icon" href="music.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -3269,12 +3269,12 @@
                             <i class="fas fa-search search-icon"></i>
                         </div>
                         <div class="filter-tabs">
-                            <button class="filter-tab active" data-filter="all">Tất Cả</button>
-                            <button class="filter-tab" data-filter="songs">Bài Hát</button>
-                            <button class="filter-tab" data-filter="playlists">Playlist</button>
-                            <button class="filter-tab" data-filter="podcasts">Podcast</button>
-                            <button class="filter-tab" data-filter="sounds">Âm Thanh</button>
-                            <button class="filter-tab" data-filter="friends">Bạn Bè</button>
+                            <button class="filter-tab active" data-filter="all" onclick="setSearchFilter('all')">Tất Cả</button>
+                            <button class="filter-tab" data-filter="songs" onclick="setSearchFilter('songs')">Bài Hát</button>
+                            <button class="filter-tab" data-filter="playlists" onclick="setSearchFilter('playlists')">Playlist</button>
+                            <button class="filter-tab" data-filter="podcasts" onclick="setSearchFilter('podcasts')">Podcast</button>
+                            <button class="filter-tab" data-filter="sounds" onclick="setSearchFilter('sounds')">Âm Thanh</button>
+                            <button class="filter-tab" data-filter="friends" onclick="setSearchFilter('friends')">Bạn Bè</button>
                         </div>
                         <div class="search-results" id="searchResults">
                             <!-- Search results will be displayed here -->
@@ -3289,12 +3289,12 @@
                             <h2 class="section-title">Thư Viện Của Bạn</h2>
                         </div>
                         <div class="library-tabs">
-                            <button class="library-tab active" data-library="recent">Nghe Gần Đây</button>
-                            <button class="library-tab" data-library="favorites">Yêu Thích</button>
-                            <button class="library-tab" data-library="music">Âm Nhạc</button>
-                            <button class="library-tab" data-library="playlists">Playlist</button>
-                            <button class="library-tab" data-library="podcasts">Podcast</button>
-                            <button class="library-tab" data-library="sounds">Âm Thanh</button>
+                            <button class="library-tab active" data-library="recent" onclick="showLibraryContent('recent')">Nghe Gần Đây</button>
+                            <button class="library-tab" data-library="favorites" onclick="showLibraryContent('favorites')">Yêu Thích</button>
+                            <button class="library-tab" data-library="music" onclick="showLibraryContent('music')">Âm Nhạc</button>
+                            <button class="library-tab" data-library="playlists" onclick="showLibraryContent('playlists')">Playlist</button>
+                            <button class="library-tab" data-library="podcasts" onclick="showLibraryContent('podcasts')">Podcast</button>
+                            <button class="library-tab" data-library="sounds" onclick="showLibraryContent('sounds')">Âm Thanh</button>
                         </div>
                         
                         <div class="library-content active" id="recentLibrary">
@@ -3637,13 +3637,13 @@
         <div class="music-player">
             <div class="player-left">
                 <div class="now-playing">
-                    <img src="https://i.ytimg.com/vi/LklFoy_a3bA/maxresdefault.jpg" alt="Now Playing" class="track-image" id="nowPlayingImage">
+                    <img src="" alt="Now Playing" class="track-image" id="nowPlayingImage" style="display: none;">
                     <div class="track-info">
-                        <div class="track-name" id="nowPlayingName">Phía Sau Em</div>
-                        <div class="track-artist" id="nowPlayingArtist">Kay Tran & Binz</div>
+                        <div class="track-name" id="nowPlayingName">Chưa có bài hát</div>
+                        <div class="track-artist" id="nowPlayingArtist">Chọn một bài hát để nghe</div>
                     </div>
                     <div class="track-actions">
-                        <button class="action-btn" id="favoriteBtn">
+                        <button class="action-btn" id="favoriteBtn" onclick="toggleFavorite()">
                             <i class="far fa-heart"></i>
                         </button>
                         <button class="action-btn" onclick="toggleLyricDisplay()">
@@ -3678,7 +3678,7 @@
                         <div class="progress" id="progress"></div>
                         <div class="progress-handle"></div>
                     </div>
-                    <span class="progress-time" id="duration">4:00</span>
+                    <span class="progress-time" id="duration">0:00</span>
                 </div>
             </div>
             
@@ -3709,12 +3709,12 @@
             </div>
             
             <div class="lyric-track-info">
-                <div class="lyric-track-name" id="lyricTrackName">Phía Sau Em</div>
-                <div class="lyric-track-artist" id="lyricTrackArtist">Kay Tran & Binz</div>
+                <div class="lyric-track-name" id="lyricTrackName">Chưa có bài hát</div>
+                <div class="lyric-track-artist" id="lyricTrackArtist">Chọn một bài hát để nghe</div>
             </div>
             
             <div class="lyric-content" id="lyricContent">
-                <div class="lyric-line">Đang tải lời bài hát...</div>
+                <div class="lyric-line">Chưa có lời bài hát</div>
             </div>
         </div>
         
@@ -4267,7 +4267,7 @@
                     artist: "Kygo",
                     duration: "3:50",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-                    image: "https://i.ytimg.com/vi/0t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4276,7 +4276,7 @@
                     artist: "Petit Biscuit",
                     duration: "3:58",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
-                    image: "https://i.ytimg.com/vi/1t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4285,7 +4285,7 @@
                     artist: "The Chainsmokers",
                     duration: "4:04",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-                    image: "https://i.ytimg.com/vi/2t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4294,7 +4294,7 @@
                     artist: "The Chainsmokers & Coldplay",
                     duration: "4:07",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
-                    image: "https://i.ytimg.com/vi/3t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4303,7 +4303,7 @@
                     artist: "The Chainsmokers",
                     duration: "3:28",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-                    image: "https://i.ytimg.com/vi/4t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4312,7 +4312,7 @@
                     artist: "Sidney Samson",
                     duration: "2:53",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                    image: "https://i.ytimg.com/vi/5t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4321,7 +4321,7 @@
                     artist: "Major Lazer & DJ Snake",
                     duration: "2:56",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-                    image: "https://i.ytimg.com/vi/6t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4330,7 +4330,7 @@
                     artist: "Avicii",
                     duration: "4:09",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-                    image: "https://i.ytimg.com/vi/7t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4339,7 +4339,7 @@
                     artist: "Avicii",
                     duration: "5:38",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-                    image: "https://i.ytimg.com/vi/8t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4348,7 +4348,7 @@
                     artist: "Calvin Harris",
                     duration: "3:42",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-                    image: "https://i.ytimg.com/vi/9t7J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4357,7 +4357,7 @@
                     artist: "Calvin Harris & Rihanna",
                     duration: "3:42",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-                    image: "https://i.ytimg.com/vi/0t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4366,7 +4366,7 @@
                     artist: "David Guetta & Sia",
                     duration: "4:05",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
-                    image: "https://i.ytimg.com/vi/1t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4375,7 +4375,7 @@
                     artist: "David Guetta & Kid Cudi",
                     duration: "3:30",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-                    image: "https://i.ytimg.com/vi/2t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4384,7 +4384,7 @@
                     artist: "Swedish House Mafia",
                     duration: "3:32",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
-                    image: "https://i.ytimg.com/vi/3t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4393,7 +4393,7 @@
                     artist: "Swedish House Mafia",
                     duration: "3:33",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-                    image: "https://i.ytimg.com/vi/4t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4402,7 +4402,7 @@
                     artist: "M83",
                     duration: "4:04",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                    image: "https://i.ytimg.com/vi/5t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4411,7 +4411,7 @@
                     artist: "The Weeknd & Daft Punk",
                     duration: "3:50",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-                    image: "https://i.ytimg.com/vi/6t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4420,7 +4420,7 @@
                     artist: "The Weeknd",
                     duration: "3:20",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-                    image: "https://i.ytimg.com/vi/7t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4429,7 +4429,7 @@
                     artist: "The Weeknd",
                     duration: "3:35",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-                    image: "https://i.ytimg.com/vi/8t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4438,7 +4438,7 @@
                     artist: "Dua Lipa",
                     duration: "3:23",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-                    image: "https://i.ytimg.com/vi/9t8J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4447,7 +4447,7 @@
                     artist: "Dua Lipa",
                     duration: "3:03",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-                    image: "https://i.ytimg.com/vi/0t9J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4456,7 +4456,7 @@
                     artist: "Dua Lipa",
                     duration: "3:13",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
-                    image: "https://i.ytimg.com/vi/1t9J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4465,7 +4465,7 @@
                     artist: "Dua Lipa",
                     duration: "3:41",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-                    image: "https://i.ytimg.com/vi/2t9J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4474,7 +4474,7 @@
                     artist: "Dua Lipa",
                     duration: "4:18",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
-                    image: "https://i.ytimg.com/vi/3t9J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 },
                 {
@@ -4483,7 +4483,7 @@
                     artist: "Dua Lipa",
                     duration: "3:29",
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-                    image: "https://i.ytimg.com/vi/4t9J2Q6K8qk/maxresdefault.jpg",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
                 }
             ]
@@ -4720,7 +4720,7 @@
         // ==============================================
         // BIẾN TOÀN CỤC
         // ==============================================
-
+        let currentSearchFilter = 'all';
         let currentTrack = null;
         let currentPlaylist = null;
         let currentTrackIndex = 0;
@@ -4769,9 +4769,8 @@
             loadAllUsers();
             checkAutoLogin();
             setupEventListeners();
-            loadNightMode();
             
-            // Khởi tạo audio element
+            loadNightMode();
             initializeAudio();
         });
 
@@ -5132,6 +5131,7 @@
 
         function initializeAudio() {
             audioElement.volume = 0.7;
+            audioElement.autoplay = false;
             
             audioElement.addEventListener('loadedmetadata', function() {
                 updateDurationDisplay();
@@ -5154,13 +5154,19 @@
                 handleTrackEnd();
             });
             
-            // Khởi tạo track mặc định để hiển thị, không tự động phát
-            currentPlaylist = playlists.chill;
-            if (currentPlaylist && currentPlaylist.length > 0) {
-                currentTrack = currentPlaylist[0];
-                updatePlayerDisplay();
-                updateFavoriteButton();
-            }
+            audioElement.addEventListener('play', function() {
+                isPlaying = true;
+                updatePlayPauseButton();
+            });
+            
+            audioElement.addEventListener('pause', function() {
+                isPlaying = false;
+                updatePlayPauseButton();
+            });
+            
+            // Khởi tạo player trống
+            updatePlayerDisplay();
+            updateFavoriteButton();
         }
 
         // ==============================================
@@ -5214,6 +5220,7 @@
                 updatePlayPauseButton();
             }).catch(error => {
                 console.error('Lỗi phát nhạc:', error);
+                alert('Không thể phát bài hát này. Vui lòng thử lại!');
             });
             
             // Tải lời bài hát
@@ -5271,6 +5278,11 @@
                 image: podcast.thumbnail
             };
             
+            // Dừng nhạc hiện tại nếu đang phát
+            if (isPlaying) {
+                audioElement.pause();
+            }
+            
             audioElement.src = podcast.audioUrl;
             audioElement.play().then(() => {
                 isPlaying = true;
@@ -5278,10 +5290,15 @@
                 updatePlayerDisplay();
             }).catch(error => {
                 console.error('Lỗi phát podcast:', error);
+                alert('Không thể phát podcast này. Vui lòng thử lại!');
             });
             
             // Thêm vào danh sách nghe gần đây
             addToRecentTracks(currentTrack);
+            
+            // Tải lời bài hát (không có lời cho podcast)
+            loadLyrics([]);
+            updateFavoriteButton();
         }
 
         function playSound(soundId) {
@@ -5299,8 +5316,14 @@
                 name: sound.name,
                 artist: sound.type,
                 duration: "∞",
-                audioUrl: sound.audioUrl
+                audioUrl: sound.audioUrl,
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
             };
+            
+            // Dừng nhạc hiện tại nếu đang phát
+            if (isPlaying) {
+                audioElement.pause();
+            }
             
             audioElement.src = sound.audioUrl;
             audioElement.play().then(() => {
@@ -5309,10 +5332,15 @@
                 updatePlayerDisplay();
             }).catch(error => {
                 console.error('Lỗi phát âm thanh:', error);
+                alert('Không thể phát âm thanh này. Vui lòng thử lại!');
             });
             
             // Thêm vào danh sách nghe gần đây
             addToRecentTracks(currentTrack);
+            
+            // Tải lời bài hát (không có lời cho âm thanh)
+            loadLyrics([]);
+            updateFavoriteButton();
         }
 
         // ==============================================
@@ -5326,8 +5354,10 @@
                 return;
             }
             
-            if (!currentTrack) {
-                if (currentPlaylist && currentPlaylist.length > 0) {
+            if (!currentTrack || !audioElement.src) {
+                // Nếu không có bài hát nào đang được chọn, chơi bài đầu tiên từ playlist chill
+                if (playlists.chill && playlists.chill.length > 0) {
+                    currentPlaylist = playlists.chill;
                     playTrack(0);
                 }
                 return;
@@ -5335,20 +5365,18 @@
             
             if (isPlaying) {
                 audioElement.pause();
-                isPlaying = false;
             } else {
                 audioElement.play().then(() => {
                     isPlaying = true;
                 }).catch(error => {
                     console.error('Lỗi phát nhạc:', error);
+                    alert('Không thể phát nhạc. Vui lòng thử lại!');
                 });
             }
-            
-            updatePlayPauseButton();
         }
 
         function playNextTrack() {
-            if (!currentPlaylist) return;
+            if (!currentPlaylist || currentPlaylist.length === 0) return;
             
             let nextIndex = currentTrackIndex + 1;
             if (nextIndex >= currentPlaylist.length) {
@@ -5365,7 +5393,7 @@
         }
 
         function playPreviousTrack() {
-            if (!currentPlaylist) return;
+            if (!currentPlaylist || currentPlaylist.length === 0) return;
             
             let prevIndex = currentTrackIndex - 1;
             if (prevIndex < 0) {
@@ -5385,8 +5413,30 @@
             
             if (isShuffled) {
                 shuffleBtn.style.color = 'var(--primary-color)';
+                // Trộn playlist hiện tại
+                if (currentPlaylist) {
+                    const shuffled = [...currentPlaylist];
+                    for (let i = shuffled.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                    }
+                    currentPlaylist = shuffled;
+                    currentTrackIndex = currentPlaylist.findIndex(track => track.id === currentTrack.id);
+                }
             } else {
                 shuffleBtn.style.color = 'var(--gray-color)';
+                // Khôi phục playlist gốc
+                if (currentTrack) {
+                    for (const playlistName in playlists) {
+                        const playlist = playlists[playlistName];
+                        const originalTrack = playlist.find(t => t.id === currentTrack.id);
+                        if (originalTrack) {
+                            currentPlaylist = playlist;
+                            currentTrackIndex = playlist.findIndex(t => t.id === currentTrack.id);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -5408,7 +5458,7 @@
         }
 
         function updateProgressBar() {
-            if (!audioElement.duration) return;
+            if (!audioElement.duration || isNaN(audioElement.duration)) return;
             
             const progressPercent = (audioElement.currentTime / audioElement.duration) * 100;
             document.getElementById('progress').style.width = `${progressPercent}%`;
@@ -5420,6 +5470,11 @@
         }
 
         function updateDurationDisplay() {
+            if (!audioElement.duration || isNaN(audioElement.duration)) {
+                document.getElementById('duration').textContent = '0:00';
+                return;
+            }
+            
             const duration = formatAudioTime(audioElement.duration);
             document.getElementById('duration').textContent = duration;
         }
@@ -5433,7 +5488,7 @@
         }
 
         function seekAudio(event) {
-            if (!audioElement.duration) return;
+            if (!audioElement.duration || isNaN(audioElement.duration)) return;
             
             const progressBar = event.currentTarget;
             const clickPosition = event.offsetX;
@@ -5447,7 +5502,7 @@
             const volumeBar = event.currentTarget;
             const clickPosition = event.offsetX;
             const containerWidth = volumeBar.offsetWidth;
-            const volumeLevel = clickPosition / containerWidth;
+            const volumeLevel = Math.min(1, Math.max(0, clickPosition / containerWidth));
             
             audioElement.volume = volumeLevel;
             document.getElementById('volumeLevel').style.width = `${volumeLevel * 100}%`;
@@ -5557,9 +5612,23 @@
         // ==============================================
 
         function updatePlayerDisplay() {
-            if (!currentTrack) return;
+            if (!currentTrack) {
+                document.getElementById('nowPlayingImage').style.display = 'none';
+                document.getElementById('nowPlayingName').textContent = 'Chưa có bài hát';
+                document.getElementById('nowPlayingArtist').textContent = 'Chọn một bài hát để nghe';
+                document.getElementById('lyricTrackName').textContent = 'Chưa có bài hát';
+                document.getElementById('lyricTrackArtist').textContent = 'Chọn một bài hát để nghe';
+                return;
+            }
             
-            document.getElementById('nowPlayingImage').src = currentTrack.image;
+            const nowPlayingImage = document.getElementById('nowPlayingImage');
+            if (currentTrack.image) {
+                nowPlayingImage.src = currentTrack.image;
+                nowPlayingImage.style.display = 'block';
+            } else {
+                nowPlayingImage.style.display = 'none';
+            }
+            
             document.getElementById('nowPlayingName').textContent = currentTrack.name;
             document.getElementById('nowPlayingArtist').textContent = currentTrack.artist;
             
@@ -5676,11 +5745,17 @@
             if (document.getElementById('recentLibrary').classList.contains('active')) {
                 loadLibraryContent();
             }
+            
+            // Lưu dữ liệu
+            saveUserData();
         }
 
         function updateFavoriteButton() {
             const favoriteBtn = document.getElementById('favoriteBtn');
-            if (!currentTrack) return;
+            if (!currentTrack) {
+                favoriteBtn.innerHTML = '<i class="far fa-heart"></i>';
+                return;
+            }
             
             const isFavorite = favoriteTracks.some(track => track.id === currentTrack.id);
             
@@ -5821,10 +5896,20 @@
                     allTracks = allTracks.concat(playlist);
                 });
                 
-                if (allTracks.length > 0) {
+                // Loại bỏ trùng lặp
+                const uniqueTracks = [];
+                const trackIds = new Set();
+                allTracks.forEach(track => {
+                    if (!trackIds.has(track.id)) {
+                        trackIds.add(track.id);
+                        uniqueTracks.push(track);
+                    }
+                });
+                
+                if (uniqueTracks.length > 0) {
                     let musicHTML = '<div class="track-list"><div class="track-list-header"><div>#</div><div>BÀI HÁT</div><div>ALBUM</div><div>NGÀY THÊM</div><div></div></div>';
                     
-                    allTracks.slice(0, 20).forEach((track, index) => {
+                    uniqueTracks.slice(0, 20).forEach((track, index) => {
                         musicHTML += `
                             <div class="track-item" onclick="playTrackById(${track.id})">
                                 <div class="track-number">${index + 1}</div>
@@ -5923,28 +6008,29 @@
         }
 
         function showLibraryContent(library) {
+            // Ẩn tất cả nội dung
             document.querySelectorAll('.library-content').forEach(content => {
                 content.classList.remove('active');
             });
-            
+
+            // Hiển thị nội dung được chọn
             const targetElement = document.getElementById(library + 'Library');
             if (targetElement) {
                 targetElement.classList.add('active');
             }
-            
+
+            // Cập nhật tab active
             document.querySelectorAll('.library-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             const activeTab = document.querySelector(`.library-tab[data-library="${library}"]`);
             if (activeTab) {
                 activeTab.classList.add('active');
             }
-            
-            // Tải nội dung nếu cần
-            if (library === 'sounds') {
-                loadSounds();
-            }
+
+            // Tải nội dung
+            loadLibraryContent();
         }
 
         // ==============================================
@@ -5965,7 +6051,7 @@
                     <h1 class="playlist-detail-name">${currentPlaylistDetail.name}</h1>
                     <p class="playlist-detail-description">${currentPlaylistDetail.description || 'Playlist của bạn'}</p>
                     <div class="playlist-detail-stats">
-                        <span>${currentPlaylistDetail.tracks.length} bài hát</span>
+                        <span>${currentPlaylistDetail.tracks ? currentPlaylistDetail.tracks.length : 0} bài hát</span>
                         <span>•</span>
                         <span>Được tạo bởi ${currentUser.name}</span>
                     </div>
@@ -5974,7 +6060,7 @@
             
             // Tải danh sách bài hát
             const trackList = document.getElementById('playlistDetailTrackList');
-            if (currentPlaylistDetail.tracks.length === 0) {
+            if (!currentPlaylistDetail.tracks || currentPlaylistDetail.tracks.length === 0) {
                 trackList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có bài hát nào trong playlist</div>';
             } else {
                 let trackListHTML = '<div class="track-list-header"><div>#</div><div>BÀI HÁT</div><div>ALBUM</div><div>NGÀY THÊM</div><div></div></div>';
@@ -6022,7 +6108,7 @@
         }
 
         function playPlaylistFromDetail() {
-            if (!currentPlaylistDetail || currentPlaylistDetail.tracks.length === 0) {
+            if (!currentPlaylistDetail || !currentPlaylistDetail.tracks || currentPlaylistDetail.tracks.length === 0) {
                 alert('Playlist này chưa có bài hát nào!');
                 return;
             }
@@ -6084,12 +6170,14 @@
         }
 
         // ==============================================
-        // TÌM KIẾM BẠN BÈ & KẾT BẠN (ĐÃ SỬA LỖI)
+        // TÌM KIẾM BẠN BÈ & KẾT BẠN
         // ==============================================
 
         function loadFriends() {
             const container = document.getElementById('friendsGrid');
             const requestsContainer = document.getElementById('friendRequestsGrid');
+            
+            if (!container || !requestsContainer) return;
             
             if (friends.length === 0) {
                 container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Bạn chưa có bạn bè. Hãy tìm kiếm và kết bạn!</div>';
@@ -6159,6 +6247,8 @@
         function loadFriendSearchResults() {
             const searchTerm = document.getElementById('searchFriend').value.toLowerCase();
             const resultsContainer = document.getElementById('friendSearchResults');
+            
+            if (!resultsContainer) return;
             
             // Tìm kiếm người dùng không phải là bạn bè và không phải là chính mình
             const results = allUsers.filter(user => 
@@ -6319,6 +6409,7 @@
 
         function loadChats() {
             const chatList = document.getElementById('chatList');
+            if (!chatList) return;
             
             if (chats.length === 0) {
                 chatList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có cuộc trò chuyện nào</div>';
@@ -6467,6 +6558,7 @@
 
         function showApp() {
             document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('registerScreen').style.display = 'none';
             document.getElementById('appContainer').style.display = 'flex';
         }
 
@@ -6559,6 +6651,9 @@
                 loadPodcasts();
             } else if (sectionName === 'library') {
                 loadLibraryContent();
+            } else if (sectionName === 'search') {
+                // Xóa kết quả tìm kiếm cũ
+                document.getElementById('searchResults').innerHTML = '';
             }
         }
 
@@ -6728,6 +6823,14 @@
             if (findFriendSearchEl) {
                 findFriendSearchEl.addEventListener('input', loadFriendSearchResults);
             }
+            
+            // Filter tabs for search
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    setSearchFilter(filter);
+                });
+            });
         }
 
         function handleAvatarUpload(event) {
@@ -6754,141 +6857,232 @@
         }
 
         // ==============================================
-        // CÁC HÀM CHƯA ĐƯỢC TRIỂN KHAI ĐẦY ĐỦ
-        // (giữ nguyên để tránh lỗi)
+        // TÌM KIẾM
         // ==============================================
 
-        function addEmoji(emoji) {
-            const input = document.getElementById('chatInput');
-            input.value += emoji;
-            input.focus();
-        }
-
-        function addGroupEmoji(emoji) {
-            const input = document.getElementById('groupInput');
-            input.value += emoji;
-            input.focus();
-        }
-
-        function loadGroupChats() {
-            const groupList = document.getElementById('groupList');
+        function setSearchFilter(filter) {
+            currentSearchFilter = filter;
             
-            if (groupChats.length === 0) {
-                groupList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có phòng chat nào</div>';
+            // Cập nhật UI
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const activeTab = document.querySelector(`.filter-tab[data-filter="${filter}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            // Thực hiện tìm kiếm với filter mới
+            const query = document.getElementById('globalSearchInput').value;
+            if (query.trim()) {
+                performSearch(query);
+            }
+        }
+
+        function handleSearch(event) {
+            const query = document.getElementById('globalSearchInput').value;
+            
+            // Nếu đang không ở searchSection, chuyển sang searchSection
+            if (!document.getElementById('searchSection').classList.contains('active')) {
+                showSection('search');
+            }
+            
+            performSearch(query);
+        }
+
+        function performSearch(query) {
+            const resultsContainer = document.getElementById('searchResults');
+            
+            if (!query || query.trim() === '') {
+                resultsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Vui lòng nhập từ khóa tìm kiếm</div>';
                 return;
             }
             
-            let groupHTML = '';
-            groupChats.forEach(group => {
-                const lastMessage = group.messages[group.messages.length - 1];
-                const memberCount = group.members.length;
-                
-                groupHTML += `
-                    <div class="group-item" onclick="openGroup('${group.id}')">
-                        <div class="group-avatar">
-                            ${group.name.charAt(0)}
-                        </div>
-                        <div class="group-info">
-                            <div class="group-name">${group.name}</div>
-                            <div class="group-members">${memberCount} thành viên</div>
-                        </div>
-                        <div class="group-time">${lastMessage ? formatTime(lastMessage.time) : ''}</div>
-                    </div>
-                `;
-            });
+            const searchTerm = query.toLowerCase().trim();
+            let results = [];
             
-            groupList.innerHTML = groupHTML;
-        }
-
-        function openGroup(groupId) {
-            currentGroup = groupChats.find(g => g.id === groupId);
-            if (!currentGroup) return;
-            
-            // Tải tin nhắn
-            const messagesContainer = document.getElementById('groupMessages');
-            let messagesHTML = '';
-            
-            currentGroup.messages.forEach(message => {
-                const isUser = message.sender === currentUser.id;
-                const sender = message.sender === 'system' ? 'Hệ thống' : 
-                               (allUsers.find(u => u.id === message.sender)?.name || 'Ẩn danh');
-                
-                messagesHTML += `
-                    <div class="group-message-item ${isUser ? 'user' : 'other'}">
-                        <div class="group-message-content">
-                            <div class="group-message-sender">${sender}</div>
-                            ${message.text}
-                        </div>
-                        <div class="group-message-time">${formatTime(message.time)}</div>
-                    </div>
-                `;
-            });
-            
-            messagesContainer.innerHTML = messagesHTML;
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            // Kích hoạt input
-            document.getElementById('groupInput').disabled = false;
-            document.getElementById('groupSendBtn').disabled = false;
-            
-            // Hiển thị section group chat
-            showSection('group-chat');
-        }
-
-        function sendGroupMessage() {
-            if (!currentGroup) {
-                alert('Vui lòng chọn một phòng chat!');
-                return;
+            // Tìm kiếm trong tất cả dữ liệu
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'songs') {
+                // Tìm trong bài hát
+                Object.values(playlists).forEach(playlist => {
+                    playlist.forEach(track => {
+                        if (track.name.toLowerCase().includes(searchTerm) || track.artist.toLowerCase().includes(searchTerm)) {
+                            results.push({
+                                type: 'song',
+                                data: track
+                            });
+                        }
+                    });
+                });
             }
             
-            const input = document.getElementById('groupInput');
-            const message = input.value.trim();
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'playlists') {
+                // Tìm trong playlist của người dùng
+                userPlaylists.forEach(playlist => {
+                    if (playlist.name.toLowerCase().includes(searchTerm) || (playlist.description && playlist.description.toLowerCase().includes(searchTerm))) {
+                        results.push({
+                            type: 'playlist',
+                            data: playlist
+                        });
+                    }
+                });
+            }
             
-            if (!message) return;
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'podcasts') {
+                // Tìm trong podcast
+                podcasts.forEach(podcast => {
+                    if (podcast.title.toLowerCase().includes(searchTerm) || podcast.category.toLowerCase().includes(searchTerm)) {
+                        results.push({
+                            type: 'podcast',
+                            data: podcast
+                        });
+                    }
+                });
+            }
             
-            // Thêm tin nhắn
-            const newMessage = {
-                id: 'msg_' + Date.now(),
-                sender: currentUser.id,
-                text: message,
-                time: new Date().toISOString()
-            };
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'sounds') {
+                // Tìm trong âm thanh
+                sounds.forEach(sound => {
+                    if (sound.name.toLowerCase().includes(searchTerm) || sound.type.toLowerCase().includes(searchTerm)) {
+                        results.push({
+                            type: 'sound',
+                            data: sound
+                        });
+                    }
+                });
+            }
             
-            currentGroup.messages.push(newMessage);
-            saveUserData();
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'friends') {
+                // Tìm trong bạn bè
+                friends.forEach(friend => {
+                    const friendUser = allUsers.find(u => u.id === friend.id);
+                    if (friendUser && (friendUser.name.toLowerCase().includes(searchTerm) || friendUser.username.toLowerCase().includes(searchTerm))) {
+                        results.push({
+                            type: 'friend',
+                            data: friendUser
+                        });
+                    }
+                });
+            }
             
-            // Cập nhật giao diện
-            const messagesContainer = document.getElementById('groupMessages');
-            messagesContainer.innerHTML += `
-                <div class="group-message-item user">
-                    <div class="group-message-content">
-                        <div class="group-message-sender">${currentUser.name}</div>
-                        ${message}
-                    </div>
-                    <div class="group-message-time">${formatTime(newMessage.time)}</div>
-                </div>
-            `;
-            
-            input.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            // Hiển thị kết quả
+            displaySearchResults(results);
         }
 
-        function searchGroups(query) {
-            const groupItems = document.querySelectorAll('.group-item');
-            const lowerQuery = query.toLowerCase();
-            
-            groupItems.forEach(item => {
-                const groupName = item.querySelector('.group-name').textContent.toLowerCase();
-                if (groupName.includes(lowerQuery)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
+        function displaySearchResults(results) {
+            const searchResults = document.getElementById('searchResults');
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Không tìm thấy kết quả nào</div>';
+                return;
+            }
+
+            let resultsHTML = '<h3>Kết quả tìm kiếm:</h3>';
+
+            // Nếu filter là 'all', chúng ta có thể nhóm theo loại
+            if (currentSearchFilter === 'all') {
+                // Nhóm kết quả theo loại
+                const grouped = {};
+                results.forEach(result => {
+                    if (!grouped[result.type]) {
+                        grouped[result.type] = [];
+                    }
+                    grouped[result.type].push(result);
+                });
+
+                for (const type in grouped) {
+                    let typeName;
+                    switch(type) {
+                        case 'song': typeName = 'Bài hát'; break;
+                        case 'playlist': typeName = 'Playlist'; break;
+                        case 'podcast': typeName = 'Podcast'; break;
+                        case 'sound': typeName = 'Âm thanh'; break;
+                        case 'friend': typeName = 'Bạn bè'; break;
+                        default: typeName = type;
+                    }
+                    resultsHTML += `<h4>${typeName}</h4>`;
+                    grouped[type].forEach(result => {
+                        resultsHTML += getSearchResultHTML(result);
+                    });
                 }
-            });
+            } else {
+                // Nếu filter cụ thể, hiển thị tất cả kết quả cùng loại
+                results.forEach(result => {
+                    resultsHTML += getSearchResultHTML(result);
+                });
+            }
+
+            searchResults.innerHTML = resultsHTML;
+        }
+
+        function getSearchResultHTML(result) {
+            let html = '';
+            if (result.type === 'song') {
+                const track = result.data;
+                html = `
+                    <div class="search-track-item" onclick="playTrackById(${track.id})">
+                        <img src="${track.image}" alt="${track.name}" class="search-track-image">
+                        <div class="search-track-info">
+                            <div class="search-track-name">${track.name}</div>
+                            <div class="search-track-artist">${track.artist} • Bài hát</div>
+                        </div>
+                        <button class="add-track-btn" onclick="event.stopPropagation(); showAddToPlaylistModalForTrack(${track.id})">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                `;
+            } else if (result.type === 'playlist') {
+                const playlist = result.data;
+                html = `
+                    <div class="playlist-card" onclick="openPlaylistDetail('${playlist.id}')">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="${playlist.name}" class="playlist-image">
+                        <div class="playlist-card-title">${playlist.name}</div>
+                        <div class="playlist-card-description">${playlist.description || 'Playlist của bạn'}</div>
+                        <div class="play-play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                `;
+            } else if (result.type === 'podcast') {
+                const podcast = result.data;
+                html = `
+                    <div class="podcast-card" onclick="playPodcast(${podcast.id})">
+                        <img src="${podcast.thumbnail}" alt="${podcast.title}" class="podcast-image">
+                        <div class="podcast-title">${podcast.title}</div>
+                        <div class="podcast-description">${podcast.category} • ${podcast.duration}</div>
+                    </div>
+                `;
+            } else if (result.type === 'sound') {
+                const sound = result.data;
+                html = `
+                    <div class="sound-card" onclick="playSound(${sound.id})">
+                        <div class="sound-icon">
+                            <i class="${sound.icon}"></i>
+                        </div>
+                        <div class="sound-title">${sound.name}</div>
+                        <div class="sound-type">${sound.type}</div>
+                    </div>
+                `;
+            } else if (result.type === 'friend') {
+                const friend = result.data;
+                html = `
+                    <div class="friend-card">
+                        <img src="${friend.avatar}" alt="${friend.name}" class="friend-avatar">
+                        <div class="friend-name">${friend.name}</div>
+                        <div class="friend-status">@${friend.username}</div>
+                        <div class="friend-actions">
+                            <button class="friend-btn chat" onclick="startChat('${friend.id}')">
+                                <i class="fas fa-comment"></i> Nhắn tin
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            return html;
         }
 
         // ==============================================
-        // CÁC HÀM MODAL & AI CHAT (giữ nguyên)
+        // CÁC HÀM MODAL & AI CHAT
         // ==============================================
 
         function showEditProfileModal() {
@@ -7066,150 +7260,138 @@
             aiChatHistory.push({ sender, message, time: timeString });
         }
 
-        function handleSearch(event) {
-            const query = event.target.value.toLowerCase();
-            const searchResults = document.getElementById('searchResults');
-            
-            if (!query.trim()) {
-                searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Nhập từ khóa để tìm kiếm</div>';
-                return;
-            }
-            
-            // Tìm kiếm trong tất cả dữ liệu
-            let results = [];
-            
-            // Tìm trong bài hát
-            Object.values(playlists).forEach(playlist => {
-                playlist.forEach(track => {
-                    if (track.name.toLowerCase().includes(query) || track.artist.toLowerCase().includes(query)) {
-                        results.push({
-                            type: 'song',
-                            data: track
-                        });
-                    }
-                });
-            });
-            
-            // Tìm trong playlist của người dùng
-            userPlaylists.forEach(playlist => {
-                if (playlist.name.toLowerCase().includes(query) || (playlist.description && playlist.description.toLowerCase().includes(query))) {
-                    results.push({
-                        type: 'playlist',
-                        data: playlist
-                    });
-                }
-            });
-            
-            // Tìm trong podcast
-            podcasts.forEach(podcast => {
-                if (podcast.title.toLowerCase().includes(query) || podcast.category.toLowerCase().includes(query)) {
-                    results.push({
-                        type: 'podcast',
-                        data: podcast
-                    });
-                }
-            });
-            
-            // Tìm trong âm thanh
-            sounds.forEach(sound => {
-                if (sound.name.toLowerCase().includes(query) || sound.type.toLowerCase().includes(query)) {
-                    results.push({
-                        type: 'sound',
-                        data: sound
-                    });
-                }
-            });
-            
-            // Tìm trong bạn bè
-            friends.forEach(friend => {
-                const friendUser = allUsers.find(u => u.id === friend.id);
-                if (friendUser && (friendUser.name.toLowerCase().includes(query) || friendUser.username.toLowerCase().includes(query))) {
-                    results.push({
-                        type: 'friend',
-                        data: friendUser
-                    });
-                }
-            });
-            
-            // Hiển thị kết quả
-            displaySearchResults(results);
+        // ==============================================
+        // CÁC HÀM CHƯA ĐƯỢC TRIỂN KHAI ĐẦY ĐỦ
+        // ==============================================
+
+        function addEmoji(emoji) {
+            const input = document.getElementById('chatInput');
+            input.value += emoji;
+            input.focus();
         }
 
-        function displaySearchResults(results) {
-            const searchResults = document.getElementById('searchResults');
+        function addGroupEmoji(emoji) {
+            const input = document.getElementById('groupInput');
+            input.value += emoji;
+            input.focus();
+        }
+
+        function loadGroupChats() {
+            const groupList = document.getElementById('groupList');
+            if (!groupList) return;
             
-            if (results.length === 0) {
-                searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Không tìm thấy kết quả nào</div>';
+            if (groupChats.length === 0) {
+                groupList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có phòng chat nào</div>';
                 return;
             }
             
-            let resultsHTML = '<h3>Kết quả tìm kiếm:</h3>';
-            
-            results.forEach(result => {
-                if (result.type === 'song') {
-                    const track = result.data;
-                    resultsHTML += `
-                        <div class="search-track-item" onclick="playTrackById(${track.id})">
-                            <img src="${track.image}" alt="${track.name}" class="search-track-image">
-                            <div class="search-track-info">
-                                <div class="search-track-name">${track.name}</div>
-                                <div class="search-track-artist">${track.artist} • Bài hát</div>
-                            </div>
-                            <button class="add-track-btn" onclick="event.stopPropagation(); showAddToPlaylistModalForTrack(${track.id})">
-                                <i class="fas fa-plus"></i>
-                            </button>
+            let groupHTML = '';
+            groupChats.forEach(group => {
+                const lastMessage = group.messages[group.messages.length - 1];
+                const memberCount = group.members.length;
+                
+                groupHTML += `
+                    <div class="group-item" onclick="openGroup('${group.id}')">
+                        <div class="group-avatar">
+                            ${group.name.charAt(0)}
                         </div>
-                    `;
-                } else if (result.type === 'playlist') {
-                    const playlist = result.data;
-                    resultsHTML += `
-                        <div class="playlist-card" onclick="openPlaylistDetail('${playlist.id}')">
-                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="${playlist.name}" class="playlist-image">
-                            <div class="playlist-card-title">${playlist.name}</div>
-                            <div class="playlist-card-description">${playlist.description || 'Playlist của bạn'}</div>
-                            <div class="play-play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
+                        <div class="group-info">
+                            <div class="group-name">${group.name}</div>
+                            <div class="group-members">${memberCount} thành viên</div>
                         </div>
-                    `;
-                } else if (result.type === 'podcast') {
-                    const podcast = result.data;
-                    resultsHTML += `
-                        <div class="podcast-card" onclick="playPodcast(${podcast.id})">
-                            <img src="${podcast.thumbnail}" alt="${podcast.title}" class="podcast-image">
-                            <div class="podcast-title">${podcast.title}</div>
-                            <div class="podcast-description">${podcast.category} • ${podcast.duration}</div>
-                        </div>
-                    `;
-                } else if (result.type === 'sound') {
-                    const sound = result.data;
-                    resultsHTML += `
-                        <div class="sound-card" onclick="playSound(${sound.id})">
-                            <div class="sound-icon">
-                                <i class="${sound.icon}"></i>
-                            </div>
-                            <div class="sound-title">${sound.name}</div>
-                            <div class="sound-type">${sound.type}</div>
-                        </div>
-                    `;
-                } else if (result.type === 'friend') {
-                    const friend = result.data;
-                    resultsHTML += `
-                        <div class="friend-card">
-                            <img src="${friend.avatar}" alt="${friend.name}" class="friend-avatar">
-                            <div class="friend-name">${friend.name}</div>
-                            <div class="friend-status">@${friend.username}</div>
-                            <div class="friend-actions">
-                                <button class="friend-btn chat" onclick="startChat('${friend.id}')">
-                                    <i class="fas fa-comment"></i> Nhắn tin
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }
+                        <div class="group-time">${lastMessage ? formatTime(lastMessage.time) : ''}</div>
+                    </div>
+                `;
             });
             
-            searchResults.innerHTML = resultsHTML;
+            groupList.innerHTML = groupHTML;
+        }
+
+        function openGroup(groupId) {
+            currentGroup = groupChats.find(g => g.id === groupId);
+            if (!currentGroup) return;
+            
+            // Tải tin nhắn
+            const messagesContainer = document.getElementById('groupMessages');
+            let messagesHTML = '';
+            
+            currentGroup.messages.forEach(message => {
+                const isUser = message.sender === currentUser.id;
+                const sender = message.sender === 'system' ? 'Hệ thống' : 
+                               (allUsers.find(u => u.id === message.sender)?.name || 'Ẩn danh');
+                
+                messagesHTML += `
+                    <div class="group-message-item ${isUser ? 'user' : 'other'}">
+                        <div class="group-message-content">
+                            <div class="group-message-sender">${sender}</div>
+                            ${message.text}
+                        </div>
+                        <div class="group-message-time">${formatTime(message.time)}</div>
+                    </div>
+                `;
+            });
+            
+            messagesContainer.innerHTML = messagesHTML;
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Kích hoạt input
+            document.getElementById('groupInput').disabled = false;
+            document.getElementById('groupSendBtn').disabled = false;
+            
+            // Hiển thị section group chat
+            showSection('group-chat');
+        }
+
+        function sendGroupMessage() {
+            if (!currentGroup) {
+                alert('Vui lòng chọn một phòng chat!');
+                return;
+            }
+            
+            const input = document.getElementById('groupInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Thêm tin nhắn
+            const newMessage = {
+                id: 'msg_' + Date.now(),
+                sender: currentUser.id,
+                text: message,
+                time: new Date().toISOString()
+            };
+            
+            currentGroup.messages.push(newMessage);
+            saveUserData();
+            
+            // Cập nhật giao diện
+            const messagesContainer = document.getElementById('groupMessages');
+            messagesContainer.innerHTML += `
+                <div class="group-message-item user">
+                    <div class="group-message-content">
+                        <div class="group-message-sender">${currentUser.name}</div>
+                        ${message}
+                    </div>
+                    <div class="group-message-time">${formatTime(newMessage.time)}</div>
+                </div>
+            `;
+            
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function searchGroups(query) {
+            const groupItems = document.querySelectorAll('.group-item');
+            const lowerQuery = query.toLowerCase();
+            
+            groupItems.forEach(item => {
+                const groupName = item.querySelector('.group-name').textContent.toLowerCase();
+                if (groupName.includes(lowerQuery)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
 
         // ==============================================
