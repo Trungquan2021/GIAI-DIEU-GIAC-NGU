@@ -5280,80 +5280,6 @@
                 audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
             }
         ];
-
-        // Dữ liệu người dùng mẫu
-        const sampleUsers = [
-            {
-                id: "user1",
-                username: "thanhnguyen",
-                password: "123456",
-                name: "Thanh Nguyễn",
-                email: "thanh@example.com",
-                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-                bio: "Yêu âm nhạc và thiên nhiên",
-                joined: "2023-01-15",
-                stats: {
-                    plays: 128,
-                    time: 42,
-                    playlists: 5,
-                    friends: 12
-                },
-                friendRequests: [],
-                friends: [],
-                isAdmin: false,
-                isBanned: false,
-                role: "user",
-                lastLogin: null,
-                status: "active"
-            },
-            {
-                id: "user2",
-                username: "lanpham",
-                password: "123456",
-                name: "Lan Phạm",
-                email: "lan@example.com",
-                avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-                bio: "Đam mê podcast và âm nhạc thư giãn",
-                joined: "2023-02-20",
-                stats: {
-                    plays: 95,
-                    time: 35,
-                    playlists: 3,
-                    friends: 8
-                },
-                friendRequests: [],
-                friends: [],
-                isAdmin: false,
-                isBanned: false,
-                role: "user",
-                lastLogin: null,
-                status: "active"
-            },
-            {
-                id: "user3",
-                username: "minhle",
-                password: "123456",
-                name: "Minh Lê",
-                email: "minh@example.com",
-                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-                bio: "Thích nhạc chill và đọc sách",
-                joined: "2023-03-10",
-                stats: {
-                    plays: 210,
-                    time: 78,
-                    playlists: 7,
-                    friends: 15
-                },
-                friendRequests: [],
-                friends: [],
-                isAdmin: false,
-                isBanned: false,
-                role: "user",
-                lastLogin: null,
-                status: "active"
-            }
-        ];
-
         // Admin user account - FIXED: Có quyền admin
         const adminUser = {
             id: "admin_user_001",
@@ -5518,40 +5444,30 @@
 
         // Tải tất cả người dùng từ localStorage
         function loadAllUsers() {
-            try {
-                const savedUsers = localStorage.getItem(STORAGE_KEYS.USERS);
-                if (savedUsers) {
-                    allUsers = JSON.parse(savedUsers);
-                    // Đảm bảo mỗi user có các trường cần thiết
-                    allUsers.forEach(user => {
-                        if (!user.friendRequests) user.friendRequests = [];
-                        if (!user.friends) user.friends = [];
-                        if (!user.isAdmin) user.isAdmin = false;
-                        if (!user.isBanned) user.isBanned = false;
-                        if (!user.role) user.role = "user";
-                        if (!user.status) user.status = "active";
-                        if (!user.lastLogin) user.lastLogin = null;
-                    });
-                    
-                    // Kiểm tra xem admin user đã tồn tại chưa
-                    const adminExists = allUsers.find(u => u.username === adminUser.username);
-                    if (!adminExists) {
-                        allUsers.push(adminUser);
-                        localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(allUsers));
-                    }
-                } else {
-                    // Tạo dữ liệu mẫu nếu chưa có
-                    allUsers = [...sampleUsers, adminUser];
-                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(allUsers));
-                }
-            } catch (error) {
-                console.error('Lỗi khi tải người dùng:', error);
-                allUsers = [...sampleUsers, adminUser];
-            }
-        }
+    try {
+        const storedUsers = localStorage.getItem(STORAGE_KEYS.USERS);
 
-        // Lưu tất cả người dùng vào localStorage
-        function saveAllUsers() {
+        if (storedUsers && storedUsers !== "[]") {
+            allUsers = JSON.parse(storedUsers);
+
+            const adminExists = allUsers.some(
+                u => u.username === adminUser.username
+            );
+
+            if (!adminExists) {
+                allUsers.push(adminUser);
+                localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(allUsers));
+            }
+        } else {
+            allUsers = [adminUser];
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(allUsers));
+        }
+    } catch (error) {
+        console.error('Lỗi khi load users:', error);
+        allUsers = [adminUser];
+    }
+}
+function saveAllUsers() {
             try {
                 localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(allUsers));
             } catch (error) {
