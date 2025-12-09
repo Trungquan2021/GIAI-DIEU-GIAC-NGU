@@ -36,6 +36,8 @@
             --message-user: #0084ff;
             --message-friend: #3a3a3c;
             --group-message: #2a2a2c;
+            --warning-color: #ff6b6b;
+            --admin-color: #9c27b0;
         }
 
         body {
@@ -2880,6 +2882,252 @@
             font-size: 12px;
         }
 
+        /* ADMIN SECTION */
+        .admin-badge {
+            background: var(--admin-color);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        .admin-section {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .admin-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            color: var(--light-color);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-action-btn.warning {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .admin-action-btn.warning:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+
+        .admin-action-btn.admin {
+            background: rgba(156, 39, 176, 0.2);
+            color: #9c27b0;
+        }
+
+        .admin-action-btn.admin:hover {
+            background: rgba(156, 39, 176, 0.3);
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .user-table th {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--light-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .user-table .user-avatar-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .user-status {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .user-status.active {
+            background: rgba(29, 185, 84, 0.2);
+            color: #1DB954;
+        }
+
+        .user-status.banned {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .user-status.admin {
+            background: rgba(156, 39, 176, 0.2);
+            color: #9c27b0;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .table-action-btn {
+            background: none;
+            border: none;
+            color: var(--gray-color);
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .table-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .table-action-btn.delete {
+            color: #ff6b6b;
+        }
+
+        .table-action-btn.delete:hover {
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .table-action-btn.ban {
+            color: #ffa726;
+        }
+
+        .table-action-btn.ban:hover {
+            background: rgba(255, 167, 38, 0.1);
+        }
+
+        .table-action-btn.admin {
+            color: #9c27b0;
+        }
+
+        .table-action-btn.admin:hover {
+            background: rgba(156, 39, 176, 0.1);
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stats-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stats-card-title {
+            font-size: 12px;
+            color: var(--gray-color);
+            margin-bottom: 5px;
+        }
+
+        .stats-card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stats-card-change {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .stats-card-change.positive {
+            color: #1DB954;
+        }
+
+        .stats-card-change.negative {
+            color: #ff6b6b;
+        }
+
+        /* BANNED USER STYLES */
+        .banned-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .banned-icon {
+            font-size: 64px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .banned-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .banned-message {
+            font-size: 16px;
+            color: var(--gray-color);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .banned-admin-contact {
+            background: rgba(255, 107, 107, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-width: 500px;
+        }
+
         /* RESPONSIVE ADJUSTMENTS */
         @media (max-width: 768px) {
             .login-container {
@@ -2921,6 +3169,19 @@
             .profile-edit-row {
                 flex-direction: column;
                 gap: 0;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+            }
+            
+            .user-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -2971,6 +3232,19 @@
         </div>
     </div>
 
+    <!-- Banned User Screen -->
+    <div class="banned-overlay" id="bannedScreen" style="display: none;">
+        <div class="banned-icon">
+            <i class="fas fa-ban"></i>
+        </div>
+        <h1 class="banned-title">TÀI KHOẢN BỊ KHÓA</h1>
+        <p class="banned-message" id="bannedMessage">Tài khoản của bạn đã bị khóa do vi phạm điều khoản sử dụng. Vui lòng liên hệ quản trị viên để biết thêm chi tiết.</p>
+        <button class="login-button" onclick="logout()">Quay lại trang đăng nhập</button>
+        <div class="banned-admin-contact">
+            <p><i class="fas fa-info-circle"></i> Liên hệ quản trị viên: admin@giaidieugiacngu.com</p>
+        </div>
+    </div>
+
     <!-- Main App (Hidden until login) -->
     <div class="app-container" id="appContainer" style="display: none;">
         <!-- Sidebar -->
@@ -3018,6 +3292,12 @@
                 <div class="nav-item" data-section="profile">
                     <i class="fas fa-user"></i>
                     <span>Hồ Sơ</span>
+                </div>
+                <!-- Admin Section - Only shown for admin users -->
+                <div class="nav-item" data-section="admin" id="adminNavItem" style="display: none;">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Quản Trị Viên</span>
+                    <span class="admin-badge">ADMIN</span>
                 </div>
             </div>
             
@@ -3071,6 +3351,7 @@
                     <div class="section">
                         <div class="section-header">
                             <h2 class="section-title" id="welcomeTitle">Xin chào!</h2>
+                            <span id="adminWelcomeBadge" style="display: none;" class="admin-badge">QUẢN TRỊ VIÊN</span>
                         </div>
                         
                         <div class="quick-actions">
@@ -3089,6 +3370,10 @@
                             <button class="quick-action-btn" onclick="showSection('group-chat')">
                                 <i class="fas fa-users"></i> Phòng chat nhóm
                             </button>
+                            <!-- Admin quick actions -->
+                            <button class="quick-action-btn admin-action-btn admin" onclick="showSection('admin')" id="adminQuickAction" style="display: none;">
+                                <i class="fas fa-shield-alt"></i> Quản trị
+                            </button>
                         </div>
                         
                         <div class="stats-section">
@@ -3103,6 +3388,11 @@
                             <div class="stat-card">
                                 <div class="stat-card-title">Bạn bè trực tuyến</div>
                                 <div class="stat-card-value" id="onlineFriends">0</div>
+                            </div>
+                            <!-- Admin stats -->
+                            <div class="stat-card" id="adminStatCard" style="display: none;">
+                                <div class="stat-card-title">Người dùng hệ thống</div>
+                                <div class="stat-card-value" id="totalUsers">0</div>
                             </div>
                         </div>
                     </div>
@@ -3630,6 +3920,82 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Admin Section (Only visible to admin users) -->
+                <div class="section-content" id="adminSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Bảng điều khiển Quản trị viên</h2>
+                            <div class="admin-badge" style="font-size: 14px;">QUYỀN HẠN CAO NHẤT</div>
+                        </div>
+                        
+                        <div class="admin-section">
+                            <div class="admin-actions">
+                                <button class="admin-action-btn" onclick="refreshAdminData()">
+                                    <i class="fas fa-sync-alt"></i> Làm mới dữ liệu
+                                </button>
+                                <button class="admin-action-btn warning" onclick="showBulkActionsModal()">
+                                    <i class="fas fa-user-slash"></i> Hành động hàng loạt
+                                </button>
+                                <button class="admin-action-btn admin" onclick="showAdminStats()">
+                                    <i class="fas fa-chart-bar"></i> Thống kê hệ thống
+                                </button>
+                                <button class="admin-action-btn" onclick="exportUserData()">
+                                    <i class="fas fa-download"></i> Xuất dữ liệu
+                                </button>
+                            </div>
+                            
+                            <div class="stats-cards" id="adminStatsCards">
+                                <!-- Admin stats will be loaded here -->
+                            </div>
+                            
+                            <div class="section-header">
+                                <h3 class="section-title">Quản lý người dùng</h3>
+                                <div class="search-container" style="width: 300px;">
+                                    <input type="text" class="search-input" id="adminUserSearch" placeholder="Tìm kiếm người dùng..." oninput="searchAdminUsers()">
+                                    <i class="fas fa-search search-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="user-table-container" style="overflow-x: auto;">
+                                <table class="user-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Người dùng</th>
+                                            <th>Email</th>
+                                            <th>Trạng thái</th>
+                                            <th>Vai trò</th>
+                                            <th>Ngày tham gia</th>
+                                            <th>Lần đăng nhập cuối</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminUsersTable">
+                                        <!-- User rows will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-section">
+                            <div class="section-header">
+                                <h3 class="section-title">Quản lý nội dung</h3>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-action-btn" onclick="showContentManagement()">
+                                    <i class="fas fa-music"></i> Quản lý bài hát
+                                </button>
+                                <button class="admin-action-btn" onclick="showPlaylistManagement()">
+                                    <i class="fas fa-list"></i> Quản lý playlist
+                                </button>
+                                <button class="admin-action-btn" onclick="showPodcastManagement()">
+                                    <i class="fas fa-podcast"></i> Quản lý podcast
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -3964,6 +4330,120 @@
             </div>
         </div>
 
+        <!-- Admin User Management Modal -->
+        <div class="modal-overlay" id="adminUserModal">
+            <div class="modal" style="max-width: 600px;">
+                <div class="modal-header">
+                    <h3 class="modal-title">Quản lý người dùng</h3>
+                    <button class="modal-close" onclick="hideAdminUserModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Thông tin người dùng</label>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <img id="adminModalAvatar" src="" alt="Avatar" class="user-avatar" style="width: 60px; height: 60px;">
+                            <div>
+                                <h4 id="adminModalName">Nguyễn Văn A</h4>
+                                <p id="adminModalEmail" style="color: var(--gray-color); font-size: 14px;">user@example.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-edit-row">
+                        <div class="form-group">
+                            <label class="form-label" for="adminModalStatus">Trạng thái tài khoản</label>
+                            <select class="form-input" id="adminModalStatus">
+                                <option value="active">Hoạt động</option>
+                                <option value="banned">Đã khóa</option>
+                                <option value="suspended">Tạm ngừng</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="adminModalRole">Vai trò</label>
+                            <select class="form-input" id="adminModalRole">
+                                <option value="user">Người dùng</option>
+                                <option value="admin">Quản trị viên</option>
+                                <option value="moderator">Điều hành viên</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="adminModalReason">Lý do thay đổi (nếu có)</label>
+                        <textarea class="form-input" id="adminModalReason" placeholder="Nhập lý do thay đổi trạng thái..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Hành động khác</label>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="admin-action-btn warning" onclick="adminResetUserData()">
+                                <i class="fas fa-trash-alt"></i> Xóa dữ liệu người dùng
+                            </button>
+                            <button class="admin-action-btn" onclick="adminViewUserActivity()">
+                                <i class="fas fa-history"></i> Xem lịch sử hoạt động
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="hideAdminUserModal()">Hủy</button>
+                    <button class="btn btn-primary" onclick="adminSaveUserChanges()">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bulk Actions Modal -->
+        <div class="modal-overlay" id="bulkActionsModal">
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3 class="modal-title">Hành động hàng loạt</h3>
+                    <button class="modal-close" onclick="hideBulkActionsModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Chọn hành động</label>
+                        <select class="form-input" id="bulkActionSelect">
+                            <option value="ban">Khóa tài khoản</option>
+                            <option value="unban">Mở khóa tài khoản</option>
+                            <option value="delete">Xóa tài khoản</option>
+                            <option value="make_admin">Cấp quyền Admin</option>
+                            <option value="remove_admin">Xóa quyền Admin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Chọn người dùng</label>
+                        <div style="max-height: 200px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 10px;">
+                            <div id="bulkUsersList">
+                                <!-- Users list will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="bulkActionReason">Lý do (nếu có)</label>
+                        <textarea class="form-input" id="bulkActionReason" placeholder="Nhập lý cho hành động hàng loạt..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-label">Thông báo</div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="bulkSendNotification" checked>
+                            <label for="bulkSendNotification">Gửi thông báo cho người dùng</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="hideBulkActionsModal()">Hủy</button>
+                    <button class="btn btn-primary" onclick="executeBulkAction()">Thực hiện hành động</button>
+                </div>
+            </div>
+        </div>
+
         <!-- User Menu Dropdown -->
         <div class="user-dropdown" id="userDropdown">
             <div class="dropdown-item" onclick="showSection('profile')">
@@ -3981,6 +4461,12 @@
             <div class="dropdown-item" onclick="showEditProfileModal()">
                 <i class="fas fa-cog"></i>
                 <span>Cài đặt</span>
+            </div>
+            <!-- Admin dropdown items -->
+            <div class="dropdown-item" onclick="showSection('admin')" id="adminDropdownItem" style="display: none;">
+                <i class="fas fa-shield-alt"></i>
+                <span>Quản trị</span>
+                <span class="admin-badge" style="margin-left: auto;">ADMIN</span>
             </div>
             <div class="dropdown-item" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i>
@@ -4001,7 +4487,7 @@
         // DỮ LIỆU HỆ THỐNG
         // ==============================================
 
-        // Dữ liệu playlist nhạc (giữ nguyên tất cả)
+        // Dữ liệu playlist nhạc
         const playlists = {
             'chill': [
                 {
@@ -4249,6 +4735,97 @@
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
                     image: "https://i.ytimg.com/vi/8t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
+                },
+                // Thêm 20 bài hát mới
+                {
+                    id: 70,
+                    name: "Bài Hát Mới 1",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "3:45",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    image: "https://i.ytimg.com/vi/9t6J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 71,
+                    name: "Bài Hát Mới 2",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "4:10",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    image: "https://i.ytimg.com/vi/0t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 72,
+                    name: "Bài Hát Mới 3",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "3:55",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    image: "https://i.ytimg.com/vi/1t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 73,
+                    name: "Bài Hát Mới 4",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "4:20",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    image: "https://i.ytimg.com/vi/2t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 74,
+                    name: "Bài Hát Mới 5",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "3:30",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    image: "https://i.ytimg.com/vi/3t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 75,
+                    name: "Bài Hát Mới 6",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "4:05",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                    image: "https://i.ytimg.com/vi/4t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 76,
+                    name: "Bài Hát Mới 7",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "3:40",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    image: "https://i.ytimg.com/vi/5t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 77,
+                    name: "Bài Hát Mới 8",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "4:15",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    image: "https://i.ytimg.com/vi/6t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 78,
+                    name: "Bài Hát Mới 9",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "3:50",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                    image: "https://i.ytimg.com/vi/7t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
+                {
+                    id: 79,
+                    name: "Bài Hát Mới 10",
+                    artist: "Nghệ sĩ Việt",
+                    duration: "4:00",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    image: "https://i.ytimg.com/vi/8t7J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
                 }
             ],
             'world': [
@@ -4485,6 +5062,97 @@
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
                     image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                     lyrics: []
+                },
+                // Thêm 10 bài hát quốc tế mới
+                {
+                    id: 80,
+                    name: "International Song 1",
+                    artist: "International Artist",
+                    duration: "3:45",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 81,
+                    name: "International Song 2",
+                    artist: "International Artist",
+                    duration: "4:10",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 82,
+                    name: "International Song 3",
+                    artist: "International Artist",
+                    duration: "3:55",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 83,
+                    name: "International Song 4",
+                    artist: "International Artist",
+                    duration: "4:20",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 84,
+                    name: "International Song 5",
+                    artist: "International Artist",
+                    duration: "3:30",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 85,
+                    name: "International Song 6",
+                    artist: "International Artist",
+                    duration: "4:05",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 86,
+                    name: "International Song 7",
+                    artist: "International Artist",
+                    duration: "3:40",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 87,
+                    name: "International Song 8",
+                    artist: "International Artist",
+                    duration: "4:15",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 88,
+                    name: "International Song 9",
+                    artist: "International Artist",
+                    duration: "3:50",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
+                },
+                {
+                    id: 89,
+                    name: "International Song 10",
+                    artist: "International Artist",
+                    duration: "4:00",
+                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                    lyrics: []
                 }
             ]
         };
@@ -4629,7 +5297,14 @@
                     time: 42,
                     playlists: 5,
                     friends: 12
-                }
+                },
+                friendRequests: [],
+                friends: [],
+                isAdmin: false,
+                isBanned: false,
+                role: "user",
+                lastLogin: null,
+                status: "active"
             },
             {
                 id: "user2",
@@ -4645,7 +5320,14 @@
                     time: 35,
                     playlists: 3,
                     friends: 8
-                }
+                },
+                friendRequests: [],
+                friends: [],
+                isAdmin: false,
+                isBanned: false,
+                role: "user",
+                lastLogin: null,
+                status: "active"
             },
             {
                 id: "user3",
@@ -4661,11 +5343,53 @@
                     time: 78,
                     playlists: 7,
                     friends: 15
-                }
+                },
+                friendRequests: [],
+                friends: [],
+                isAdmin: false,
+                isBanned: false,
+                role: "user",
+                lastLogin: null,
+                status: "active"
             }
         ];
 
-        // Phản hồi AI nâng cao (chuyên gia tâm lý)
+        // Admin user account - FIXED: Có quyền admin
+        const adminUser = {
+            id: "admin_user_001",
+            username: "TRUNGQUANADMIN",
+            password: "trungquan2010",
+            name: "Nguyễn Quân",
+            email: "trungquann36@gmail.com",
+            avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+            bio: "Quản trị viên hệ thống Giai Điệu Giấc Ngủ",
+            joined: "2023-01-01",
+            stats: {
+                plays: 1500,
+                time: 500,
+                playlists: 25,
+                friends: 50
+            },
+            friendRequests: [],
+            friends: [],
+            isAdmin: true,
+            isBanned: false,
+            role: "admin",
+            lastLogin: null,
+            status: "active",
+            adminStats: {
+                totalActions: 0,
+                usersBanned: 0,
+                usersDeleted: 0,
+                lastAction: null
+            }
+        };
+
+        // API Key DeepSeek
+        const DEEPSEEK_API_KEY = "sk-d419c1bcbe7e4dbe916520700578b625";
+        const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
+
+        // Phản hồi AI nâng cao (chuyên gia tâm lý) - Fallback nếu API không hoạt động
         const aiResponses = {
             "căng thẳng": {
                 response: "Tôi hiểu bạn đang cảm thấy căng thẳng. Đây là phản ứng tự nhiên của cơ thể. Hãy thử hít thở sâu 5 lần: hít vào 4 giây, giữ 7 giây, thở ra 8 giây. Âm nhạc nhẹ nhàng với tiếng mưa rơi có thể giúp bạn thư giãn ngay lập tức.",
@@ -4714,7 +5438,9 @@
             CURRENT_USER: 'currentMusicUser',
             USER_DATA: (userId) => `userData_${userId}`,
             NIGHT_MODE: 'nightMode',
-            LAST_PLAY_DATE: (userId) => `lastPlayDate_${userId}`
+            LAST_PLAY_DATE: (userId) => `lastPlayDate_${userId}`,
+            BANNED_USERS: 'bannedUsers',
+            ADMIN_ACTIONS: 'adminActions'
         };
 
         // ==============================================
@@ -4761,6 +5487,18 @@
         let currentGroup = null;
         let selectedFriendsForGroup = [];
 
+        // Admin variables
+        let adminStats = {
+            totalUsers: 0,
+            activeUsers: 0,
+            bannedUsers: 0,
+            adminUsers: 0,
+            totalPlays: 0,
+            totalPlaylists: 0
+        };
+        let currentlyEditingUser = null;
+        let selectedUsersForBulkAction = [];
+
         // ==============================================
         // KHỞI TẠO ỨNG DỤNG
         // ==============================================
@@ -4784,14 +5522,31 @@
                 const savedUsers = localStorage.getItem(STORAGE_KEYS.USERS);
                 if (savedUsers) {
                     allUsers = JSON.parse(savedUsers);
+                    // Đảm bảo mỗi user có các trường cần thiết
+                    allUsers.forEach(user => {
+                        if (!user.friendRequests) user.friendRequests = [];
+                        if (!user.friends) user.friends = [];
+                        if (!user.isAdmin) user.isAdmin = false;
+                        if (!user.isBanned) user.isBanned = false;
+                        if (!user.role) user.role = "user";
+                        if (!user.status) user.status = "active";
+                        if (!user.lastLogin) user.lastLogin = null;
+                    });
+                    
+                    // Kiểm tra xem admin user đã tồn tại chưa
+                    const adminExists = allUsers.find(u => u.username === adminUser.username);
+                    if (!adminExists) {
+                        allUsers.push(adminUser);
+                        localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(allUsers));
+                    }
                 } else {
                     // Tạo dữ liệu mẫu nếu chưa có
-                    allUsers = sampleUsers;
+                    allUsers = [...sampleUsers, adminUser];
                     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(allUsers));
                 }
             } catch (error) {
                 console.error('Lỗi khi tải người dùng:', error);
-                allUsers = sampleUsers;
+                allUsers = [...sampleUsers, adminUser];
             }
         }
 
@@ -4809,13 +5564,32 @@
             try {
                 const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (savedUser) {
-                    currentUser = JSON.parse(savedUser);
+                    const user = JSON.parse(savedUser);
+                    
+                    // Kiểm tra xem người dùng có bị cấm không
+                    const bannedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.BANNED_USERS) || '[]');
+                    if (bannedUsers.includes(user.id)) {
+                        showBannedScreen(user);
+                        return;
+                    }
+                    
+                    currentUser = user;
                     loadUserData();
                     showApp();
                 }
             } catch (error) {
                 console.error('Lỗi khi kiểm tra đăng nhập tự động:', error);
             }
+        }
+
+        // Hiển thị màn hình bị cấm
+        function showBannedScreen(user) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('registerScreen').style.display = 'none';
+            document.getElementById('bannedScreen').style.display = 'flex';
+            
+            const bannedMessage = document.getElementById('bannedMessage');
+            bannedMessage.textContent = `Tài khoản ${user.name} (${user.username}) đã bị khóa do vi phạm điều khoản sử dụng. Vui lòng liên hệ quản trị viên để biết thêm chi tiết.`;
         }
 
         // Lưu người dùng hiện tại
@@ -4842,32 +5616,36 @@
                     userPlaylists = userData.playlists || [];
                     favoriteTracks = userData.favorites || [];
                     recentTracks = userData.recent || [];
-                    friends = userData.friends || [];
-                    friendRequests = userData.requests || [];
                     chats = userData.chats || [];
                     groupChats = userData.groupChats || [];
                     userStats = userData.stats || userStats;
-                    
-                    // Kiểm tra xem có phải ngày hôm nay không
-                    const today = new Date().toISOString().split('T')[0];
-                    const lastPlayDate = localStorage.getItem(STORAGE_KEYS.LAST_PLAY_DATE(currentUser.id));
-                    
-                    if (lastPlayDate !== today) {
-                        resetDailyStats();
-                    }
                 } else {
                     // Khởi tạo dữ liệu mới cho người dùng
                     userPlaylists = [];
                     favoriteTracks = [];
                     recentTracks = [];
-                    friends = [];
-                    friendRequests = [];
                     chats = [];
                     groupChats = [];
                     resetDailyStats();
                     
                     // Tạo phòng chat mặc định cho người dùng mới
                     createDefaultGroupChats();
+                }
+                
+                // Tải friends và friendRequests từ allUsers
+                const currentUserInAllUsers = allUsers.find(u => u.id === currentUser.id);
+                if (currentUserInAllUsers) {
+                    friends = currentUserInAllUsers.friends || [];
+                    friendRequests = currentUserInAllUsers.friendRequests || [];
+                    
+                    // Cập nhật currentUser với dữ liệu mới nhất
+                    currentUser.friends = friends;
+                    currentUser.friendRequests = friendRequests;
+                    currentUser.stats = userStats;
+                    currentUser.lastLogin = new Date().toISOString();
+                } else {
+                    friends = [];
+                    friendRequests = [];
                 }
                 
                 // Cập nhật giao diện
@@ -4880,8 +5658,35 @@
                 loadChats();
                 loadGroupChats();
                 
+                // Hiển thị phần admin nếu là admin - FIXED: Kiểm tra cả isAdmin và role
+                if (currentUser.isAdmin || currentUser.role === 'admin') {
+                    showAdminFeatures();
+                    loadAdminData();
+                }
+                
             } catch (error) {
                 console.error('Lỗi khi tải dữ liệu người dùng:', error);
+            }
+        }
+
+        // Hiển thị tính năng admin
+        function showAdminFeatures() {
+            document.getElementById('adminNavItem').style.display = 'flex';
+            document.getElementById('adminDropdownItem').style.display = 'flex';
+            document.getElementById('adminQuickAction').style.display = 'flex';
+            document.getElementById('adminStatCard').style.display = 'block';
+            document.getElementById('adminWelcomeBadge').style.display = 'inline-block';
+            
+            // Thêm badge vào tên người dùng
+            const userNameElement = document.getElementById('userName');
+            if (userNameElement) {
+                userNameElement.innerHTML = `${currentUser.name} <span class="admin-badge">ADMIN</span>`;
+            }
+            
+            // Cập nhật tiêu đề chào mừng
+            const welcomeTitle = document.getElementById('welcomeTitle');
+            if (welcomeTitle) {
+                welcomeTitle.textContent = `Xin chào, Quản trị viên ${currentUser.name}!`;
             }
         }
 
@@ -4894,8 +5699,6 @@
                     playlists: userPlaylists,
                     favorites: favoriteTracks,
                     recent: recentTracks,
-                    friends: friends,
-                    requests: friendRequests,
                     chats: chats,
                     groupChats: groupChats,
                     stats: userStats
@@ -4903,6 +5706,19 @@
                 
                 const userDataKey = STORAGE_KEYS.USER_DATA(currentUser.id);
                 localStorage.setItem(userDataKey, JSON.stringify(userData));
+                
+                // Cập nhật currentUser trong allUsers
+                const userIndex = allUsers.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    allUsers[userIndex] = {
+                        ...allUsers[userIndex],
+                        ...currentUser,
+                        friends: friends,
+                        friendRequests: friendRequests,
+                        lastLogin: new Date().toISOString()
+                    };
+                    saveAllUsers();
+                }
                 
                 // Lưu ngày phát cuối cùng
                 const today = new Date().toISOString().split('T')[0];
@@ -4970,6 +5786,8 @@
                             key === STORAGE_KEYS.USERS || 
                             key === STORAGE_KEYS.CURRENT_USER || 
                             key === STORAGE_KEYS.NIGHT_MODE ||
+                            key === STORAGE_KEYS.BANNED_USERS ||
+                            key === STORAGE_KEYS.ADMIN_ACTIONS ||
                             key.startsWith('lastPlayDate_')) {
                             keysToRemove.push(key);
                         }
@@ -4979,12 +5797,13 @@
                     
                     // Reset biến toàn cục
                     currentUser = null;
-                    allUsers = sampleUsers;
+                    allUsers = [...sampleUsers, adminUser];
                     saveAllUsers();
                     
                     // Hiển thị lại màn hình đăng nhập
                     document.getElementById('appContainer').style.display = 'none';
                     document.getElementById('loginScreen').style.display = 'flex';
+                    document.getElementById('bannedScreen').style.display = 'none';
                     
                     alert('Đã reset toàn bộ dữ liệu! Vui lòng đăng nhập lại.');
                     
@@ -5002,11 +5821,13 @@
         function showLogin() {
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('registerScreen').style.display = 'none';
+            document.getElementById('bannedScreen').style.display = 'none';
         }
 
         function showRegister() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('registerScreen').style.display = 'flex';
+            document.getElementById('bannedScreen').style.display = 'none';
         }
 
         // Xử lý đăng nhập
@@ -5025,7 +5846,15 @@
             const user = allUsers.find(u => u.username === username && u.password === password);
             
             if (user) {
+                // Kiểm tra xem người dùng có bị cấm không
+                const bannedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.BANNED_USERS) || '[]');
+                if (bannedUsers.includes(user.id)) {
+                    showBannedScreen(user);
+                    return;
+                }
+                
                 currentUser = user;
+                currentUser.lastLogin = new Date().toISOString();
                 saveCurrentUser();
                 loadUserData();
                 showApp();
@@ -5036,7 +5865,7 @@
             }
         });
 
-        // Xử lý đăng ký
+        // Xử lý đăng ký - FIXED: Lưu currentUser và loadUserData
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -5088,7 +5917,14 @@
                     time: 0,
                     playlists: 0,
                     friends: 0
-                }
+                },
+                friendRequests: [],
+                friends: [],
+                isAdmin: false,
+                isBanned: false,
+                role: "user",
+                lastLogin: new Date().toISOString(),
+                status: "active"
             };
             
             allUsers.push(newUser);
@@ -5118,6 +5954,7 @@
                 // Hiển thị màn hình đăng nhập
                 document.getElementById('appContainer').style.display = 'none';
                 document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('bannedScreen').style.display = 'none';
                 
                 // Reset form
                 document.getElementById('loginUsername').value = '';
@@ -5180,6 +6017,12 @@
                 return;
             }
             
+            // Kiểm tra xem người dùng có bị cấm nghe nhạc không
+            if (currentUser.isBanned && !currentUser.isAdmin) {
+                alert('Tài khoản của bạn đã bị cấm nghe nhạc. Vui lòng liên hệ quản trị viên!');
+                return;
+            }
+            
             if (playlists[playlistId]) {
                 currentPlaylist = playlists[playlistId];
                 currentTrackIndex = 0;
@@ -5191,6 +6034,12 @@
             if (!currentUser) {
                 alert('Vui lòng đăng nhập để nghe nhạc!');
                 showLogin();
+                return;
+            }
+            
+            // Kiểm tra xem người dùng có bị cấm nghe nhạc không
+            if (currentUser.isBanned && !currentUser.isAdmin) {
+                alert('Tài khoản của bạn đã bị cấm nghe nhạc. Vui lòng liên hệ quản trị viên!');
                 return;
             }
             
@@ -5239,6 +6088,12 @@
                 return;
             }
             
+            // Kiểm tra xem người dùng có bị cấm nghe nhạc không
+            if (currentUser.isBanned && !currentUser.isAdmin) {
+                alert('Tài khoản của bạn đã bị cấm nghe nhạc. Vui lòng liên hệ quản trị viên!');
+                return;
+            }
+            
             // Tìm bài hát trong tất cả playlist
             let found = false;
             for (const playlistName in playlists) {
@@ -5266,6 +6121,12 @@
             if (!currentUser) {
                 alert('Vui lòng đăng nhập để nghe podcast!');
                 showLogin();
+                return;
+            }
+            
+            // Kiểm tra xem người dùng có bị cấm nghe nhạc không
+            if (currentUser.isBanned && !currentUser.isAdmin) {
+                alert('Tài khoản của bạn đã bị cấm nghe nhạc. Vui lòng liên hệ quản trị viên!');
                 return;
             }
             
@@ -5311,6 +6172,12 @@
                 return;
             }
             
+            // Kiểm tra xem người dùng có bị cấm nghe nhạc không
+            if (currentUser.isBanned && !currentUser.isAdmin) {
+                alert('Tài khoản của bạn đã bị cấm nghe nhạc. Vui lòng liên hệ quản trị viên!');
+                return;
+            }
+            
             currentTrack = {
                 id: sound.id,
                 name: sound.name,
@@ -5351,6 +6218,12 @@
             if (!currentUser) {
                 alert('Vui lòng đăng nhập để nghe nhạc!');
                 showLogin();
+                return;
+            }
+            
+            // Kiểm tra xem người dùng có bị cấm nghe nhạc không
+            if (currentUser.isBanned && !currentUser.isAdmin) {
+                alert('Tài khoản của bạn đã bị cấm nghe nhạc. Vui lòng liên hệ quản trị viên!');
                 return;
             }
             
@@ -6170,7 +7043,7 @@
         }
 
         // ==============================================
-        // TÌM KIẾM BẠN BÈ & KẾT BẠN
+        // CƠ CHẾ KẾT BẠN - ĐÃ SỬA LỖI
         // ==============================================
 
         function loadFriends() {
@@ -6185,7 +7058,7 @@
                 let friendsHTML = '';
                 friends.forEach(friend => {
                     const friendUser = allUsers.find(u => u.id === friend.id);
-                    if (friendUser) {
+                    if (friendUser && !friendUser.isBanned) {
                         friendsHTML += `
                             <div class="friend-card">
                                 <img src="${friendUser.avatar}" alt="${friendUser.name}" class="friend-avatar">
@@ -6213,7 +7086,7 @@
                 let requestsHTML = '';
                 friendRequests.forEach(request => {
                     const requester = allUsers.find(u => u.id === request.from);
-                    if (requester) {
+                    if (requester && !requester.isBanned) {
                         requestsHTML += `
                             <div class="friend-card">
                                 <img src="${requester.avatar}" alt="${requester.name}" class="friend-avatar">
@@ -6250,9 +7123,10 @@
             
             if (!resultsContainer) return;
             
-            // Tìm kiếm người dùng không phải là bạn bè và không phải là chính mình
+            // Tìm kiếm người dùng không phải là bạn bè, không bị cấm, và không phải là chính mình
             const results = allUsers.filter(user => 
                 user.id !== currentUser.id && 
+                !user.isBanned &&
                 !friends.find(f => f.id === user.id) &&
                 !friendRequests.find(r => r.from === user.id) &&
                 (user.name.toLowerCase().includes(searchTerm) || 
@@ -6296,10 +7170,11 @@
             // Tìm kiếm trong danh sách bạn bè hiện tại
             const filteredFriends = friends.filter(friend => {
                 const friendUser = allUsers.find(u => u.id === friend.id);
-                if (!friendUser) return false;
+                if (!friendUser || friendUser.isBanned) return false;
                 
                 return friendUser.name.toLowerCase().includes(query) || 
-                       friendUser.username.toLowerCase().includes(query);
+                       friendUser.username.toLowerCase().includes(query) ||
+                       friendUser.id.includes(query);
             });
             
             if (filteredFriends.length === 0) {
@@ -6310,7 +7185,7 @@
             let friendsHTML = '';
             filteredFriends.forEach(friend => {
                 const friendUser = allUsers.find(u => u.id === friend.id);
-                if (friendUser) {
+                if (friendUser && !friendUser.isBanned) {
                     friendsHTML += `
                         <div class="friend-card">
                             <img src="${friendUser.avatar}" alt="${friendUser.name}" class="friend-avatar">
@@ -6328,83 +7203,299 @@
                     `;
                 }
             });
+            
             container.innerHTML = friendsHTML;
         }
 
+        // ==============================================
+        // CÁC HÀM KẾT BẠN - ĐÃ SỬA LỖI
+        // ==============================================
+
         function sendFriendRequest(userId) {
             const targetUser = allUsers.find(u => u.id === userId);
-            if (!targetUser) return;
-            
-            // Kiểm tra xem đã gửi lời mời chưa
-            if (friendRequests.find(r => r.from === userId)) {
-                alert('Bạn đã gửi lời mời kết bạn đến người này rồi!');
+            if (!targetUser || targetUser.isBanned) {
+                alert('Người dùng không tồn tại hoặc đã bị khóa!');
                 return;
             }
             
-            // Thêm vào danh sách lời mời
-            friendRequests.push({
-                from: userId,
-                to: currentUser.id,
-                date: new Date().toISOString()
+            // Kiểm tra xem đã gửi lời mời chưa
+            if (targetUser.friendRequests && targetUser.friendRequests.some(req => req.from === currentUser.id)) {
+                alert('Bạn đã gửi lời mời kết bạn cho người này rồi!');
+                return;
+            }
+            
+            // Thêm lời mời vào danh sách của người nhận
+            if (!targetUser.friendRequests) targetUser.friendRequests = [];
+            targetUser.friendRequests.push({
+                from: currentUser.id,
+                time: new Date().toISOString(),
+                status: 'pending'
             });
             
-            saveUserData();
-            loadFriends();
-            hideFindFriendsModal();
+            // Lưu thay đổi
+            saveAllUsers();
             
-            alert('Đã gửi lời mời kết bạn đến ' + targetUser.name);
+            // Tải lại kết quả tìm kiếm
+            loadFriendSearchResults();
+            
+            alert(`Đã gửi lời mời kết bạn đến ${targetUser.name}!`);
         }
 
         function acceptFriendRequest(userId) {
             const requester = allUsers.find(u => u.id === userId);
             if (!requester) return;
             
-            // Thêm vào danh sách bạn bè
-            friends.push({
-                id: userId,
-                online: true,
-                since: new Date().toISOString()
-            });
-            
-            // Xóa khỏi danh sách lời mời
-            friendRequests = friendRequests.filter(r => r.from !== userId);
-            
-            // Cập nhật thống kê
-            userStats.friends++;
-            if (currentUser.stats) {
-                currentUser.stats.friends = userStats.friends;
+            // Xóa lời mời từ danh sách của mình
+            const requestIndex = friendRequests.findIndex(req => req.from === userId);
+            if (requestIndex !== -1) {
+                friendRequests.splice(requestIndex, 1);
             }
             
-            saveUserData();
-            loadFriends();
-            updateStatsUI();
+            // Xóa lời mời từ danh sách của người gửi
+            const requesterIndex = allUsers.findIndex(u => u.id === userId);
+            if (requesterIndex !== -1) {
+                const requesterRequestIndex = allUsers[requesterIndex].friendRequests.findIndex(req => req.from === currentUser.id);
+                if (requesterRequestIndex !== -1) {
+                    allUsers[requesterIndex].friendRequests.splice(requesterRequestIndex, 1);
+                }
+            }
             
-            alert('Đã chấp nhận kết bạn với ' + requester.name);
+            // Thêm vào danh sách bạn bè của cả hai
+            if (!friends.find(f => f.id === userId)) {
+                friends.push({
+                    id: userId,
+                    online: false,
+                    since: new Date().toISOString()
+                });
+                userStats.friends = friends.length;
+            }
+            
+            if (!requester.friends) requester.friends = [];
+            if (!requester.friends.find(f => f.id === currentUser.id)) {
+                requester.friends.push({
+                    id: currentUser.id,
+                    online: true,
+                    since: new Date().toISOString()
+                });
+            }
+            
+            // Cập nhật currentUser
+            currentUser.friends = friends;
+            currentUser.friendRequests = friendRequests;
+            currentUser.stats = userStats;
+            
+            // Lưu thay đổi
+            saveAllUsers();
+            saveUserData();
+            
+            // Tải lại danh sách bạn bè
+            loadFriends();
+            
+            alert(`Đã chấp nhận lời mời kết bạn từ ${requester.name}!`);
         }
 
         function rejectFriendRequest(userId) {
-            friendRequests = friendRequests.filter(r => r.from !== userId);
+            const requester = allUsers.find(u => u.id === userId);
+            if (!requester) return;
+            
+            // Xóa lời mời từ danh sách của mình
+            const requestIndex = friendRequests.findIndex(req => req.from === userId);
+            if (requestIndex !== -1) {
+                friendRequests.splice(requestIndex, 1);
+            }
+            
+            // Xóa lời mời từ danh sách của người gửi
+            const requesterIndex = allUsers.findIndex(u => u.id === userId);
+            if (requesterIndex !== -1) {
+                const requesterRequestIndex = allUsers[requesterIndex].friendRequests.findIndex(req => req.from === currentUser.id);
+                if (requesterRequestIndex !== -1) {
+                    allUsers[requesterIndex].friendRequests.splice(requesterRequestIndex, 1);
+                }
+            }
+            
+            // Cập nhật currentUser
+            currentUser.friendRequests = friendRequests;
+            
+            // Lưu thay đổi
+            saveAllUsers();
             saveUserData();
+            
+            // Tải lại danh sách bạn bè
             loadFriends();
+            
+            alert(`Đã từ chối lời mời kết bạn từ ${requester.name}!`);
         }
 
         function removeFriend(userId) {
-            if (confirm('Bạn có chắc muốn hủy kết bạn với người này?')) {
-                friends = friends.filter(f => f.id !== userId);
-                userStats.friends = Math.max(0, userStats.friends - 1);
-                
-                if (currentUser.stats) {
-                    currentUser.stats.friends = userStats.friends;
+            const friend = allUsers.find(u => u.id === userId);
+            if (!friend) return;
+            
+            if (confirm(`Bạn có chắc muốn hủy kết bạn với ${friend.name}?`)) {
+                // Xóa khỏi danh sách bạn bè của mình
+                const friendIndex = friends.findIndex(f => f.id === userId);
+                if (friendIndex !== -1) {
+                    friends.splice(friendIndex, 1);
+                    userStats.friends = friends.length;
                 }
                 
+                // Xóa khỏi danh sách bạn bè của người kia
+                const friendInAllUsers = allUsers.find(u => u.id === userId);
+                if (friendInAllUsers && friendInAllUsers.friends) {
+                    const myIndex = friendInAllUsers.friends.findIndex(f => f.id === currentUser.id);
+                    if (myIndex !== -1) {
+                        friendInAllUsers.friends.splice(myIndex, 1);
+                    }
+                }
+                
+                // Cập nhật currentUser
+                currentUser.friends = friends;
+                currentUser.stats = userStats;
+                
+                // Lưu thay đổi
+                saveAllUsers();
                 saveUserData();
+                
+                // Tải lại danh sách bạn bè
                 loadFriends();
-                updateStatsUI();
+                
+                alert(`Đã hủy kết bạn với ${friend.name}!`);
             }
         }
 
         // ==============================================
-        // CHAT & NHÓM CHAT
+        // THÊM BÀI HÁT VÀO PLAYLIST - ĐÃ SỬA LỖI
+        // ==============================================
+
+        function showAddToPlaylistModal() {
+            if (!currentPlaylistDetail) {
+                alert('Vui lòng chọn một playlist trước!');
+                return;
+            }
+            
+            document.getElementById('addToPlaylistModal').classList.add('active');
+            searchTracksForPlaylist('');
+        }
+
+        function hideAddToPlaylistModal() {
+            document.getElementById('addToPlaylistModal').classList.remove('active');
+            document.getElementById('trackSearch').value = '';
+        }
+
+        function searchTracksForPlaylist(query) {
+            const resultsContainer = document.getElementById('trackSearchResults');
+            if (!resultsContainer) return;
+            
+            query = query.toLowerCase();
+            
+            // Lấy tất cả bài hát từ tất cả playlist
+            let allTracks = [];
+            Object.values(playlists).forEach(playlist => {
+                allTracks = allTracks.concat(playlist);
+            });
+            
+            // Loại bỏ trùng lặp và các bài hát đã có trong playlist
+            const trackIdsInPlaylist = new Set();
+            if (currentPlaylistDetail && currentPlaylistDetail.tracks) {
+                currentPlaylistDetail.tracks.forEach(track => {
+                    trackIdsInPlaylist.add(track.id);
+                });
+            }
+            
+            const uniqueTracks = [];
+            const trackIds = new Set();
+            
+            allTracks.forEach(track => {
+                if (!trackIds.has(track.id) && !trackIdsInPlaylist.has(track.id)) {
+                    if (track.name.toLowerCase().includes(query) || 
+                        track.artist.toLowerCase().includes(query) ||
+                        query === '') {
+                        trackIds.add(track.id);
+                        uniqueTracks.push(track);
+                    }
+                }
+            });
+            
+            if (uniqueTracks.length === 0) {
+                resultsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Không tìm thấy bài hát phù hợp</div>';
+                return;
+            }
+            
+            let resultsHTML = '';
+            uniqueTracks.slice(0, 20).forEach(track => {
+                resultsHTML += `
+                    <div class="search-track-item">
+                        <img src="${track.image}" alt="${track.name}" class="search-track-image">
+                        <div class="search-track-info">
+                            <div class="search-track-name">${track.name}</div>
+                            <div class="search-track-artist">${track.artist}</div>
+                        </div>
+                        <button class="add-track-btn" onclick="addTrackToPlaylist(${track.id})">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            resultsContainer.innerHTML = resultsHTML;
+        }
+
+        function addTrackToPlaylist(trackId) {
+            if (!currentPlaylistDetail) return;
+            
+            const track = getTrackById(trackId);
+            if (!track) return;
+            
+            // Thêm bài hát vào playlist
+            if (!currentPlaylistDetail.tracks) currentPlaylistDetail.tracks = [];
+            
+            currentPlaylistDetail.tracks.push({
+                id: trackId,
+                dateAdded: new Date().toLocaleDateString('vi-VN')
+            });
+            
+            // Cập nhật trong userPlaylists
+            const playlistIndex = userPlaylists.findIndex(p => p.id === currentPlaylistDetail.id);
+            if (playlistIndex !== -1) {
+                userPlaylists[playlistIndex] = currentPlaylistDetail;
+            }
+            
+            // Lưu dữ liệu
+            saveUserData();
+            
+            // Cập nhật giao diện
+            openPlaylistDetail(currentPlaylistDetail.id);
+            hideAddToPlaylistModal();
+            
+            alert(`Đã thêm "${track.name}" vào playlist "${currentPlaylistDetail.name}"!`);
+        }
+
+        function removeTrackFromPlaylist(playlistId, trackId) {
+            if (!confirm('Bạn có chắc muốn xóa bài hát này khỏi playlist?')) return;
+            
+            const playlist = userPlaylists.find(p => p.id === playlistId);
+            if (!playlist || !playlist.tracks) return;
+            
+            const trackIndex = playlist.tracks.findIndex(t => t.id === trackId);
+            if (trackIndex !== -1) {
+                playlist.tracks.splice(trackIndex, 1);
+                
+                // Cập nhật currentPlaylistDetail nếu đang mở
+                if (currentPlaylistDetail && currentPlaylistDetail.id === playlistId) {
+                    currentPlaylistDetail.tracks = playlist.tracks;
+                }
+                
+                // Lưu dữ liệu
+                saveUserData();
+                
+                // Cập nhật giao diện
+                openPlaylistDetail(playlistId);
+                
+                alert('Đã xóa bài hát khỏi playlist!');
+            }
+        }
+
+        // ==============================================
+        // CHỨC NĂNG CHAT (TRÒ CHUYỆN VỚI BẠN BÈ)
         // ==============================================
 
         function loadChats() {
@@ -6416,680 +7507,1168 @@
                 return;
             }
             
-            let chatHTML = '';
+            let chatListHTML = '';
             chats.forEach(chat => {
-                const friend = allUsers.find(u => u.id === chat.with);
-                if (friend) {
-                    const lastMessage = chat.messages[chat.messages.length - 1];
-                    chatHTML += `
-                        <div class="chat-item" onclick="openChat('${chat.id}')">
+                const friend = allUsers.find(u => u.id === chat.friendId);
+                if (friend && !friend.isBanned) {
+                    const lastMessage = chat.messages && chat.messages.length > 0 ? 
+                        chat.messages[chat.messages.length - 1] : null;
+                    
+                    chatListHTML += `
+                        <div class="chat-item ${currentChat && currentChat.friendId === chat.friendId ? 'active' : ''}" 
+                             onclick="openChat('${chat.friendId}')">
                             <img src="${friend.avatar}" alt="${friend.name}" class="chat-avatar">
                             <div class="chat-info">
                                 <div class="chat-name">${friend.name}</div>
-                                <div class="chat-last-message">${lastMessage ? lastMessage.text : 'Bắt đầu trò chuyện'}</div>
+                                <div class="chat-last-message">
+                                    ${lastMessage ? (lastMessage.sender === currentUser.id ? 'Bạn: ' : '') + lastMessage.text : 'Bắt đầu trò chuyện'}
+                                </div>
                             </div>
-                            <div class="chat-time">${lastMessage ? formatTime(lastMessage.time) : ''}</div>
+                            <div class="chat-time">${lastMessage ? formatChatTime(lastMessage.time) : ''}</div>
                         </div>
                     `;
                 }
             });
             
-            chatList.innerHTML = chatHTML;
+            chatList.innerHTML = chatListHTML;
         }
 
-        function openChat(chatId) {
-            currentChat = chats.find(c => c.id === chatId);
-            if (!currentChat) return;
+        function formatChatTime(timeString) {
+            if (!timeString) return '';
             
-            const friend = allUsers.find(u => u.id === currentChat.with);
-            if (!friend) return;
+            const date = new Date(timeString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
             
-            // Tải tin nhắn
-            const messagesContainer = document.getElementById('chatMessages');
-            let messagesHTML = '';
+            if (diffMins < 1) return 'Vừa xong';
+            if (diffMins < 60) return `${diffMins} phút`;
             
-            currentChat.messages.forEach(message => {
-                const isUser = message.sender === currentUser.id;
-                messagesHTML += `
-                    <div class="message-item ${isUser ? 'user' : 'friend'}">
-                        <div class="message-content">${message.text}</div>
-                        <div class="message-time">${formatTime(message.time)}</div>
-                    </div>
-                `;
-            });
+            const diffHours = Math.floor(diffMins / 60);
+            if (diffHours < 24) return `${diffHours} giờ`;
             
-            messagesContainer.innerHTML = messagesHTML;
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            const diffDays = Math.floor(diffHours / 24);
+            if (diffDays < 7) return `${diffDays} ngày`;
             
-            // Hiển thị section chat
-            showSection('chat');
+            return date.toLocaleDateString('vi-VN');
         }
 
-        function startChat(friendId) {
-            // Kiểm tra xem chat đã tồn tại chưa
-            let chat = chats.find(c => c.with === friendId);
-            
-            if (!chat) {
-                // Tạo chat mới
-                chat = {
-                    id: 'chat_' + Date.now(),
-                    with: friendId,
-                    messages: []
-                };
-                chats.push(chat);
-                saveUserData();
-                loadChats();
+        function openChat(friendId) {
+            const friend = allUsers.find(u => u.id === friendId);
+            if (!friend || friend.isBanned) {
+                alert('Người dùng không tồn tại hoặc đã bị khóa!');
+                return;
             }
             
-            openChat(chat.id);
+            // Tìm hoặc tạo chat
+            let chat = chats.find(c => c.friendId === friendId);
+            if (!chat) {
+                chat = {
+                    friendId: friendId,
+                    messages: [],
+                    unread: 0,
+                    lastUpdated: new Date().toISOString()
+                };
+                chats.push(chat);
+            }
+            
+            currentChat = chat;
+            
+            // Cập nhật giao diện
+            loadChatMessages();
+            loadChats();
+            
+            // Kích hoạt input chat
+            document.getElementById('chatInput').disabled = false;
+            
+            // Hiển thị section chat nếu chưa
+            if (!document.getElementById('chatSection').classList.contains('active')) {
+                showSection('chat');
+            }
+        }
+
+        function loadChatMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages || !currentChat) return;
+            
+            let messagesHTML = '';
+            
+            if (!currentChat.messages || currentChat.messages.length === 0) {
+                messagesHTML = `
+                    <div class="message-item friend">
+                        <div class="message-content">
+                            Hãy bắt đầu trò chuyện với ${allUsers.find(u => u.id === currentChat.friendId)?.name || 'bạn bè'}!
+                        </div>
+                    </div>
+                `;
+            } else {
+                currentChat.messages.forEach(message => {
+                    const isUser = message.sender === currentUser.id;
+                    
+                    messagesHTML += `
+                        <div class="message-item ${isUser ? 'user' : 'friend'}">
+                            <div class="message-content">
+                                ${message.text}
+                            </div>
+                            <div class="message-time">${formatChatTime(message.time)}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            chatMessages.innerHTML = messagesHTML;
+            
+            // Cuộn xuống dưới cùng
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function sendChatMessage() {
-            if (!currentChat) {
+            const input = document.getElementById('chatInput');
+            const messageText = input.value.trim();
+            
+            if (!messageText || !currentChat) {
                 alert('Vui lòng chọn một cuộc trò chuyện!');
                 return;
             }
             
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            // Thêm tin nhắn
+            // Tạo tin nhắn mới
             const newMessage = {
+                id: 'msg_' + Date.now(),
                 sender: currentUser.id,
-                text: message,
+                text: messageText,
                 time: new Date().toISOString()
             };
             
+            // Thêm vào chat hiện tại
+            if (!currentChat.messages) currentChat.messages = [];
             currentChat.messages.push(newMessage);
-            saveUserData();
+            currentChat.lastUpdated = new Date().toISOString();
             
             // Cập nhật giao diện
-            const messagesContainer = document.getElementById('chatMessages');
-            messagesContainer.innerHTML += `
-                <div class="message-item user">
-                    <div class="message-content">${message}</div>
-                    <div class="message-time">${formatTime(newMessage.time)}</div>
+            input.value = '';
+            loadChatMessages();
+            loadChats();
+            
+            // Lưu dữ liệu
+            saveUserData();
+            
+            // Mô phỏng phản hồi tự động (nếu là chat với AI)
+            if (currentChat.friendId === 'ai_chat') {
+                setTimeout(() => {
+                    generateAIResponse(messageText);
+                }, 1000);
+            }
+        }
+
+        function addEmoji(emoji) {
+            const input = document.getElementById('chatInput');
+            input.value += emoji;
+            input.focus();
+        }
+
+        function startChat(friendId) {
+            openChat(friendId);
+            showSection('chat');
+        }
+
+        // ==============================================
+        // PHÒNG CHAT NHÓM
+        // ==============================================
+
+        function loadGroupChats() {
+            const groupList = document.getElementById('groupList');
+            if (!groupList) return;
+            
+            if (groupChats.length === 0) {
+                groupList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có phòng chat nào</div>';
+                return;
+            }
+            
+            let groupListHTML = '';
+            groupChats.forEach(group => {
+                const memberCount = group.members ? group.members.length : 0;
+                
+                groupListHTML += `
+                    <div class="group-item ${currentGroup && currentGroup.id === group.id ? 'active' : ''}" 
+                         onclick="openGroup('${group.id}')">
+                        <div class="group-avatar">${group.name.charAt(0)}</div>
+                        <div class="group-info">
+                            <div class="group-name">${group.name}</div>
+                            <div class="group-members">${memberCount} thành viên</div>
+                        </div>
+                        <div class="group-time">${group.lastMessage ? formatChatTime(group.lastMessage.time) : ''}</div>
+                    </div>
+                `;
+            });
+            
+            groupList.innerHTML = groupListHTML;
+        }
+
+        function openGroup(groupId) {
+            const group = groupChats.find(g => g.id === groupId);
+            if (!group) return;
+            
+            currentGroup = group;
+            
+            // Cập nhật giao diện
+            loadGroupMessages();
+            loadGroupChats();
+            
+            // Kích hoạt input
+            document.getElementById('groupInput').disabled = false;
+            document.getElementById('groupSendBtn').disabled = false;
+            
+            // Hiển thị section nếu chưa
+            if (!document.getElementById('groupChatSection').classList.contains('active')) {
+                showSection('groupChat');
+            }
+        }
+
+        function loadGroupMessages() {
+            const groupMessages = document.getElementById('groupMessages');
+            if (!groupMessages || !currentGroup) return;
+            
+            let messagesHTML = '';
+            
+            if (!currentGroup.messages || currentGroup.messages.length === 0) {
+                messagesHTML = `
+                    <div class="group-message-item other">
+                        <div class="group-message-content">
+                            <div class="group-message-sender">Hệ thống</div>
+                            Chào mừng đến với phòng chat "${currentGroup.name}"! Hãy bắt đầu trò chuyện.
+                        </div>
+                    </div>
+                `;
+            } else {
+                currentGroup.messages.forEach(message => {
+                    const isUser = message.sender === currentUser.id || message.sender === currentUser.username;
+                    
+                    // Tìm tên người gửi
+                    let senderName = message.senderName;
+                    if (!senderName && message.sender !== 'system') {
+                        if (message.sender === currentUser.id || message.sender === currentUser.username) {
+                            senderName = currentUser.name;
+                        } else {
+                            const member = allUsers.find(u => u.id === message.sender);
+                            senderName = member ? member.name : 'Ẩn danh';
+                        }
+                    }
+                    
+                    messagesHTML += `
+                        <div class="group-message-item ${isUser ? 'user' : 'other'}">
+                            <div class="group-message-content">
+                                ${!isUser ? `<div class="group-message-sender">${senderName || 'Ẩn danh'}</div>` : ''}
+                                ${message.text}
+                            </div>
+                            <div class="group-message-time">${formatChatTime(message.time)}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            groupMessages.innerHTML = messagesHTML;
+            
+            // Cuộn xuống dưới cùng
+            groupMessages.scrollTop = groupMessages.scrollHeight;
+        }
+
+        function sendGroupMessage() {
+            const input = document.getElementById('groupInput');
+            const messageText = input.value.trim();
+            
+            if (!messageText || !currentGroup) {
+                alert('Vui lòng chọn một phòng chat!');
+                return;
+            }
+            
+            // Tạo tin nhắn mới
+            const newMessage = {
+                id: 'gmsg_' + Date.now(),
+                sender: currentUser.id,
+                senderName: currentUser.name,
+                text: messageText,
+                time: new Date().toISOString()
+            };
+            
+            // Thêm vào group
+            if (!currentGroup.messages) currentGroup.messages = [];
+            currentGroup.messages.push(newMessage);
+            currentGroup.lastMessage = newMessage;
+            
+            // Cập nhật giao diện
+            input.value = '';
+            loadGroupMessages();
+            loadGroupChats();
+            
+            // Lưu dữ liệu
+            saveUserData();
+        }
+
+        function addGroupEmoji(emoji) {
+            const input = document.getElementById('groupInput');
+            input.value += emoji;
+            input.focus();
+        }
+
+        function showCreateGroupModal() {
+            document.getElementById('createGroupModal').classList.add('active');
+            loadFriendsForGroupSelection();
+        }
+
+        function hideCreateGroupModal() {
+            document.getElementById('createGroupModal').classList.remove('active');
+            document.getElementById('groupName').value = '';
+            document.getElementById('groupDescription').value = '';
+            selectedFriendsForGroup = [];
+            loadFriendsForGroupSelection();
+        }
+
+        function loadFriendsForGroupSelection() {
+            const container = document.getElementById('friendSelectList');
+            if (!container) return;
+            
+            if (friends.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Bạn chưa có bạn bè để tạo nhóm</div>';
+                return;
+            }
+            
+            let friendsHTML = '';
+            friends.forEach(friend => {
+                const friendUser = allUsers.find(u => u.id === friend.id);
+                if (friendUser && !friendUser.isBanned) {
+                    const isSelected = selectedFriendsForGroup.includes(friendUser.id);
+                    
+                    friendsHTML += `
+                        <div class="friend-select-item ${isSelected ? 'selected' : ''}" onclick="toggleFriendForGroup('${friendUser.id}')">
+                            <img src="${friendUser.avatar}" alt="${friendUser.name}" class="friend-select-avatar">
+                            <div class="friend-select-name">${friendUser.name}</div>
+                            <div class="friend-select-checkbox ${isSelected ? 'selected' : ''}">
+                                ${isSelected ? '<i class="fas fa-check"></i>' : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            container.innerHTML = friendsHTML;
+        }
+
+        function toggleFriendForGroup(friendId) {
+            const index = selectedFriendsForGroup.indexOf(friendId);
+            if (index === -1) {
+                selectedFriendsForGroup.push(friendId);
+            } else {
+                selectedFriendsForGroup.splice(index, 1);
+            }
+            
+            loadFriendsForGroupSelection();
+        }
+
+        function createGroup() {
+            const name = document.getElementById('groupName').value.trim();
+            const description = document.getElementById('groupDescription').value.trim();
+            
+            if (!name) {
+                alert('Vui lòng nhập tên phòng chat!');
+                return;
+            }
+            
+            if (selectedFriendsForGroup.length === 0) {
+                alert('Vui lòng chọn ít nhất một bạn bè để tạo nhóm!');
+                return;
+            }
+            
+            // Tạo phòng chat mới
+            const newGroup = {
+                id: 'group_' + Date.now(),
+                name: name,
+                description: description,
+                createdBy: currentUser.id,
+                members: [currentUser.id, ...selectedFriendsForGroup],
+                messages: [
+                    {
+                        id: 'gmsg_' + Date.now(),
+                        sender: 'system',
+                        senderName: 'Hệ thống',
+                        text: `Phòng chat "${name}" đã được tạo bởi ${currentUser.name}. Chào mừng mọi người!`,
+                        time: new Date().toISOString()
+                    }
+                ],
+                createdAt: new Date().toISOString(),
+                lastMessage: null
+            };
+            
+            groupChats.push(newGroup);
+            
+            // Lưu dữ liệu
+            saveUserData();
+            
+            // Đóng modal và mở phòng chat mới
+            hideCreateGroupModal();
+            openGroup(newGroup.id);
+            
+            alert(`Đã tạo phòng chat "${name}" thành công!`);
+        }
+
+        // ==============================================
+        // CHỨC NĂNG GỌI THOẠI
+        // ==============================================
+
+        function startVoiceChat() {
+            if (!currentChat) {
+                alert('Vui lòng chọn một cuộc trò chuyện để bắt đầu gọi thoại!');
+                return;
+            }
+            
+            const friend = allUsers.find(u => u.id === currentChat.friendId);
+            if (!friend) return;
+            
+            // Hiển thị modal gọi thoại
+            document.getElementById('voiceChatModal').classList.add('active');
+            
+            // Cập nhật thông tin
+            document.getElementById('voiceChatAvatar').innerHTML = `<img src="${friend.avatar}" alt="${friend.name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+            document.getElementById('voiceChatName').textContent = friend.name;
+            document.getElementById('voiceChatStatus').textContent = 'Đang kết nối...';
+            
+            isVoiceChatActive = true;
+            isMuted = false;
+            isSpeakerOn = true;
+            
+            // Mô phỏng kết nối
+            setTimeout(() => {
+                document.getElementById('voiceChatStatus').textContent = 'Đã kết nối';
+            }, 2000);
+        }
+
+        function endVoiceChat() {
+            isVoiceChatActive = false;
+            document.getElementById('voiceChatModal').classList.remove('active');
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const micIcon = document.getElementById('micIcon');
+            micIcon.className = isMuted ? 'fas fa-microphone-slash' : 'fas fa-microphone';
+        }
+
+        function toggleSpeaker() {
+            isSpeakerOn = !isSpeakerOn;
+            const speakerIcon = document.getElementById('speakerIcon');
+            speakerIcon.className = isSpeakerOn ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+        }
+
+        // ==============================================
+        // CHỨC NĂNG AI (CHUYÊN GIA TÂM LÝ)
+        // ==============================================
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const messageText = input.value.trim();
+            
+            if (!messageText) {
+                alert('Vui lòng nhập tin nhắn!');
+                return;
+            }
+            
+            // Thêm tin nhắn của người dùng
+            addAIMessage(messageText, 'user');
+            input.value = '';
+            
+            // Hiển thị trạng thái đang nhập
+            showAITypingIndicator();
+            
+            // Gửi tin nhắn đến AI (mô phỏng)
+            setTimeout(() => {
+                generateAIResponse(messageText);
+            }, 1500);
+        }
+
+        function sendAISuggestion(suggestion) {
+            document.getElementById('aiInput').value = suggestion;
+            sendAIMessage();
+        }
+
+        function addAIMessage(text, sender) {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const time = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            
+            // Cuộn xuống dưới cùng
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Lưu vào lịch sử
+            aiChatHistory.push({
+                text: text,
+                sender: sender,
+                time: new Date().toISOString()
+            });
+        }
+
+        function showAITypingIndicator() {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'aiTypingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="message-bubble">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             `;
             
-            input.value = '';
+            messagesContainer.appendChild(typingDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideAITypingIndicator() {
+            const typingIndicator = document.getElementById('aiTypingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        async function generateAIResponse(userMessage) {
+            // Ẩn indicator đang nhập
+            hideAITypingIndicator();
             
-            // Giả lập phản hồi từ bạn bè sau 1 giây
-            setTimeout(() => {
-                const friend = allUsers.find(u => u.id === currentChat.with);
-                if (friend) {
-                    const responses = [
-                        "Nghe nhạc gì thế?",
-                        "Bài này hay quá!",
-                        "Mình cũng thích bài này",
-                        "Cùng nghe nhạc nhé!",
-                        "😊",
-                        "🎵"
-                    ];
-                    
-                    const response = responses[Math.floor(Math.random() * responses.length)];
-                    const friendMessage = {
-                        sender: friend.id,
-                        text: response,
-                        time: new Date().toISOString()
+            const lowerMessage = userMessage.toLowerCase();
+            let response = '';
+            let recommendations = [];
+            let advice = '';
+            
+            // Kiểm tra các từ khóa để đưa ra phản hồi phù hợp
+            if (lowerMessage.includes('căng thẳng') || lowerMessage.includes('lo lắng') || lowerMessage.includes('stress')) {
+                response = aiResponses["căng thẳng"].response;
+                recommendations = aiResponses["căng thẳng"].recommendations;
+                advice = aiResponses["căng thẳng"].advice;
+            } else if (lowerMessage.includes('cô đơn') || lowerMessage.includes('một mình')) {
+                response = aiResponses["cô đơn"].response;
+                recommendations = aiResponses["cô đơn"].recommendations;
+                advice = aiResponses["cô đơn"].advice;
+            } else if (lowerMessage.includes('mất ngủ') || lowerMessage.includes('khó ngủ') || lowerMessage.includes('giấc ngủ')) {
+                response = aiResponses["mất ngủ"].response;
+                recommendations = aiResponses["mất ngủ"].recommendations;
+                advice = aiResponses["mất ngủ"].advice;
+            } else if (lowerMessage.includes('động lực') || lowerMessage.includes('lười') || lowerMessage.includes('chán nản')) {
+                response = aiResponses["thiếu động lực"].response;
+                recommendations = aiResponses["thiếu động lực"].recommendations;
+                advice = aiResponses["thiếu động lực"].advice;
+            } else if (lowerMessage.includes('vui') || lowerMessage.includes('hạnh phúc') || lowerMessage.includes('tích cực')) {
+                response = aiResponses["chia sẻ niềm vui"].response;
+                recommendations = aiResponses["chia sẻ niềm vui"].recommendations;
+                advice = aiResponses["chia sẻ niềm vui"].advice;
+            } else if (lowerMessage.includes('quan hệ') || lowerMessage.includes('yêu') || lowerMessage.includes('tình cảm')) {
+                response = aiResponses["mối quan hệ"].response;
+                recommendations = aiResponses["mối quan hệ"].recommendations;
+                advice = aiResponses["mối quan hệ"].advice;
+            } else {
+                response = aiResponses["default"].response;
+                recommendations = aiResponses["default"].recommendations;
+                advice = aiResponses["default"].advice;
+            }
+            
+            // Thêm gợi ý playlist
+            if (recommendations.length > 0) {
+                response += '\n\n🎵 Tôi đề xuất bạn nghe những playlist sau:';
+                recommendations.forEach(rec => {
+                    const playlistNames = {
+                        1: 'Chill Vibes',
+                        2: 'Ngủ Ngon',
+                        3: 'Nhạc Việt',
+                        4: 'Podcast thiền định',
+                        5: 'Âm thanh tự nhiên'
                     };
-                    
-                    currentChat.messages.push(friendMessage);
-                    saveUserData();
-                    
-                    messagesContainer.innerHTML += `
-                        <div class="message-item friend">
-                            <div class="message-content">${response}</div>
-                            <div class="message-time">${formatTime(friendMessage.time)}</div>
-                        </div>
-                    `;
-                    
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                }
-            }, 1000);
+                    response += `\n• ${playlistNames[rec] || 'Playlist thư giãn'}`;
+                });
+            }
+            
+            // Thêm lời khuyên
+            if (advice) {
+                response += `\n\n💡 Lời khuyên: ${advice}`;
+            }
+            
+            // Thêm tin nhắn của AI
+            addAIMessage(response, 'ai');
+            
+            // Cập nhật đề xuất dựa trên tâm trạng
+            updateMoodRecommendations(recommendations);
+        }
+
+        function updateMoodRecommendations(recommendations) {
+            // Cập nhật các đề xuất dựa trên tâm trạng
+            // Có thể cập nhật giao diện ở đây nếu cần
         }
 
         // ==============================================
-        // CÁC HÀM HỖ TRỢ KHÁC
+        // CHỨC NĂNG QUẢN TRỊ VIÊN (ADMIN)
         // ==============================================
 
-        function showApp() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('registerScreen').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'flex';
-        }
-
-        function updateUserUI() {
-            if (!currentUser) return;
-            
-            document.getElementById('userName').textContent = currentUser.username;
-            document.getElementById('profileName').textContent = currentUser.name;
-            document.getElementById('profileBio').textContent = currentUser.bio || 'Chưa có tiểu sử';
-            document.getElementById('userAvatar').src = currentUser.avatar;
-            document.getElementById('profileAvatar').src = currentUser.avatar;
-            
-            // Cập nhật thống kê từ dữ liệu người dùng
-            if (currentUser.stats) {
-                userStats.totalPlays = currentUser.stats.plays || 0;
-                userStats.totalTime = currentUser.stats.time || 0;
-                userStats.playlists = currentUser.stats.playlists || 0;
-                userStats.friends = currentUser.stats.friends || 0;
-            }
-            
-            updateStatsUI();
-        }
-
-        function resetDailyStats() {
-            userStats.todayTime = 0;
-            userStats.todaySongs = 0;
-            updateStatsUI();
-        }
-
-        function updateStatsUI() {
-            document.getElementById('todayTime').textContent = Math.round(userStats.todayTime) + ' phút';
-            document.getElementById('todaySongs').textContent = userStats.todaySongs;
-            document.getElementById('profilePlays').textContent = userStats.totalPlays;
-            document.getElementById('profileFriends').textContent = userStats.friends;
-            document.getElementById('profilePlaylists').textContent = userStats.playlists;
-            
-            // Tính bạn bè trực tuyến (giả lập)
-            const onlineCount = Math.min(3, friends.length);
-            document.getElementById('onlineFriends').textContent = onlineCount;
-        }
-
-        function updateWelcomeMessage() {
-            const hour = new Date().getHours();
-            let greeting = "Xin chào";
-            
-            if (hour < 12) {
-                greeting = "Chào buổi sáng";
-            } else if (hour < 18) {
-                greeting = "Chào buổi chiều";
-            } else {
-                greeting = "Chào buổi tối";
-            }
-            
-            document.getElementById('welcomeTitle').textContent = greeting + ", " + currentUser.name + "!";
-        }
-
-        function showSection(sectionName) {
-            document.querySelectorAll('.section-content').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            const targetSection = document.getElementById(sectionName + 'Section');
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
-            
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            const navItem = document.querySelector(`.nav-item[data-section="${sectionName}"]`);
-            if (navItem) {
-                navItem.classList.add('active');
-            }
-            
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('active');
-            }
-            
-            document.getElementById('userDropdown').classList.remove('active');
-            
-            // Tải nội dung cụ thể khi chuyển section
-            if (sectionName === 'friends') {
-                loadFriends();
-            } else if (sectionName === 'chat') {
-                loadChats();
-            } else if (sectionName === 'group-chat') {
-                loadGroupChats();
-            } else if (sectionName === 'podcasts') {
-                loadPodcasts();
-            } else if (sectionName === 'library') {
-                loadLibraryContent();
-            } else if (sectionName === 'search') {
-                // Xóa kết quả tìm kiếm cũ
-                document.getElementById('searchResults').innerHTML = '';
-            }
-        }
-
-        function updateActiveTrack() {
-            document.querySelectorAll('.track-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            if (currentTrack) {
-                const activeItems = document.querySelectorAll(`.track-item[onclick*="${currentTrack.id}"]`);
-                activeItems.forEach(item => {
-                    item.classList.add('active');
-                });
-            }
-        }
-
-        function formatTime(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diff = now - date;
-            
-            if (diff < 60000) return 'Vừa xong';
-            if (diff < 3600000) return Math.floor(diff / 60000) + ' phút trước';
-            if (diff < 86400000) return Math.floor(diff / 3600000) + ' giờ trước';
-            return Math.floor(diff / 86400000) + ' ngày trước';
-        }
-
-        // ==============================================
-        // CHẾ ĐỘ BAN ĐÊM
-        // ==============================================
-
-        function toggleNightMode() {
-            isNightMode = !isNightMode;
-            document.body.classList.toggle('night-mode', isNightMode);
-            localStorage.setItem(STORAGE_KEYS.NIGHT_MODE, isNightMode);
-            
-            const nightModeBtn = document.getElementById('nightModeBtn');
-            if (isNightMode) {
-                nightModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-            } else {
-                nightModeBtn.innerHTML = '<i class="fas fa-moon"></i>';
-            }
-        }
-
-        function loadNightMode() {
-            const savedNightMode = localStorage.getItem(STORAGE_KEYS.NIGHT_MODE);
-            if (savedNightMode !== null) {
-                isNightMode = savedNightMode === 'true';
-                document.body.classList.toggle('night-mode', isNightMode);
-                
-                const nightModeBtn = document.getElementById('nightModeBtn');
-                if (isNightMode) {
-                    nightModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-                } else {
-                    nightModeBtn.innerHTML = '<i class="fas fa-moon"></i>';
-                }
-            }
-        }
-
-        // ==============================================
-        // THIẾT LẬP SỰ KIỆN
-        // ==============================================
-
-        function setupEventListeners() {
-            // Navigation
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const section = this.getAttribute('data-section');
-                    showSection(section);
-                });
-            });
-            
-            // User menu
-            const userMenuEl = document.getElementById('userMenu');
-            if (userMenuEl) {
-                userMenuEl.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const dropdown = document.getElementById('userDropdown');
-                    if (dropdown) dropdown.classList.toggle('active');
-                });
-            }
-            
-            // Đóng dropdown khi click bên ngoài
-            document.addEventListener('click', function() {
-                const dropdown = document.getElementById('userDropdown');
-                if (dropdown) dropdown.classList.remove('active');
-            });
-            
-            // Mobile menu
-            const mobileBtn = document.getElementById('mobileMenuBtn');
-            if (mobileBtn) {
-                mobileBtn.addEventListener('click', function() {
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar) sidebar.classList.toggle('active');
-                });
-            }
-            
-            // Night mode toggle
-            const nightBtn = document.getElementById('nightModeBtn');
-            if (nightBtn) nightBtn.addEventListener('click', toggleNightMode);
-            
-            // Avatar upload
-            const avatarUploadEl = document.getElementById('avatarUpload');
-            if (avatarUploadEl) avatarUploadEl.addEventListener('change', handleAvatarUpload);
-            
-            // Search input (global)
-            const globalSearchEl = document.getElementById('globalSearchInput');
-            if (globalSearchEl) {
-                globalSearchEl.addEventListener('input', handleSearch);
-                globalSearchEl.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        handleSearch(e);
-                    }
-                });
-            }
-            
-            // Friend search input
-            const friendSearchEl = document.getElementById('friendSearch');
-            if (friendSearchEl) {
-                friendSearchEl.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        searchFriends();
-                    }
-                });
-            }
-            
-            // Chat input (press Enter to send)
-            const chatInputEl = document.getElementById('chatInput');
-            if (chatInputEl) {
-                chatInputEl.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        sendChatMessage();
-                    }
-                });
-            }
-            
-            // AI input (press Enter to send)
-            const aiInputEl = document.getElementById('aiInput');
-            if (aiInputEl) {
-                aiInputEl.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        sendAIMessage();
-                    }
-                });
-            }
-            
-            // Group input (press Enter to send)
-            const groupInputEl = document.getElementById('groupInput');
-            if (groupInputEl) {
-                groupInputEl.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        sendGroupMessage();
-                    }
-                });
-            }
-            
-            // Group search
-            const groupSearchEl = document.getElementById('groupSearch');
-            if (groupSearchEl) {
-                groupSearchEl.addEventListener('input', function(e) {
-                    searchGroups(this.value);
-                });
-            }
-            
-            // Find friend search
-            const findFriendSearchEl = document.getElementById('searchFriend');
-            if (findFriendSearchEl) {
-                findFriendSearchEl.addEventListener('input', loadFriendSearchResults);
-            }
-            
-            // Filter tabs for search
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const filter = this.getAttribute('data-filter');
-                    setSearchFilter(filter);
-                });
-            });
-        }
-
-        function handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const avatarUrl = e.target.result;
-                    
-                    currentUser.avatar = avatarUrl;
-                    saveCurrentUser();
-                    
-                    // Cập nhật trong allUsers
-                    const userIndex = allUsers.findIndex(u => u.id === currentUser.id);
-                    if (userIndex !== -1) {
-                        allUsers[userIndex].avatar = avatarUrl;
-                        saveAllUsers();
-                    }
-                    
-                    updateUserUI();
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // ==============================================
-        // TÌM KIẾM
-        // ==============================================
-
-        function setSearchFilter(filter) {
-            currentSearchFilter = filter;
-            
-            // Cập nhật UI
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            const activeTab = document.querySelector(`.filter-tab[data-filter="${filter}"]`);
-            if (activeTab) {
-                activeTab.classList.add('active');
-            }
-            
-            // Thực hiện tìm kiếm với filter mới
-            const query = document.getElementById('globalSearchInput').value;
-            if (query.trim()) {
-                performSearch(query);
-            }
-        }
-
-        function handleSearch(event) {
-            const query = document.getElementById('globalSearchInput').value;
-            
-            // Nếu đang không ở searchSection, chuyển sang searchSection
-            if (!document.getElementById('searchSection').classList.contains('active')) {
-                showSection('search');
-            }
-            
-            performSearch(query);
-        }
-
-        function performSearch(query) {
-            const resultsContainer = document.getElementById('searchResults');
-            
-            if (!query || query.trim() === '') {
-                resultsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Vui lòng nhập từ khóa tìm kiếm</div>';
+        function loadAdminData() {
+            if (!currentUser || (!currentUser.isAdmin && currentUser.role !== 'admin')) {
                 return;
             }
             
-            const searchTerm = query.toLowerCase().trim();
-            let results = [];
+            // Tính toán thống kê
+            adminStats.totalUsers = allUsers.length;
+            adminStats.activeUsers = allUsers.filter(u => !u.isBanned && u.status !== 'banned').length;
+            adminStats.bannedUsers = allUsers.filter(u => u.isBanned || u.status === 'banned').length;
+            adminStats.adminUsers = allUsers.filter(u => u.isAdmin || u.role === 'admin').length;
             
-            // Tìm kiếm trong tất cả dữ liệu
-            if (currentSearchFilter === 'all' || currentSearchFilter === 'songs') {
-                // Tìm trong bài hát
-                Object.values(playlists).forEach(playlist => {
-                    playlist.forEach(track => {
-                        if (track.name.toLowerCase().includes(searchTerm) || track.artist.toLowerCase().includes(searchTerm)) {
-                            results.push({
-                                type: 'song',
-                                data: track
-                            });
+            // Tính tổng số lượt nghe và playlist
+            let totalPlays = 0;
+            let totalPlaylists = 0;
+            
+            allUsers.forEach(user => {
+                if (user.stats) {
+                    totalPlays += user.stats.plays || 0;
+                    
+                    // Tải dữ liệu người dùng để đếm playlist
+                    try {
+                        const userDataKey = STORAGE_KEYS.USER_DATA(user.id);
+                        const savedUserData = localStorage.getItem(userDataKey);
+                        if (savedUserData) {
+                            const userData = JSON.parse(savedUserData);
+                            totalPlaylists += (userData.playlists || []).length;
                         }
-                    });
-                });
-            }
-            
-            if (currentSearchFilter === 'all' || currentSearchFilter === 'playlists') {
-                // Tìm trong playlist của người dùng
-                userPlaylists.forEach(playlist => {
-                    if (playlist.name.toLowerCase().includes(searchTerm) || (playlist.description && playlist.description.toLowerCase().includes(searchTerm))) {
-                        results.push({
-                            type: 'playlist',
-                            data: playlist
-                        });
+                    } catch (e) {
+                        console.error('Lỗi khi tải dữ liệu người dùng:', e);
                     }
-                });
-            }
+                }
+            });
             
-            if (currentSearchFilter === 'all' || currentSearchFilter === 'podcasts') {
-                // Tìm trong podcast
-                podcasts.forEach(podcast => {
-                    if (podcast.title.toLowerCase().includes(searchTerm) || podcast.category.toLowerCase().includes(searchTerm)) {
-                        results.push({
-                            type: 'podcast',
-                            data: podcast
-                        });
-                    }
-                });
-            }
+            adminStats.totalPlays = totalPlays;
+            adminStats.totalPlaylists = totalPlaylists;
             
-            if (currentSearchFilter === 'all' || currentSearchFilter === 'sounds') {
-                // Tìm trong âm thanh
-                sounds.forEach(sound => {
-                    if (sound.name.toLowerCase().includes(searchTerm) || sound.type.toLowerCase().includes(searchTerm)) {
-                        results.push({
-                            type: 'sound',
-                            data: sound
-                        });
-                    }
-                });
-            }
+            // Cập nhật giao diện thống kê
+            updateAdminStatsUI();
             
-            if (currentSearchFilter === 'all' || currentSearchFilter === 'friends') {
-                // Tìm trong bạn bè
-                friends.forEach(friend => {
-                    const friendUser = allUsers.find(u => u.id === friend.id);
-                    if (friendUser && (friendUser.name.toLowerCase().includes(searchTerm) || friendUser.username.toLowerCase().includes(searchTerm))) {
-                        results.push({
-                            type: 'friend',
-                            data: friendUser
-                        });
-                    }
-                });
-            }
-            
-            // Hiển thị kết quả
-            displaySearchResults(results);
+            // Tải danh sách người dùng
+            loadAdminUsersTable();
         }
 
-        function displaySearchResults(results) {
-            const searchResults = document.getElementById('searchResults');
-            if (results.length === 0) {
-                searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Không tìm thấy kết quả nào</div>';
+        function updateAdminStatsUI() {
+            const statsCards = document.getElementById('adminStatsCards');
+            if (!statsCards) return;
+            
+            statsCards.innerHTML = `
+                <div class="stats-card">
+                    <div class="stats-card-title">Tổng người dùng</div>
+                    <div class="stats-card-value">${adminStats.totalUsers}</div>
+                    <div class="stats-card-change positive">+${adminStats.activeUsers} hoạt động</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-title">Người dùng bị cấm</div>
+                    <div class="stats-card-value">${adminStats.bannedUsers}</div>
+                    <div class="stats-card-change ${adminStats.bannedUsers > 0 ? 'negative' : 'positive'}">
+                        ${adminStats.bannedUsers > 0 ? '⚠️ Cần chú ý' : '✅ An toàn'}
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-title">Quản trị viên</div>
+                    <div class="stats-card-value">${adminStats.adminUsers}</div>
+                    <div class="stats-card-change">Hệ thống</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-title">Tổng lượt nghe</div>
+                    <div class="stats-card-value">${adminStats.totalPlays}</div>
+                    <div class="stats-card-change positive">+${Math.floor(adminStats.totalPlays / adminStats.totalUsers)}/người</div>
+                </div>
+            `;
+            
+            // Cập nhật tổng số người dùng trên trang chủ
+            document.getElementById('totalUsers').textContent = adminStats.totalUsers;
+        }
+
+        function loadAdminUsersTable() {
+            const tableBody = document.getElementById('adminUsersTable');
+            if (!tableBody) return;
+            
+            let tableHTML = '';
+            
+            allUsers.forEach(user => {
+                // Xác định trạng thái
+                let statusClass = 'active';
+                let statusText = 'Hoạt động';
+                
+                if (user.isBanned || user.status === 'banned') {
+                    statusClass = 'banned';
+                    statusText = 'Đã khóa';
+                } else if (user.status === 'suspended') {
+                    statusClass = 'banned';
+                    statusText = 'Tạm ngừng';
+                }
+                
+                // Xác định vai trò
+                let roleText = 'Người dùng';
+                if (user.isAdmin || user.role === 'admin') {
+                    roleText = 'Quản trị viên';
+                } else if (user.role === 'moderator') {
+                    roleText = 'Điều hành viên';
+                }
+                
+                // Định dạng ngày
+                const joinDate = user.joined ? new Date(user.joined).toLocaleDateString('vi-VN') : 'N/A';
+                const lastLogin = user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('vi-VN') : 'Chưa đăng nhập';
+                
+                tableHTML += `
+                    <tr>
+                        <td>${user.id.substring(0, 8)}...</td>
+                        <td>
+                            <img src="${user.avatar}" alt="${user.name}" class="user-avatar-small">
+                            ${user.name}
+                            ${user.isAdmin || user.role === 'admin' ? '<span class="admin-badge">ADMIN</span>' : ''}
+                        </td>
+                        <td>${user.email}</td>
+                        <td><span class="user-status ${statusClass}">${statusText}</span></td>
+                        <td><span class="user-status ${user.isAdmin || user.role === 'admin' ? 'admin' : 'active'}">${roleText}</span></td>
+                        <td>${joinDate}</td>
+                        <td>${lastLogin}</td>
+                        <td class="table-actions">
+                            <button class="table-action-btn" onclick="editAdminUser('${user.id}')" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="table-action-btn ${user.isBanned ? 'ban' : ''}" onclick="toggleBanUser('${user.id}')" title="${user.isBanned ? 'Mở khóa' : 'Khóa tài khoản'}">
+                                <i class="fas ${user.isBanned ? 'fa-unlock' : 'fa-lock'}"></i>
+                            </button>
+                            <button class="table-action-btn delete" onclick="deleteUser('${user.id}')" title="Xóa người dùng" ${user.isAdmin ? 'disabled' : ''}>
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = tableHTML;
+        }
+
+        function searchAdminUsers() {
+            const searchTerm = document.getElementById('adminUserSearch').value.toLowerCase();
+            const tableBody = document.getElementById('adminUsersTable');
+            
+            if (!searchTerm) {
+                loadAdminUsersTable();
                 return;
             }
-
-            let resultsHTML = '<h3>Kết quả tìm kiếm:</h3>';
-
-            // Nếu filter là 'all', chúng ta có thể nhóm theo loại
-            if (currentSearchFilter === 'all') {
-                // Nhóm kết quả theo loại
-                const grouped = {};
-                results.forEach(result => {
-                    if (!grouped[result.type]) {
-                        grouped[result.type] = [];
-                    }
-                    grouped[result.type].push(result);
-                });
-
-                for (const type in grouped) {
-                    let typeName;
-                    switch(type) {
-                        case 'song': typeName = 'Bài hát'; break;
-                        case 'playlist': typeName = 'Playlist'; break;
-                        case 'podcast': typeName = 'Podcast'; break;
-                        case 'sound': typeName = 'Âm thanh'; break;
-                        case 'friend': typeName = 'Bạn bè'; break;
-                        default: typeName = type;
-                    }
-                    resultsHTML += `<h4>${typeName}</h4>`;
-                    grouped[type].forEach(result => {
-                        resultsHTML += getSearchResultHTML(result);
-                    });
+            
+            const filteredUsers = allUsers.filter(user => 
+                user.name.toLowerCase().includes(searchTerm) ||
+                user.email.toLowerCase().includes(searchTerm) ||
+                user.username.toLowerCase().includes(searchTerm) ||
+                user.id.toLowerCase().includes(searchTerm)
+            );
+            
+            let tableHTML = '';
+            
+            filteredUsers.forEach(user => {
+                // Xác định trạng thái
+                let statusClass = 'active';
+                let statusText = 'Hoạt động';
+                
+                if (user.isBanned || user.status === 'banned') {
+                    statusClass = 'banned';
+                    statusText = 'Đã khóa';
+                } else if (user.status === 'suspended') {
+                    statusClass = 'banned';
+                    statusText = 'Tạm ngừng';
                 }
-            } else {
-                // Nếu filter cụ thể, hiển thị tất cả kết quả cùng loại
-                results.forEach(result => {
-                    resultsHTML += getSearchResultHTML(result);
-                });
-            }
-
-            searchResults.innerHTML = resultsHTML;
+                
+                // Xác định vai trò
+                let roleText = 'Người dùng';
+                if (user.isAdmin || user.role === 'admin') {
+                    roleText = 'Quản trị viên';
+                } else if (user.role === 'moderator') {
+                    roleText = 'Điều hành viên';
+                }
+                
+                // Định dạng ngày
+                const joinDate = user.joined ? new Date(user.joined).toLocaleDateString('vi-VN') : 'N/A';
+                const lastLogin = user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('vi-VN') : 'Chưa đăng nhập';
+                
+                tableHTML += `
+                    <tr>
+                        <td>${user.id.substring(0, 8)}...</td>
+                        <td>
+                            <img src="${user.avatar}" alt="${user.name}" class="user-avatar-small">
+                            ${user.name}
+                            ${user.isAdmin || user.role === 'admin' ? '<span class="admin-badge">ADMIN</span>' : ''}
+                        </td>
+                        <td>${user.email}</td>
+                        <td><span class="user-status ${statusClass}">${statusText}</span></td>
+                        <td><span class="user-status ${user.isAdmin || user.role === 'admin' ? 'admin' : 'active'}">${roleText}</span></td>
+                        <td>${joinDate}</td>
+                        <td>${lastLogin}</td>
+                        <td class="table-actions">
+                            <button class="table-action-btn" onclick="editAdminUser('${user.id}')" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="table-action-btn ${user.isBanned ? 'ban' : ''}" onclick="toggleBanUser('${user.id}')" title="${user.isBanned ? 'Mở khóa' : 'Khóa tài khoản'}">
+                                <i class="fas ${user.isBanned ? 'fa-unlock' : 'fa-lock'}"></i>
+                            </button>
+                            <button class="table-action-btn delete" onclick="deleteUser('${user.id}')" title="Xóa người dùng" ${user.isAdmin ? 'disabled' : ''}>
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = tableHTML;
         }
 
-        function getSearchResultHTML(result) {
-            let html = '';
-            if (result.type === 'song') {
-                const track = result.data;
-                html = `
-                    <div class="search-track-item" onclick="playTrackById(${track.id})">
-                        <img src="${track.image}" alt="${track.name}" class="search-track-image">
-                        <div class="search-track-info">
-                            <div class="search-track-name">${track.name}</div>
-                            <div class="search-track-artist">${track.artist} • Bài hát</div>
-                        </div>
-                        <button class="add-track-btn" onclick="event.stopPropagation(); showAddToPlaylistModalForTrack(${track.id})">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                `;
-            } else if (result.type === 'playlist') {
-                const playlist = result.data;
-                html = `
-                    <div class="playlist-card" onclick="openPlaylistDetail('${playlist.id}')">
-                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="${playlist.name}" class="playlist-image">
-                        <div class="playlist-card-title">${playlist.name}</div>
-                        <div class="playlist-card-description">${playlist.description || 'Playlist của bạn'}</div>
-                        <div class="play-play-btn">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                `;
-            } else if (result.type === 'podcast') {
-                const podcast = result.data;
-                html = `
-                    <div class="podcast-card" onclick="playPodcast(${podcast.id})">
-                        <img src="${podcast.thumbnail}" alt="${podcast.title}" class="podcast-image">
-                        <div class="podcast-title">${podcast.title}</div>
-                        <div class="podcast-description">${podcast.category} • ${podcast.duration}</div>
-                    </div>
-                `;
-            } else if (result.type === 'sound') {
-                const sound = result.data;
-                html = `
-                    <div class="sound-card" onclick="playSound(${sound.id})">
-                        <div class="sound-icon">
-                            <i class="${sound.icon}"></i>
-                        </div>
-                        <div class="sound-title">${sound.name}</div>
-                        <div class="sound-type">${sound.type}</div>
-                    </div>
-                `;
-            } else if (result.type === 'friend') {
-                const friend = result.data;
-                html = `
-                    <div class="friend-card">
-                        <img src="${friend.avatar}" alt="${friend.name}" class="friend-avatar">
-                        <div class="friend-name">${friend.name}</div>
-                        <div class="friend-status">@${friend.username}</div>
-                        <div class="friend-actions">
-                            <button class="friend-btn chat" onclick="startChat('${friend.id}')">
-                                <i class="fas fa-comment"></i> Nhắn tin
-                            </button>
-                        </div>
-                    </div>
-                `;
+        function editAdminUser(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            currentlyEditingUser = user;
+            
+            // Cập nhật modal
+            document.getElementById('adminModalAvatar').src = user.avatar;
+            document.getElementById('adminModalName').textContent = user.name;
+            document.getElementById('adminModalEmail').textContent = user.email;
+            document.getElementById('adminModalStatus').value = user.isBanned ? 'banned' : (user.status || 'active');
+            document.getElementById('adminModalRole').value = user.isAdmin ? 'admin' : (user.role || 'user');
+            document.getElementById('adminModalReason').value = '';
+            
+            // Hiển thị modal
+            document.getElementById('adminUserModal').classList.add('active');
+        }
+
+        function hideAdminUserModal() {
+            document.getElementById('adminUserModal').classList.remove('active');
+            currentlyEditingUser = null;
+        }
+
+        function adminSaveUserChanges() {
+            if (!currentlyEditingUser) return;
+            
+            const status = document.getElementById('adminModalStatus').value;
+            const role = document.getElementById('adminModalRole').value;
+            const reason = document.getElementById('adminModalReason').value.trim();
+            
+            // Cập nhật người dùng
+            const userIndex = allUsers.findIndex(u => u.id === currentlyEditingUser.id);
+            if (userIndex !== -1) {
+                allUsers[userIndex].status = status;
+                allUsers[userIndex].isBanned = status === 'banned';
+                allUsers[userIndex].role = role;
+                allUsers[userIndex].isAdmin = role === 'admin';
+                
+                // Cập nhật danh sách người dùng bị cấm trong localStorage
+                let bannedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.BANNED_USERS) || '[]');
+                
+                if (status === 'banned') {
+                    if (!bannedUsers.includes(currentlyEditingUser.id)) {
+                        bannedUsers.push(currentlyEditingUser.id);
+                    }
+                } else {
+                    const bannedIndex = bannedUsers.indexOf(currentlyEditingUser.id);
+                    if (bannedIndex !== -1) {
+                        bannedUsers.splice(bannedIndex, 1);
+                    }
+                }
+                
+                localStorage.setItem(STORAGE_KEYS.BANNED_USERS, JSON.stringify(bannedUsers));
+                
+                // Lưu lịch sử hành động admin
+                saveAdminAction({
+                    action: 'edit_user',
+                    adminId: currentUser.id,
+                    targetUserId: currentlyEditingUser.id,
+                    changes: { status, role, reason },
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Lưu thay đổi
+                saveAllUsers();
+                
+                // Cập nhật giao diện
+                loadAdminData();
+                hideAdminUserModal();
+                
+                alert('Đã cập nhật thông tin người dùng!');
             }
-            return html;
+        }
+
+        function toggleBanUser(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            const action = user.isBanned ? 'mở khóa' : 'khóa';
+            
+            if (confirm(`Bạn có chắc muốn ${action} tài khoản của ${user.name}?`)) {
+                user.isBanned = !user.isBanned;
+                user.status = user.isBanned ? 'banned' : 'active';
+                
+                // Cập nhật danh sách người dùng bị cấm trong localStorage
+                let bannedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.BANNED_USERS) || '[]');
+                
+                if (user.isBanned) {
+                    if (!bannedUsers.includes(user.id)) {
+                        bannedUsers.push(user.id);
+                    }
+                } else {
+                    const bannedIndex = bannedUsers.indexOf(user.id);
+                    if (bannedIndex !== -1) {
+                        bannedUsers.splice(bannedIndex, 1);
+                    }
+                }
+                
+                localStorage.setItem(STORAGE_KEYS.BANNED_USERS, JSON.stringify(bannedUsers));
+                
+                // Lưu lịch sử hành động admin
+                saveAdminAction({
+                    action: user.isBanned ? 'ban_user' : 'unban_user',
+                    adminId: currentUser.id,
+                    targetUserId: user.id,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Lưu thay đổi
+                saveAllUsers();
+                
+                // Nếu đang chỉnh sửa user này, đóng modal
+                if (currentlyEditingUser && currentlyEditingUser.id === userId) {
+                    hideAdminUserModal();
+                }
+                
+                // Cập nhật giao diện
+                loadAdminData();
+                
+                alert(`Đã ${action} tài khoản ${user.name}!`);
+            }
+        }
+
+        function deleteUser(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            if (user.isAdmin || user.role === 'admin') {
+                alert('Không thể xóa tài khoản quản trị viên!');
+                return;
+            }
+            
+            if (confirm(`Bạn có chắc muốn XÓA VĨNH VIỄN tài khoản ${user.name}? Hành động này không thể hoàn tả!`)) {
+                // Xóa người dùng khỏi danh sách
+                const userIndex = allUsers.findIndex(u => u.id === userId);
+                if (userIndex !== -1) {
+                    allUsers.splice(userIndex, 1);
+                }
+                
+                // Xóa dữ liệu người dùng trong localStorage
+                const userDataKey = STORAGE_KEYS.USER_DATA(userId);
+                localStorage.removeItem(userDataKey);
+                
+                // Xóa khỏi danh sách bạn bè của các người dùng khác
+                allUsers.forEach(u => {
+                    if (u.friends) {
+                        u.friends = u.friends.filter(f => f.id !== userId);
+                    }
+                    if (u.friendRequests) {
+                        u.friendRequests = u.friendRequests.filter(r => r.from !== userId);
+                    }
+                });
+                
+                // Xóa khỏi danh sách bị cấm
+                let bannedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.BANNED_USERS) || '[]');
+                bannedUsers = bannedUsers.filter(id => id !== userId);
+                localStorage.setItem(STORAGE_KEYS.BANNED_USERS, JSON.stringify(bannedUsers));
+                
+                // Lưu lịch sử hành động admin
+                saveAdminAction({
+                    action: 'delete_user',
+                    adminId: currentUser.id,
+                    targetUserId: userId,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Lưu thay đổi
+                saveAllUsers();
+                
+                // Cập nhật giao diện
+                loadAdminData();
+                
+                alert(`Đã xóa tài khoản ${user.name} vĩnh viễn!`);
+            }
+        }
+
+        function saveAdminAction(action) {
+            try {
+                let actions = JSON.parse(localStorage.getItem(STORAGE_KEYS.ADMIN_ACTIONS) || '[]');
+                actions.push(action);
+                localStorage.setItem(STORAGE_KEYS.ADMIN_ACTIONS, JSON.stringify(actions));
+            } catch (error) {
+                console.error('Lỗi khi lưu hành động admin:', error);
+            }
+        }
+
+        function showBulkActionsModal() {
+            document.getElementById('bulkActionsModal').classList.add('active');
+            loadUsersForBulkActions();
+        }
+
+        function hideBulkActionsModal() {
+            document.getElementById('bulkActionsModal').classList.remove('active');
+            selectedUsersForBulkAction = [];
+        }
+
+        function loadUsersForBulkActions() {
+            const container = document.getElementById('bulkUsersList');
+            if (!container) return;
+            
+            let usersHTML = '';
+            allUsers.forEach(user => {
+                // Không cho phép chọn chính mình hoặc admin khác (trừ khi là super admin)
+                if (user.id === currentUser.id) return;
+                if ((user.isAdmin || user.role === 'admin') && !currentUser.isSuperAdmin) return;
+                
+                const isSelected = selectedUsersForBulkAction.includes(user.id);
+                
+                usersHTML += `
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <input type="checkbox" id="bulk_user_${user.id}" ${isSelected ? 'checked' : ''} 
+                               onchange="toggleUserForBulkAction('${user.id}', this.checked)">
+                        <label for="bulk_user_${user.id}" style="flex: 1; cursor: pointer;">
+                            ${user.name} <small style="color: var(--gray-color);">(${user.email})</small>
+                        </label>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = usersHTML || '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Không có người dùng phù hợp</div>';
+        }
+
+        function toggleUserForBulkAction(userId, checked) {
+            if (checked) {
+                if (!selectedUsersForBulkAction.includes(userId)) {
+                    selectedUsersForBulkAction.push(userId);
+                }
+            } else {
+                const index = selectedUsersForBulkAction.indexOf(userId);
+                if (index !== -1) {
+                    selectedUsersForBulkAction.splice(index, 1);
+                }
+            }
+        }
+
+        function executeBulkAction() {
+            const action = document.getElementById('bulkActionSelect').value;
+            const reason = document.getElementById('bulkActionReason').value.trim();
+            const sendNotification = document.getElementById('bulkSendNotification').checked;
+            
+            if (selectedUsersForBulkAction.length === 0) {
+                alert('Vui lòng chọn ít nhất một người dùng!');
+                return;
+            }
+            
+            let actionText = '';
+            let confirmText = '';
+            
+            switch (action) {
+                case 'ban':
+                    actionText = 'khóa';
+                    confirmText = `Bạn có chắc muốn khóa ${selectedUsersForBulkAction.length} tài khoản?`;
+                    break;
+                case 'unban':
+                    actionText = 'mở khóa';
+                    confirmText = `Bạn có chắc muốn mở khóa ${selectedUsersForBulkAction.length} tài khoản?`;
+                    break;
+                case 'delete':
+                    actionText = 'xóa';
+                    confirmText = `Bạn có chắc muốn XÓA VĨNH VIỄN ${selectedUsersForBulkAction.length} tài khoản? Hành động này không thể hoàn tả!`;
+                    break;
+                case 'make_admin':
+                    actionText = 'cấp quyền admin cho';
+                    confirmText = `Bạn có chắc muốn cấp quyền admin cho ${selectedUsersForBulkAction.length} người dùng?`;
+                    break;
+                case 'remove_admin':
+                    actionText = 'xóa quyền admin khỏi';
+                    confirmText = `Bạn có chắc muốn xóa quyền admin khỏi ${selectedUsersForBulkAction.length} người dùng?`;
+                    break;
+            }
+            
+            if (!confirm(confirmText)) return;
+            
+            // Thực hiện hành động
+            selectedUsersForBulkAction.forEach(userId => {
+                const user = allUsers.find(u => u.id === userId);
+                if (!user) return;
+                
+                switch (action) {
+                    case 'ban':
+                        user.isBanned = true;
+                        user.status = 'banned';
+                        break;
+                    case 'unban':
+                        user.isBanned = false;
+                        user.status = 'active';
+                        break;
+                    case 'delete':
+                        // Xóa người dùng
+                        const userIndex = allUsers.findIndex(u => u.id === userId);
+                        if (userIndex !== -1) {
+                            allUsers.splice(userIndex, 1);
+                        }
+                        break;
+                    case 'make_admin':
+                        user.isAdmin = true;
+                        user.role = 'admin';
+                        break;
+                    case 'remove_admin':
+                        user.isAdmin = false;
+                        user.role = 'user';
+                        break;
+                }
+            });
+            
+            // Lưu thay đổi
+            saveAllUsers();
+            
+            // Lưu lịch sử hành động admin
+            saveAdminAction({
+                action: 'bulk_' + action,
+                adminId: currentUser.id,
+                targetUserIds: [...selectedUsersForBulkAction],
+                reason: reason,
+                sendNotification: sendNotification,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Cập nhật giao diện
+            loadAdminData();
+            hideBulkActionsModal();
+            
+            alert(`Đã ${actionText} ${selectedUsersForBulkAction.length} tài khoản!`);
         }
 
         // ==============================================
-        // CÁC HÀM MODAL & AI CHAT
+        // CÁC HÀM QUẢN LÝ HỒ SƠ
         // ==============================================
 
         function showEditProfileModal() {
+            if (!currentUser) return;
+            
             document.getElementById('editName').value = currentUser.name;
             document.getElementById('editUsername').value = currentUser.username;
             document.getElementById('editEmail').value = currentUser.email;
             document.getElementById('editBio').value = currentUser.bio || '';
+            document.getElementById('editPassword').value = '';
+            document.getElementById('editConfirmPassword').value = '';
             
             document.getElementById('editProfileModal').classList.add('active');
         }
@@ -7103,44 +8682,44 @@
             const username = document.getElementById('editUsername').value.trim();
             const email = document.getElementById('editEmail').value.trim();
             const bio = document.getElementById('editBio').value.trim();
-            const password = document.getElementById('editPassword').value;
-            const confirmPassword = document.getElementById('editConfirmPassword').value;
+            const password = document.getElementById('editPassword').value.trim();
+            const confirmPassword = document.getElementById('editConfirmPassword').value.trim();
             
             if (!name || !username || !email) {
-                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                alert('Vui lòng nhập đầy đủ thông tin!');
                 return;
             }
             
-            // Kiểm tra username đã thay đổi và có sẵn không
-            if (username !== currentUser.username) {
-                if (allUsers.find(u => u.username === username && u.id !== currentUser.id)) {
-                    alert('Tên đăng nhập đã được sử dụng!');
-                    return;
-                }
+            // Kiểm tra username trùng (trừ chính mình)
+            const usernameExists = allUsers.find(u => u.username === username && u.id !== currentUser.id);
+            if (usernameExists) {
+                alert('Tên đăng nhập đã được sử dụng!');
+                return;
             }
             
-            // Kiểm tra email đã thay đổi và có sẵn không
-            if (email !== currentUser.email) {
-                if (allUsers.find(u => u.email === email && u.id !== currentUser.id)) {
-                    alert('Email đã được đăng ký!');
-                    return;
-                }
+            // Kiểm tra email trùng (trừ chính mình)
+            const emailExists = allUsers.find(u => u.email === email && u.id !== currentUser.id);
+            if (emailExists) {
+                alert('Email đã được đăng ký!');
+                return;
             }
             
-            // Cập nhật mật khẩu nếu có
+            // Kiểm tra mật khẩu nếu có thay đổi
             if (password) {
                 if (password !== confirmPassword) {
                     alert('Mật khẩu xác nhận không khớp!');
                     return;
                 }
+                
                 if (password.length < 6) {
                     alert('Mật khẩu phải có ít nhất 6 ký tự!');
                     return;
                 }
+                
                 currentUser.password = password;
             }
             
-            // Cập nhật thông tin người dùng
+            // Cập nhật thông tin
             currentUser.name = name;
             currentUser.username = username;
             currentUser.email = email;
@@ -7153,17 +8732,18 @@
                 saveAllUsers();
             }
             
-            // Cập nhật người dùng hiện tại
+            // Lưu currentUser
             saveCurrentUser();
             
             // Cập nhật giao diện
             updateUserUI();
             hideEditProfileModal();
             
-            alert('Đã cập nhật hồ sơ thành công!');
+            alert('Đã lưu thay đổi hồ sơ!');
         }
 
         function showShareProfileModal() {
+            document.getElementById('profileLink').value = `https://giaidieugiacngu.com/profile/${currentUser.username}`;
             document.getElementById('shareProfileModal').classList.add('active');
         }
 
@@ -7174,15 +8754,17 @@
         function shareProfile(method) {
             const profileUrl = `https://giaidieugiacngu.com/profile/${currentUser.username}`;
             
-            switch(method) {
+            switch (method) {
                 case 'copy':
                     copyProfileLink();
                     break;
                 case 'message':
-                    alert('Tính năng gửi tin nhắn sẽ được cập nhật sau!');
+                    alert(`Chia sẻ liên kết hồ sơ qua tin nhắn: ${profileUrl}`);
+                    // Trong thực tế, sẽ tích hợp với API chia sẻ
                     break;
                 case 'social':
-                    alert('Tính năng chia sẻ lên mạng xã hội sẽ được cập nhật sau!');
+                    alert(`Chia sẻ hồ sơ lên mạng xã hội: ${profileUrl}`);
+                    // Trong thực tế, sẽ tích hợp với API mạng xã hội
                     break;
             }
         }
@@ -7190,216 +8772,849 @@
         function copyProfileLink() {
             const linkInput = document.getElementById('profileLink');
             linkInput.select();
-            document.execCommand('copy');
-            alert('Đã sao chép liên kết hồ sơ!');
+            linkInput.setSelectionRange(0, 99999); // Cho mobile
+            
+            try {
+                navigator.clipboard.writeText(linkInput.value).then(() => {
+                    alert('Đã sao chép liên kết vào clipboard!');
+                });
+            } catch (err) {
+                // Fallback cho các trình duyệt cũ
+                document.execCommand('copy');
+                alert('Đã sao chép liên kết vào clipboard!');
+            }
         }
 
-        function sendAISuggestion(text) {
-            document.getElementById('aiInput').value = text;
-            sendAIMessage();
-        }
+        // ==============================================
+        // CẬP NHẬT GIAO DIỆN NGƯỜI DÙNG
+        // ==============================================
 
-        function sendAIMessage() {
-            const input = document.getElementById('aiInput');
-            const message = input.value.trim();
+        function updateUserUI() {
+            if (!currentUser) return;
             
-            if (!message) return;
+            // Cập nhật avatar và tên ở nhiều nơi
+            const avatarElements = document.querySelectorAll('#userAvatar, #profileAvatar');
+            avatarElements.forEach(el => {
+                if (el.id === 'profileAvatar') {
+                    el.src = currentUser.avatar;
+                } else {
+                    el.src = currentUser.avatar;
+                }
+            });
             
-            // Thêm tin nhắn người dùng
-            addAIMessage(message, 'user');
-            input.value = '';
-            
-            // Phản hồi AI sau 1 giây
-            setTimeout(() => {
-                let response = aiResponses.default.response;
-                let advice = aiResponses.default.advice;
-                let recommendations = aiResponses.default.recommendations;
-                
-                // Tìm phản hồi phù hợp
-                for (const [key, value] of Object.entries(aiResponses)) {
-                    if (message.toLowerCase().includes(key)) {
-                        response = value.response;
-                        advice = value.advice;
-                        recommendations = value.recommendations;
-                        break;
+            const nameElements = document.querySelectorAll('#userName, #profileName, #welcomeTitle');
+            nameElements.forEach(el => {
+                if (el.id === 'userName') {
+                    el.textContent = currentUser.name;
+                    // Thêm badge admin nếu là admin
+                    if (currentUser.isAdmin || currentUser.role === 'admin') {
+                        el.innerHTML = `${currentUser.name} <span class="admin-badge">ADMIN</span>`;
+                    }
+                } else if (el.id === 'profileName') {
+                    el.textContent = currentUser.name;
+                } else if (el.id === 'welcomeTitle') {
+                    if (currentUser.isAdmin || currentUser.role === 'admin') {
+                        el.textContent = `Xin chào, Quản trị viên ${currentUser.name}!`;
+                    } else {
+                        el.textContent = `Xin chào, ${currentUser.name}!`;
                     }
                 }
-                
-                // Thêm đề xuất bài hát
-                const trackNames = recommendations.map(id => {
-                    for (const playlist of Object.values(playlists)) {
-                        const track = playlist.find(t => t.id === id);
-                        if (track) return track.name;
+            });
+            
+            // Cập nhật tiểu sử
+            const bioElement = document.getElementById('profileBio');
+            if (bioElement) {
+                bioElement.textContent = currentUser.bio || 'Chưa có tiểu sử';
+            }
+            
+            // Cập nhật thống kê
+            updateStatsUI();
+        }
+
+        function updateStatsUI() {
+            // Thống kê hồ sơ
+            document.getElementById('profilePlays').textContent = userStats.totalPlays || 0;
+            document.getElementById('profileFriends').textContent = userStats.friends || 0;
+            document.getElementById('profilePlaylists').textContent = userStats.playlists || 0;
+            
+            // Thống kê trang chủ
+            document.getElementById('todayTime').textContent = Math.floor(userStats.todayTime) + ' phút';
+            document.getElementById('todaySongs').textContent = userStats.todaySongs;
+            document.getElementById('onlineFriends').textContent = friends.filter(f => f.online).length;
+        }
+
+        function resetDailyStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const lastPlayDate = localStorage.getItem(STORAGE_KEYS.LAST_PLAY_DATE(currentUser.id));
+            
+            if (lastPlayDate !== today) {
+                userStats.todayTime = 0;
+                userStats.todaySongs = 0;
+                saveUserData();
+            }
+        }
+
+        // ==============================================
+        // CHẾ ĐỘ NIGHT MODE
+        // ==============================================
+
+        function loadNightMode() {
+            const saved = localStorage.getItem(STORAGE_KEYS.NIGHT_MODE);
+            isNightMode = saved === 'true';
+            
+            if (isNightMode) {
+                document.body.classList.add('night-mode');
+            }
+            
+            updateNightModeButton();
+        }
+
+        function toggleNightMode() {
+            isNightMode = !isNightMode;
+            
+            if (isNightMode) {
+                document.body.classList.add('night-mode');
+            } else {
+                document.body.classList.remove('night-mode');
+            }
+            
+            localStorage.setItem(STORAGE_KEYS.NIGHT_MODE, isNightMode);
+            updateNightModeButton();
+        }
+
+        function updateNightModeButton() {
+            const button = document.getElementById('nightModeBtn');
+            if (!button) return;
+            
+            button.innerHTML = isNightMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // ==============================================
+        // CÁC HÀM HIỂN THỊ SECTION
+        // ==============================================
+
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('registerScreen').style.display = 'none';
+            document.getElementById('bannedScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'flex';
+            
+            updateWelcomeMessage();
+        }
+
+        function updateWelcomeMessage() {
+            const welcomeTitle = document.getElementById('welcomeTitle');
+            if (!welcomeTitle || !currentUser) return;
+            
+            const hour = new Date().getHours();
+            let greeting = '';
+            
+            if (hour < 12) {
+                greeting = 'Chào buổi sáng';
+            } else if (hour < 18) {
+                greeting = 'Chào buổi chiều';
+            } else {
+                greeting = 'Chào buổi tối';
+            }
+            
+            welcomeTitle.textContent = `${greeting}, ${currentUser.name}!`;
+        }
+
+        function showSection(sectionId) {
+            // Ẩn tất cả các section
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Hiển thị section được chọn
+            const targetSection = document.getElementById(sectionId + 'Section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // Cập nhật menu bên trái
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Ẩn dropdown user nếu đang mở
+            document.getElementById('userDropdown').classList.remove('active');
+            
+            // Đóng sidebar trên mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+            
+            // Cuộn lên đầu trang
+            window.scrollTo(0, 0);
+        }
+
+        // ==============================================
+        // CẬP NHẬT TRACK ACTIVE TRONG DANH SÁCH
+        // ==============================================
+
+        function updateActiveTrack() {
+            // Xóa class active từ tất cả track
+            document.querySelectorAll('.track-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Thêm class active cho track hiện tại
+            if (currentTrack && currentPlaylist) {
+                // Tìm track trong danh sách hiện tại
+                const trackItems = document.querySelectorAll('.track-item');
+                trackItems.forEach((item, index) => {
+                    // Lấy id từ sự kiện onclick
+                    const onclick = item.getAttribute('onclick');
+                    if (onclick && onclick.includes(`playTrackById(${currentTrack.id})`)) {
+                        item.classList.add('active');
                     }
-                    return '';
-                }).filter(name => name);
-                
-                const fullResponse = `${response}\n\n💡 Lời khuyên: ${advice}\n\n🎵 Gợi ý nghe: ${trackNames.slice(0, 3).join(', ')}`;
-                
-                addAIMessage(fullResponse, 'ai');
-            }, 1000);
-        }
-
-        function addAIMessage(message, sender) {
-            const chatMessages = document.getElementById('aiChatMessages');
-            
-            const messageElement = document.createElement('div');
-            messageElement.className = `message ${sender}`;
-            
-            const now = new Date();
-            const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-            
-            messageElement.innerHTML = `
-                <div class="message-bubble">${message.replace(/\n/g, '<br>')}</div>
-                <div class="message-time">${timeString}</div>
-            `;
-            
-            chatMessages.appendChild(messageElement);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            
-            aiChatHistory.push({ sender, message, time: timeString });
+                });
+            }
         }
 
         // ==============================================
-        // CÁC HÀM CHƯA ĐƯỢC TRIỂN KHAI ĐẦY ĐỦ
+        // XỬ LÝ SỰ KIỆN
         // ==============================================
 
-        function addEmoji(emoji) {
-            const input = document.getElementById('chatInput');
-            input.value += emoji;
-            input.focus();
-        }
-
-        function addGroupEmoji(emoji) {
-            const input = document.getElementById('groupInput');
-            input.value += emoji;
-            input.focus();
-        }
-
-        function loadGroupChats() {
-            const groupList = document.getElementById('groupList');
-            if (!groupList) return;
+        function setupEventListeners() {
+            // Menu mobile
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
             
-            if (groupChats.length === 0) {
-                groupList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Chưa có phòng chat nào</div>';
+            // User menu dropdown
+            document.getElementById('userMenu').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('userDropdown').classList.toggle('active');
+            });
+            
+            // Đóng dropdown khi click ra ngoài
+            document.addEventListener('click', function() {
+                document.getElementById('userDropdown').classList.remove('active');
+            });
+            
+            // Night mode toggle
+            document.getElementById('nightModeBtn').addEventListener('click', toggleNightMode);
+            
+            // Tìm kiếm global
+            const globalSearchInput = document.getElementById('globalSearchInput');
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performGlobalSearch(this.value);
+                    }
+                });
+            }
+            
+            // Tìm kiếm trong search section
+            const searchInput = document.getElementById('globalSearch');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch(this.value);
+                    }
+                });
+            }
+            
+            // Tìm kiếm bạn bè trong modal
+            const friendSearchInput = document.getElementById('searchFriend');
+            if (friendSearchInput) {
+                friendSearchInput.addEventListener('input', loadFriendSearchResults);
+            }
+            
+            // Tìm kiếm bài hát cho playlist
+            const trackSearchInput = document.getElementById('trackSearch');
+            if (trackSearchInput) {
+                trackSearchInput.addEventListener('input', function(e) {
+                    searchTracksForPlaylist(this.value);
+                });
+            }
+            
+            // Nhấn Enter trong chat
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendChatMessage();
+                    }
+                });
+            }
+            
+            // Nhấn Enter trong group chat
+            const groupInput = document.getElementById('groupInput');
+            if (groupInput) {
+                groupInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendGroupMessage();
+                    }
+                });
+            }
+            
+            // Nhấn Enter trong AI chat
+            const aiInput = document.getElementById('aiInput');
+            if (aiInput) {
+                aiInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendAIMessage();
+                    }
+                });
+            }
+            
+            // Upload avatar
+            const avatarUpload = document.getElementById('avatarUpload');
+            if (avatarUpload) {
+                avatarUpload.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            currentUser.avatar = event.target.result;
+                            
+                            // Cập nhật trong allUsers
+                            const userIndex = allUsers.findIndex(u => u.id === currentUser.id);
+                            if (userIndex !== -1) {
+                                allUsers[userIndex].avatar = event.target.result;
+                                saveAllUsers();
+                            }
+                            
+                            // Cập nhật giao diện
+                            updateUserUI();
+                            saveCurrentUser();
+                            
+                            alert('Đã cập nhật ảnh đại diện!');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Đóng modal khi click ra ngoài
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // ==============================================
+        // TÌM KIẾM TOÀN CỤC
+        // ==============================================
+
+        function performGlobalSearch(query) {
+            if (!query.trim()) return;
+            
+            // Chuyển đến section tìm kiếm
+            showSection('search');
+            
+            // Đặt giá trị và thực hiện tìm kiếm
+            document.getElementById('globalSearch').value = query;
+            performSearch(query);
+        }
+
+        function setSearchFilter(filter) {
+            currentSearchFilter = filter;
+            
+            // Cập nhật tab active
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.filter === filter) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Thực hiện tìm kiếm lại với filter mới
+            const query = document.getElementById('globalSearch').value;
+            if (query) {
+                performSearch(query);
+            }
+        }
+
+        function performSearch(query) {
+            const resultsContainer = document.getElementById('searchResults');
+            if (!resultsContainer) return;
+            
+            query = query.toLowerCase().trim();
+            
+            if (!query) {
+                resultsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-color);">Nhập từ khóa để tìm kiếm</div>';
                 return;
             }
             
-            let groupHTML = '';
-            groupChats.forEach(group => {
-                const lastMessage = group.messages[group.messages.length - 1];
-                const memberCount = group.members.length;
-                
-                groupHTML += `
-                    <div class="group-item" onclick="openGroup('${group.id}')">
-                        <div class="group-avatar">
-                            ${group.name.charAt(0)}
-                        </div>
-                        <div class="group-info">
-                            <div class="group-name">${group.name}</div>
-                            <div class="group-members">${memberCount} thành viên</div>
-                        </div>
-                        <div class="group-time">${lastMessage ? formatTime(lastMessage.time) : ''}</div>
-                    </div>
-                `;
-            });
+            let resultsHTML = '';
             
-            groupList.innerHTML = groupHTML;
+            // Tìm kiếm bài hát
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'songs') {
+                let songResults = [];
+                Object.values(playlists).forEach(playlist => {
+                    playlist.forEach(track => {
+                        if (track.name.toLowerCase().includes(query) || 
+                            track.artist.toLowerCase().includes(query)) {
+                            songResults.push(track);
+                        }
+                    });
+                });
+                
+                // Loại bỏ trùng lặp
+                songResults = songResults.filter((track, index, self) =>
+                    index === self.findIndex(t => t.id === track.id)
+                );
+                
+                if (songResults.length > 0) {
+                    resultsHTML += '<h3 style="margin: 20px 0 10px; color: var(--light-color);">Bài hát</h3>';
+                    songResults.slice(0, 5).forEach(track => {
+                        resultsHTML += `
+                            <div class="search-track-item" onclick="playTrackById(${track.id})">
+                                <img src="${track.image}" alt="${track.name}" class="search-track-image">
+                                <div class="search-track-info">
+                                    <div class="search-track-name">${track.name}</div>
+                                    <div class="search-track-artist">${track.artist}</div>
+                                </div>
+                                <button class="add-track-btn" onclick="event.stopPropagation(); addTrackToPlaylistFromSearch(${track.id})">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        `;
+                    });
+                    
+                    if (songResults.length > 5) {
+                        resultsHTML += `<div style="text-align: center; margin: 10px 0;">
+                            <button class="profile-action-btn" onclick="showAllSearchResults('songs', '${query}')">
+                                Xem thêm ${songResults.length - 5} bài hát
+                            </button>
+                        </div>`;
+                    }
+                }
+            }
+            
+            // Tìm kiếm playlist
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'playlists') {
+                const playlistResults = Object.entries(playlists).filter(([key, playlist]) => {
+                    const playlistName = key === 'chill' ? 'Chill Vibes' :
+                                       key === 'sleep' ? 'Ngủ Ngon' :
+                                       key === 'vietnam' ? 'Nhạc Việt' :
+                                       key === 'world' ? 'Nhạc Quốc Tế' : key;
+                    return playlistName.toLowerCase().includes(query);
+                });
+                
+                if (playlistResults.length > 0) {
+                    resultsHTML += '<h3 style="margin: 20px 0 10px; color: var(--light-color);">Playlist</h3>';
+                    resultsHTML += '<div class="playlist-grid" style="margin-bottom: 20px;">';
+                    
+                    playlistResults.slice(0, 4).forEach(([key, playlist]) => {
+                        const playlistName = key === 'chill' ? 'Chill Vibes' :
+                                           key === 'sleep' ? 'Ngủ Ngon' :
+                                           key === 'vietnam' ? 'Nhạc Việt' :
+                                           key === 'world' ? 'Nhạc Quốc Tế' : key;
+                        
+                        resultsHTML += `
+                            <div class="playlist-card" onclick="playPlaylist('${key}')">
+                                <img src="${playlist[0]?.image || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'}" 
+                                     alt="${playlistName}" class="playlist-image">
+                                <div class="playlist-card-title">${playlistName}</div>
+                                <div class="playlist-card-description">${playlist.length} bài hát</div>
+                            </div>
+                        `;
+                    });
+                    
+                    resultsHTML += '</div>';
+                }
+            }
+            
+            // Tìm kiếm podcast
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'podcasts') {
+                const podcastResults = podcasts.filter(podcast => 
+                    podcast.title.toLowerCase().includes(query) ||
+                    podcast.category.toLowerCase().includes(query)
+                );
+                
+                if (podcastResults.length > 0) {
+                    resultsHTML += '<h3 style="margin: 20px 0 10px; color: var(--light-color);">Podcast</h3>';
+                    podcastResults.slice(0, 4).forEach(podcast => {
+                        resultsHTML += `
+                            <div class="podcast-card" onclick="playPodcast(${podcast.id})">
+                                <img src="${podcast.thumbnail}" alt="${podcast.title}" class="podcast-image">
+                                <div class="podcast-title">${podcast.title}</div>
+                                <div class="podcast-description">${podcast.category} • ${podcast.duration}</div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+            
+            // Tìm kiếm âm thanh
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'sounds') {
+                const soundResults = sounds.filter(sound =>
+                    sound.name.toLowerCase().includes(query) ||
+                    sound.type.toLowerCase().includes(query)
+                );
+                
+                if (soundResults.length > 0) {
+                    resultsHTML += '<h3 style="margin: 20px 0 10px; color: var(--light-color);">Âm thanh</h3>';
+                    soundResults.slice(0, 4).forEach(sound => {
+                        resultsHTML += `
+                            <div class="sound-card" onclick="playSound(${sound.id})">
+                                <div class="sound-icon">
+                                    <i class="${sound.icon}"></i>
+                                </div>
+                                <div class="sound-title">${sound.name}</div>
+                                <div class="sound-type">${sound.type}</div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+            
+            // Tìm kiếm bạn bè
+            if (currentSearchFilter === 'all' || currentSearchFilter === 'friends') {
+                const friendResults = allUsers.filter(user => 
+                    user.id !== currentUser.id &&
+                    !user.isBanned &&
+                    (user.name.toLowerCase().includes(query) ||
+                     user.username.toLowerCase().includes(query) ||
+                     user.email.toLowerCase().includes(query))
+                );
+                
+                if (friendResults.length > 0) {
+                    resultsHTML += '<h3 style="margin: 20px 0 10px; color: var(--light-color);">Người dùng</h3>';
+                    friendResults.slice(0, 5).forEach(user => {
+                        const isFriend = friends.find(f => f.id === user.id);
+                        
+                        resultsHTML += `
+                            <div class="friend-card" style="margin-bottom: 10px;">
+                                <img src="${user.avatar}" alt="${user.name}" class="friend-avatar">
+                                <div class="friend-name">${user.name}</div>
+                                <div class="friend-status">@${user.username}</div>
+                                <div class="friend-actions">
+                                    ${isFriend ? 
+                                        `<button class="friend-btn chat" onclick="startChat('${user.id}')">
+                                            <i class="fas fa-comment"></i> Nhắn tin
+                                        </button>` :
+                                        `<button class="friend-btn chat" onclick="sendFriendRequest('${user.id}')">
+                                            <i class="fas fa-user-plus"></i> Kết bạn
+                                        </button>`
+                                    }
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+            
+            // Nếu không có kết quả
+            if (!resultsHTML) {
+                resultsHTML = '<div style="padding: 40px; text-align: center; color: var(--gray-color);">Không tìm thấy kết quả phù hợp</div>';
+            }
+            
+            resultsContainer.innerHTML = resultsHTML;
         }
 
-        function openGroup(groupId) {
-            currentGroup = groupChats.find(g => g.id === groupId);
-            if (!currentGroup) return;
+        function addTrackToPlaylistFromSearch(trackId) {
+            // Hiển thị modal chọn playlist
+            const track = getTrackById(trackId);
+            if (!track) return;
             
-            // Tải tin nhắn
-            const messagesContainer = document.getElementById('groupMessages');
-            let messagesHTML = '';
-            
-            currentGroup.messages.forEach(message => {
-                const isUser = message.sender === currentUser.id;
-                const sender = message.sender === 'system' ? 'Hệ thống' : 
-                               (allUsers.find(u => u.id === message.sender)?.name || 'Ẩn danh');
-                
-                messagesHTML += `
-                    <div class="group-message-item ${isUser ? 'user' : 'other'}">
-                        <div class="group-message-content">
-                            <div class="group-message-sender">${sender}</div>
-                            ${message.text}
-                        </div>
-                        <div class="group-message-time">${formatTime(message.time)}</div>
-                    </div>
-                `;
-            });
-            
-            messagesContainer.innerHTML = messagesHTML;
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            // Kích hoạt input
-            document.getElementById('groupInput').disabled = false;
-            document.getElementById('groupSendBtn').disabled = false;
-            
-            // Hiển thị section group chat
-            showSection('group-chat');
-        }
-
-        function sendGroupMessage() {
-            if (!currentGroup) {
-                alert('Vui lòng chọn một phòng chat!');
+            if (userPlaylists.length === 0) {
+                if (confirm('Bạn chưa có playlist nào. Tạo playlist mới?')) {
+                    showCreatePlaylistModal();
+                }
                 return;
             }
             
-            const input = document.getElementById('groupInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            // Thêm tin nhắn
-            const newMessage = {
-                id: 'msg_' + Date.now(),
-                sender: currentUser.id,
-                text: message,
-                time: new Date().toISOString()
-            };
-            
-            currentGroup.messages.push(newMessage);
-            saveUserData();
-            
-            // Cập nhật giao diện
-            const messagesContainer = document.getElementById('groupMessages');
-            messagesContainer.innerHTML += `
-                <div class="group-message-item user">
-                    <div class="group-message-content">
-                        <div class="group-message-sender">${currentUser.name}</div>
-                        ${message}
+            let playlistOptions = '<div style="max-height: 300px; overflow-y: auto;">';
+            userPlaylists.forEach(playlist => {
+                playlistOptions += `
+                    <div class="search-track-item" onclick="addTrackToSpecificPlaylist('${playlist.id}', ${trackId})">
+                        <div class="search-track-info">
+                            <div class="search-track-name">${playlist.name}</div>
+                            <div class="search-track-artist">${playlist.tracks?.length || 0} bài hát</div>
+                        </div>
                     </div>
-                    <div class="group-message-time">${formatTime(newMessage.time)}</div>
+                `;
+            });
+            playlistOptions += '</div>';
+            
+            // Tạo modal tạm thời
+            const tempModal = document.createElement('div');
+            tempModal.className = 'modal-overlay active';
+            tempModal.innerHTML = `
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Thêm "${track.name}" vào playlist</h3>
+                        <button class="modal-close" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ${playlistOptions}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Hủy</button>
+                        <button class="btn btn-primary" onclick="showCreatePlaylistModal(); this.parentElement.parentElement.parentElement.remove()">Tạo playlist mới</button>
+                    </div>
                 </div>
             `;
             
-            input.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            document.body.appendChild(tempModal);
         }
 
-        function searchGroups(query) {
-            const groupItems = document.querySelectorAll('.group-item');
-            const lowerQuery = query.toLowerCase();
+        function addTrackToSpecificPlaylist(playlistId, trackId) {
+            const playlist = userPlaylists.find(p => p.id === playlistId);
+            if (!playlist) return;
             
-            groupItems.forEach(item => {
-                const groupName = item.querySelector('.group-name').textContent.toLowerCase();
-                if (groupName.includes(lowerQuery)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
+            const track = getTrackById(trackId);
+            if (!track) return;
+            
+            // Thêm bài hát vào playlist
+            if (!playlist.tracks) playlist.tracks = [];
+            
+            // Kiểm tra xem bài hát đã có chưa
+            const existingTrack = playlist.tracks.find(t => t.id === trackId);
+            if (existingTrack) {
+                alert('Bài hát đã có trong playlist này!');
+                return;
+            }
+            
+            playlist.tracks.push({
+                id: trackId,
+                dateAdded: new Date().toLocaleDateString('vi-VN')
             });
+            
+            // Lưu dữ liệu
+            saveUserData();
+            
+            // Xóa modal tạm thời
+            const tempModal = document.querySelector('.modal-overlay.active:last-child');
+            if (tempModal) {
+                tempModal.remove();
+            }
+            
+            alert(`Đã thêm "${track.name}" vào playlist "${playlist.name}"!`);
+        }
+
+        function showAllSearchResults(type, query) {
+            // Có thể mở rộng để hiển thị tất cả kết quả
+            alert(`Hiển thị tất cả kết quả cho "${query}" trong mục ${type}`);
+            // Trong thực tế, có thể tạo một trang/modal riêng để hiển thị tất cả kết quả
         }
 
         // ==============================================
-        // KHỞI CHẠY ỨNG DỤNG
+        // CÁC HÀM BỔ SUNG CHO ADMIN
         // ==============================================
 
-        // Ứng dụng đã sẵn sàng!
-        console.log('Giai Điệu Giấc Ngủ đã sẵn sàng!');
+        function refreshAdminData() {
+            loadAllUsers();
+            loadAdminData();
+            alert('Đã làm mới dữ liệu quản trị!');
+        }
+
+        function showAdminStats() {
+            // Có thể mở modal hoặc section riêng để hiển thị thống kê chi tiết
+            alert(`Thống kê hệ thống:
+            • Tổng người dùng: ${adminStats.totalUsers}
+            • Người dùng hoạt động: ${adminStats.activeUsers}
+            • Người dùng bị cấm: ${adminStats.bannedUsers}
+            • Quản trị viên: ${adminStats.adminUsers}
+            • Tổng lượt nghe: ${adminStats.totalPlays}
+            • Tổng playlist: ${adminStats.totalPlaylists}`);
+        }
+
+        function exportUserData() {
+            // Tạo dữ liệu để xuất
+            const exportData = {
+                exportedAt: new Date().toISOString(),
+                admin: currentUser.name,
+                stats: adminStats,
+                users: allUsers.map(user => ({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    status: user.status,
+                    role: user.role,
+                    joined: user.joined,
+                    lastLogin: user.lastLogin,
+                    isBanned: user.isBanned
+                }))
+            };
+            
+            // Tạo file JSON để tải xuống
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `users_export_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('Đã xuất dữ liệu người dùng!');
+        }
+
+        function adminResetUserData(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            if (confirm(`Bạn có chắc muốn XÓA TOÀN BỘ DỮ LIỆU của ${user.name}? Hành động này không thể hoàn tả!`)) {
+                try {
+                    // Xóa dữ liệu người dùng trong localStorage
+                    const userDataKey = STORAGE_KEYS.USER_DATA(userId);
+                    localStorage.removeItem(userDataKey);
+                    
+                    // Reset thống kê người dùng
+                    user.stats = {
+                        plays: 0,
+                        time: 0,
+                        playlists: 0,
+                        friends: 0
+                    };
+                    
+                    // Xóa bạn bè
+                    user.friends = [];
+                    user.friendRequests = [];
+                    
+                    // Xóa playlist của người dùng
+                    const userPlaylistsKey = STORAGE_KEYS.USER_DATA(userId);
+                    localStorage.removeItem(userPlaylistsKey);
+                    
+                    // Lưu thay đổi
+                    saveAllUsers();
+                    
+                    // Lưu lịch sử hành động admin
+                    saveAdminAction({
+                        action: 'reset_user_data',
+                        adminId: currentUser.id,
+                        targetUserId: userId,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    alert(`Đã xóa toàn bộ dữ liệu của ${user.name}!`);
+                    
+                } catch (error) {
+                    console.error('Lỗi khi reset dữ liệu người dùng:', error);
+                    alert('Có lỗi xảy ra khi reset dữ liệu người dùng!');
+                }
+            }
+        }
+
+        function adminViewUserActivity(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Trong thực tế, sẽ truy vấn lịch sử hoạt động từ server
+            alert(`Lịch sử hoạt động của ${user.name}:
+            • Tham gia: ${user.joined ? new Date(user.joined).toLocaleDateString('vi-VN') : 'N/A'}
+            • Đăng nhập cuối: ${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('vi-VN') : 'Chưa đăng nhập'}
+            • Trạng thái: ${user.isBanned ? 'Đã khóa' : 'Hoạt động'}
+            • Vai trò: ${user.isAdmin ? 'Quản trị viên' : (user.role || 'Người dùng')}
+            • Số bạn bè: ${user.friends ? user.friends.length : 0}
+            • Lượt nghe: ${user.stats ? user.stats.plays || 0 : 0}`);
+        }
+
+        function showContentManagement() {
+            alert('Chức năng quản lý nội dung đang được phát triển!');
+            // Trong thực tế, sẽ mở một section/modal để quản lý bài hát, playlist, podcast
+        }
+
+        function showPlaylistManagement() {
+            alert('Chức năng quản lý playlist đang được phát triển!');
+        }
+
+        function showPodcastManagement() {
+            alert('Chức năng quản lý podcast đang được phát triển!');
+        }
+
+        // ==============================================
+        // HÀM KHỞI ĐỘNG CUỐI CÙNG
+        // ==============================================
+
+        // Thêm style cho typing indicator
+        const typingStyle = document.createElement('style');
+        typingStyle.textContent = `
+            .typing-indicator {
+                display: flex;
+                align-items: center;
+                height: 20px;
+            }
+            
+            .typing-indicator span {
+                height: 8px;
+                width: 8px;
+                background: var(--gray-color);
+                border-radius: 50%;
+                margin: 0 2px;
+                animation: typing 1s infinite ease-in-out;
+            }
+            
+            .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+            .typing-indicator span:nth-child(2) { animation-delay: 0.1s; }
+            .typing-indicator span:nth-child(3) { animation-delay: 0.2s; }
+            
+            @keyframes typing {
+                0%, 100% { transform: translateY(0); opacity: 0.5; }
+                50% { transform: translateY(-5px); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(typingStyle);
+
+        // Thêm hiệu ứng fade-in cho các phần tử
+        setTimeout(() => {
+            document.querySelectorAll('.section').forEach((section, index) => {
+                section.style.animationDelay = `${index * 0.1}s`;
+                section.classList.add('fade-in');
+            });
+        }, 100);
+
+        // Cập nhật thời gian thực cho các thống kê
+        setInterval(() => {
+            if (currentUser) {
+                // Cập nhật số bạn bè online (mô phỏng)
+                friends.forEach(friend => {
+                    // 30% khả năng online
+                    friend.online = Math.random() > 0.7;
+                });
+                
+                // Cập nhật UI
+                document.getElementById('onlineFriends').textContent = friends.filter(f => f.online).length;
+            }
+        }, 30000); // Cập nhật mỗi 30 giây
+
+        // Kiểm tra và cập nhật dữ liệu khi tab được focus lại
+        window.addEventListener('focus', function() {
+            if (currentUser) {
+                loadAllUsers();
+                loadUserData();
+            }
+        });
+
+        console.log('Ứng dụng Giai Điệu Giấc Ngủ đã khởi động thành công!');
+        console.log('Tài khoản admin mặc định:');
+        console.log('Username: TRUNGQUANADMIN');
+        console.log('Password: trungquan2010');
+        // Xử lý chuyển tab sidebar
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function () {
+        const section = this.getAttribute('data-section');
+
+        // Ẩn tất cả section
+        document.querySelectorAll('.section-content').forEach(sec => {
+            sec.classList.remove('active');
+        });
+
+        // Hiện section tương ứng
+        const target = document.getElementById(section + 'Section');
+        if (target) target.classList.add('active');
+
+        // Set active cho nav-item
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
     </script>
 </body>
 </html>
