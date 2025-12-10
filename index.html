@@ -9533,11 +9533,12 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
     </script>
     <script type="module">
-  // Import trực tiếp từ link web (CDN) để chạy được trên GitHub
+  // 1. Import thêm hàm tạo tài khoản (createUserWithEmailAndPassword)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"; // <-- THÊM DÒNG NÀY
 
-  // Cấu hình Firebase của bạn
+  // 2. Cấu hình Firebase (giữ nguyên của bạn)
   const firebaseConfig = {
     apiKey: "AIzaSyAmXjoxob3AVYMTmb0SXW_d-Le1beNYvLA",
     authDomain: "giaidieugiacngu-f01bd.firebaseapp.com",
@@ -9548,11 +9549,49 @@ document.querySelectorAll('.nav-item').forEach(item => {
     measurementId: "G-X3Y5SF5K8Y"
   };
 
-  // Khởi tạo Firebase
+  // 3. Khởi tạo
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+  const auth = getAuth(app); // Khởi tạo Auth
 
-  console.log("Firebase đã được kết nối thành công cho Giai Điệu Giấc Ngủ!");
+  console.log("Firebase đã kết nối!");
+
+  // 4. Xử lý sự kiện khi bấm nút Đăng Ký
+  const registerForm = document.getElementById('registerForm');
+  if (registerForm) {
+      registerForm.addEventListener('submit', (e) => {
+          e.preventDefault(); // Ngăn trang web tải lại
+
+          // Lấy thông tin từ ô nhập
+          const email = document.getElementById('registerEmail').value;
+          const password = document.getElementById('registerPassword').value;
+          const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+          // Kiểm tra mật khẩu khớp
+          if (password !== confirmPassword) {
+              alert("Mật khẩu xác nhận không khớp!");
+              return;
+          }
+
+          // GỬI LÊN FIREBASE
+          createUserWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  // Thành công!
+                  const user = userCredential.user;
+                  alert("Đăng ký thành công! Tài khoản: " + user.email);
+                  console.log("User đã tạo:", user);
+                  // Chuyển hướng hoặc đăng nhập luôn tại đây
+                  // window.location.reload(); 
+              })
+              .catch((error) => {
+                  // Thất bại (ví dụ: email trùng, mật khẩu yếu)
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  alert("Lỗi đăng ký: " + errorMessage);
+                  console.error(error);
+              });
+      });
+  }
 </script>
 </body>
 </html>
