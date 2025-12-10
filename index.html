@@ -9583,7 +9583,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
                   alert("Đăng nhập thất bại: " + error.message);
               });
       });
-  }
+
       // Nút "Đăng Ký" trên form Đăng nhập
       const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
       if(toRegisterBtn) {
@@ -9592,6 +9592,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
               document.getElementById('registerScreen').style.display = 'flex';
           });
       }
+  }
 </script>
 </body>
 </html>
