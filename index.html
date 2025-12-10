@@ -5747,7 +5747,7 @@ function saveAllUsers() {
         }
 
         // Xử lý đăng nhập
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const username = document.getElementById('loginUsername').value.trim();
@@ -5780,83 +5780,6 @@ function saveAllUsers() {
                 alert('Tên đăng nhập hoặc mật khẩu không đúng!');
             }
         });
-
-        // Xử lý đăng ký - FIXED: Lưu currentUser và loadUserData
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('registerName').value.trim();
-            const username = document.getElementById('registerUsername').value.trim();
-            const email = document.getElementById('registerEmail').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
-            const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
-            
-            if (!name || !username || !email || !password || !confirmPassword) {
-                alert('Vui lòng nhập đầy đủ thông tin!');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                alert('Mật khẩu xác nhận không khớp!');
-                return;
-            }
-            
-            if (password.length < 6) {
-                alert('Mật khẩu phải có ít nhất 6 ký tự!');
-                return;
-            }
-            
-            // Kiểm tra username đã tồn tại
-            if (allUsers.find(u => u.username === username)) {
-                alert('Tên đăng nhập đã được sử dụng!');
-                return;
-            }
-            
-            // Kiểm tra email đã tồn tại
-            if (allUsers.find(u => u.email === email)) {
-                alert('Email đã được đăng ký!');
-                return;
-            }
-            
-            // Tạo người dùng mới
-            const newUser = {
-                id: 'user_' + Date.now(),
-                username: username,
-                password: password,
-                name: name,
-                email: email,
-                avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-                bio: "Người yêu âm nhạc mới",
-                joined: new Date().toISOString().split('T')[0],
-                stats: {
-                    plays: 0,
-                    time: 0,
-                    playlists: 0,
-                    friends: 0
-                },
-                friendRequests: [],
-                friends: [],
-                isAdmin: false,
-                isBanned: false,
-                role: "user",
-                lastLogin: new Date().toISOString(),
-                status: "active"
-            };
-            
-            allUsers.push(newUser);
-            saveAllUsers();
-            
-            currentUser = newUser;
-            saveCurrentUser();
-            
-            loadUserData();
-            showApp();
-            resetDailyStats();
-            updateWelcomeMessage();
-            
-            alert('Đăng ký thành công! Chào mừng ' + name + ' đến với Giai Điệu Giấc Ngủ!');
-        });
-
         // Đăng xuất
         function logout() {
             if (confirm('Bạn có chắc muốn đăng xuất?')) {
@@ -9533,12 +9456,11 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
     </script>
     <script type="module">
-  // 1. Import thêm hàm tạo tài khoản (createUserWithEmailAndPassword)
+  // 1. Nhập khẩu đầy đủ công cụ: App, Auth (Đăng ký & Đăng nhập)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"; // <-- THÊM DÒNG NÀY
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // 2. Cấu hình Firebase (giữ nguyên của bạn)
+  // 2. Cấu hình Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAmXjoxob3AVYMTmb0SXW_d-Le1beNYvLA",
     authDomain: "giaidieugiacngu-f01bd.firebaseapp.com",
@@ -9549,48 +9471,97 @@ document.querySelectorAll('.nav-item').forEach(item => {
     measurementId: "G-X3Y5SF5K8Y"
   };
 
-  // 3. Khởi tạo
+  // 3. Khởi động
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const auth = getAuth(app); // Khởi tạo Auth
+  const auth = getAuth(app);
+  console.log("Firebase đã sẵn sàng!");
 
-  console.log("Firebase đã kết nối!");
-
-  // 4. Xử lý sự kiện khi bấm nút Đăng Ký
+  // ==============================
+  // PHẦN 1: XỬ LÝ ĐĂNG KÝ (REGISTER)
+  // ==============================
   const registerForm = document.getElementById('registerForm');
   if (registerForm) {
-      registerForm.addEventListener('submit', (e) => {
-          e.preventDefault(); // Ngăn trang web tải lại
+      // Xóa lệnh cũ
+      const newRegisterForm = registerForm.cloneNode(true);
+      registerForm.parentNode.replaceChild(newRegisterForm, registerForm);
 
-          // Lấy thông tin từ ô nhập
+      newRegisterForm.addEventListener('submit', (e) => {
+          e.preventDefault();
           const email = document.getElementById('registerEmail').value;
           const password = document.getElementById('registerPassword').value;
           const confirmPassword = document.getElementById('registerConfirmPassword').value;
 
-          // Kiểm tra mật khẩu khớp
-          if (password !== confirmPassword) {
-              alert("Mật khẩu xác nhận không khớp!");
-              return;
-          }
+          if (password !== confirmPassword) { alert("Mật khẩu không khớp!"); return; }
+          if (password.length < 6) { alert("Mật khẩu phải từ 6 ký tự!"); return; }
 
-          // GỬI LÊN FIREBASE
+          // Gửi lên Firebase
           createUserWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
-                  // Thành công!
-                  const user = userCredential.user;
-                  alert("Đăng ký thành công! Tài khoản: " + user.email);
-                  console.log("User đã tạo:", user);
-                  // Chuyển hướng hoặc đăng nhập luôn tại đây
-                  // window.location.reload(); 
+                  alert("✅ Đăng ký thành công! Hãy quay lại để đăng nhập.");
+                  // Chuyển sang màn hình đăng nhập
+                  document.getElementById('loginScreen').style.display = 'flex';
+                  document.getElementById('registerScreen').style.display = 'none';
               })
               .catch((error) => {
-                  // Thất bại (ví dụ: email trùng, mật khẩu yếu)
-                  const errorCode = error.code;
-                  const errorMessage = error.message;
-                  alert("Lỗi đăng ký: " + errorMessage);
+                  alert("Lỗi đăng ký: " + error.message);
+              });
+      });
+
+      // Nút "Quay lại" trên form Đăng ký
+      const backBtn = newRegisterForm.querySelector('.login-button.secondary');
+      if(backBtn) {
+          backBtn.addEventListener('click', () => {
+              document.getElementById('loginScreen').style.display = 'flex';
+              document.getElementById('registerScreen').style.display = 'none';
+          });
+      }
+  }
+
+  // ==============================
+  // PHẦN 2: XỬ LÝ ĐĂNG NHẬP (LOGIN) - MỚI
+  // ==============================
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+      // Xóa lệnh cũ
+      const newLoginForm = loginForm.cloneNode(true);
+      loginForm.parentNode.replaceChild(newLoginForm, loginForm);
+
+      newLoginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          // LƯU Ý: Ở ô "Tên đăng nhập", bạn hãy NHẬP EMAIL đã đăng ký
+          const email = document.getElementById('loginUsername').value; 
+          const password = document.getElementById('loginPassword').value;
+
+          // Gửi lên Firebase kiểm tra
+          signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  const user = userCredential.user;
+                  alert("🎉 Đăng nhập thành công!\nXin chào: " + user.email);
+                  
+                  // Vào ứng dụng chính
+                  document.getElementById('loginScreen').style.display = 'none';
+                  document.getElementById('appContainer').style.display = 'flex';
+                  
+                  // Cập nhật tên hiển thị tạm thời (lấy phần đầu email)
+                  const nameDisplay = user.email.split('@')[0];
+                  document.getElementById('userName').innerHTML = nameDisplay;
+                  document.getElementById('welcomeTitle').textContent = "Xin chào, " + nameDisplay + "!";
+              })
+              .catch((error) => {
+                  alert("Đăng nhập thất bại! Kiểm tra lại Email/Mật khẩu.");
                   console.error(error);
               });
       });
+
+      // Nút "Đăng Ký" trên form Đăng nhập
+      const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
+      if(toRegisterBtn) {
+          toRegisterBtn.addEventListener('click', () => {
+              document.getElementById('loginScreen').style.display = 'none';
+              document.getElementById('registerScreen').style.display = 'flex';
+          });
+      }
   }
 </script>
 </body>
