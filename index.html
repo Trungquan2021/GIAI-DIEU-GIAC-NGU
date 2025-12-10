@@ -5283,7 +5283,7 @@
         // Admin user account - FIXED: Có quyền admin
         const adminUser = {
             id: "admin_user_001",
-            username: "phatnehihhi@gmail.com",
+            username: "TRUNGQUANADMIN@gmail.com",
             password: "trungquan2010",
             name: "Nguyễn Quân",
             email: "TRUNGQUANADMIN@gmail.com",
@@ -9583,15 +9583,6 @@ document.querySelectorAll('.nav-item').forEach(item => {
                   alert("Đăng nhập thất bại: " + error.message);
               });
       });
-
-      // Nút "Đăng Ký"
-      const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
-      if(toRegisterBtn) {
-          toRegisterBtn.addEventListener('click', () => {
-              document.getElementById('loginScreen').style.display = 'none';
-              document.getElementById('registerScreen').style.display = 'flex';
-          });
-      }
   }
       // Nút "Đăng Ký" trên form Đăng nhập
       const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
