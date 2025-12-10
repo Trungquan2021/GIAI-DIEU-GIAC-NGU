@@ -9517,8 +9517,8 @@ document.querySelectorAll('.nav-item').forEach(item => {
       }
   }
 
-  // ==============================
-  // PHẦN 2: XỬ LÝ ĐĂNG NHẬP (LOGIN) - MỚI
+ // ==============================
+  // PHẦN 2: XỬ LÝ ĐĂNG NHẬP (LOGIN) - ĐÃ NÂNG CẤP
   // ==============================
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
@@ -9529,32 +9529,62 @@ document.querySelectorAll('.nav-item').forEach(item => {
       newLoginForm.addEventListener('submit', (e) => {
           e.preventDefault();
           
-          // LƯU Ý: Ở ô "Tên đăng nhập", bạn hãy NHẬP EMAIL đã đăng ký
           const email = document.getElementById('loginUsername').value; 
           const password = document.getElementById('loginPassword').value;
 
-          // Gửi lên Firebase kiểm tra
+          // --- CẤU HÌNH EMAIL ADMIN TẠI ĐÂY ---
+          const ADMIN_EMAIL = "admin@gmail.com"; // <--- Thay bằng email bạn vừa đăng ký
+          // ------------------------------------
+
           signInWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
                   const user = userCredential.user;
-                  alert("🎉 Đăng nhập thành công!\nXin chào: " + user.email);
+                  let welcomeMsg = "🎉 Đăng nhập thành công!";
+                  
+                  // Tạo dữ liệu người dùng để lưu vào máy (cho app chạy được)
+                  const userInfo = {
+                      id: user.uid,
+                      email: user.email,
+                      name: user.email.split('@')[0],
+                      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+                      role: "user",
+                      isAdmin: false,
+                      // Các chỉ số mặc định
+                      stats: { plays: 0, time: 0, playlists: 0, friends: 0 },
+                      friends: [],
+                      playlists: []
+                  };
+
+                  // KIỂM TRA QUYỀN ADMIN
+                  if (user.email === ADMIN_EMAIL) {
+                      userInfo.role = "admin";
+                      userInfo.isAdmin = true;
+                      userInfo.name = "Admin Tổng";
+                      welcomeMsg = "👑 Xin chào Quản Trị Viên!";
+                  }
+
+                  // Lưu vào bộ nhớ máy để các trang khác hiểu đây là ai
+                  localStorage.setItem('currentMusicUser', JSON.stringify(userInfo));
+
+                  alert(welcomeMsg);
                   
                   // Vào ứng dụng chính
                   document.getElementById('loginScreen').style.display = 'none';
                   document.getElementById('appContainer').style.display = 'flex';
                   
-                  // Cập nhật tên hiển thị tạm thời (lấy phần đầu email)
-                  const nameDisplay = user.email.split('@')[0];
-                  document.getElementById('userName').innerHTML = nameDisplay;
-                  document.getElementById('welcomeTitle').textContent = "Xin chào, " + nameDisplay + "!";
+                  // Cập nhật giao diện
+                  document.getElementById('userName').innerHTML = userInfo.isAdmin ? 
+                      userInfo.name + ' <span class="admin-badge">ADMIN</span>' : userInfo.name;
+                  
+                  // Reload trang để tải dữ liệu Admin (nếu cần)
+                  if(userInfo.isAdmin) setTimeout(() => window.location.reload(), 1000);
               })
               .catch((error) => {
-                  alert("Đăng nhập thất bại! Kiểm tra lại Email/Mật khẩu.");
-                  console.error(error);
+                  alert("Đăng nhập thất bại: " + error.message);
               });
       });
 
-      // Nút "Đăng Ký" trên form Đăng nhập
+      // Nút "Đăng Ký"
       const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
       if(toRegisterBtn) {
           toRegisterBtn.addEventListener('click', () => {
@@ -9563,6 +9593,14 @@ document.querySelectorAll('.nav-item').forEach(item => {
           });
       }
   }
+      // Nút "Đăng Ký" trên form Đăng nhập
+      const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
+      if(toRegisterBtn) {
+          toRegisterBtn.addEventListener('click', () => {
+              document.getElementById('loginScreen').style.display = 'none';
+              document.getElementById('registerScreen').style.display = 'flex';
+          });
+      }
 </script>
 </body>
 </html>
