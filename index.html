@@ -9517,15 +9517,64 @@ document.querySelectorAll('.nav-item').forEach(item => {
       loginForm.parentNode.replaceChild(newLoginForm, loginForm);
 
       newLoginForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const email = document.getElementById('loginUsername').value; 
-          const password = document.getElementById('loginPassword').value;
+         then((userCredential) => {
+    const user = userCredential.user; // Biến user từ Firebase
+    const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com"; // Email Admin của bạn
 
-          // EMAIL ADMIN CỦA BẠN
-          const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com"; 
+    let userToSet; // Biến tạm để tạo dữ liệu người dùng
 
+    if (user.email === ADMIN_EMAIL) {
+        userToSet = {
+            id: "admin_001",
+            email: user.email,
+            name: "Quản trị viên",
+            role: "admin",
+            isAdmin: true, // Cờ admin quan trọng
+            stats: { plays: 0, friends: 0, playlists: 0 } // Thêm đủ trường để app không lỗi
+        };
+
+        // BƯỚC 1: Gán vào biến TOÀN CỤC (window)
+        window.currentUser = userToSet; 
+        
+        // BƯỚC 2: Kích hoạt toàn bộ giao diện Admin
+        if (typeof window.showAdminFeatures === "function") {
+            window.showAdminFeatures();
+        }
+        
+        // BƯỚC 3: Tải dữ liệu Admin (đã có trong code cũ)
+        if (typeof window.loadAdminData === "function") {
+            window.loadAdminData();
+        }
+
+    } else {
+        userToSet = {
+            id: user.uid,
+            email: user.email,
+            role: "user",
+            isAdmin: false,
+            stats: { plays: 0, friends: 0, playlists: 0 } // Thêm đủ trường
+        };
+        
+        // BƯỚC 1: Gán vào biến TOÀN CỤC (window)
+        window.currentUser = userToSet;
+    }
+
+    // Các hàm đồng bộ và hiển thị chính (nên gọi qua window để chắc chắn)
+    if (typeof window.saveAllUsers === "function") window.saveAllUsers();
+    if (typeof window.saveCurrentUser === "function") window.saveCurrentUser();
+    if (typeof window.loadUserData === "function") window.loadUserData();
+    if (typeof window.showApp === "function") window.showApp();
+    
+    // Ẩn màn hình đăng nhập và hiển thị ứng dụng
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'flex';
+})
+.catch((error) => {
+    console.error(error);
+    alert("Đăng nhập thất bại: " + error.message);
+});
           signInWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
+               .then((userCredential) => {
                   const firebaseUser = userCredential.user;
                   
                   // 1. Tạo object user chuẩn theo format của App cũ
