@@ -4345,7 +4345,7 @@
                         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
                             <img id="adminModalAvatar" src="" alt="Avatar" class="user-avatar" style="width: 60px; height: 60px;">
                             <div>
-                                <h4 id="adminModalName">Nguyễn Văn A</h4>
+                                <h4 id="adminModalName">TRUNG QUÂN</h4>
                                 <p id="adminModalEmail" style="color: var(--gray-color); font-size: 14px;">user@example.com</p>
                             </div>
                         </div>
@@ -9456,11 +9456,9 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
     </script>
     <script type="module">
-  // 1. Nhập khẩu đầy đủ công cụ: App, Auth (Đăng ký & Đăng nhập)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // 2. Cấu hình Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAmXjoxob3AVYMTmb0SXW_d-Le1beNYvLA",
     authDomain: "giaidieugiacngu-f01bd.firebaseapp.com",
@@ -9471,17 +9469,13 @@ document.querySelectorAll('.nav-item').forEach(item => {
     measurementId: "G-X3Y5SF5K8Y"
   };
 
-  // 3. Khởi động
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   console.log("Firebase đã sẵn sàng!");
 
-  // ==============================
-  // PHẦN 1: XỬ LÝ ĐĂNG KÝ (REGISTER)
-  // ==============================
+  // --- XỬ LÝ ĐĂNG KÝ ---
   const registerForm = document.getElementById('registerForm');
   if (registerForm) {
-      // Xóa lệnh cũ
       const newRegisterForm = registerForm.cloneNode(true);
       registerForm.parentNode.replaceChild(newRegisterForm, registerForm);
 
@@ -9490,24 +9484,23 @@ document.querySelectorAll('.nav-item').forEach(item => {
           const email = document.getElementById('registerEmail').value;
           const password = document.getElementById('registerPassword').value;
           const confirmPassword = document.getElementById('registerConfirmPassword').value;
+          const name = document.getElementById('registerName').value || "Người dùng mới";
 
           if (password !== confirmPassword) { alert("Mật khẩu không khớp!"); return; }
           if (password.length < 6) { alert("Mật khẩu phải từ 6 ký tự!"); return; }
 
-          // Gửi lên Firebase
           createUserWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
-                  alert("✅ Đăng ký thành công! Hãy quay lại để đăng nhập.");
-                  // Chuyển sang màn hình đăng nhập
+                  alert("✅ Đăng ký thành công! Hãy đăng nhập.");
                   document.getElementById('loginScreen').style.display = 'flex';
                   document.getElementById('registerScreen').style.display = 'none';
               })
               .catch((error) => {
-                  alert("Lỗi đăng ký: " + error.message);
+                  alert("Lỗi: " + error.message);
               });
       });
-
-      // Nút "Quay lại" trên form Đăng ký
+      
+      // Nút quay lại
       const backBtn = newRegisterForm.querySelector('.login-button.secondary');
       if(backBtn) {
           backBtn.addEventListener('click', () => {
@@ -9517,81 +9510,89 @@ document.querySelectorAll('.nav-item').forEach(item => {
       }
   }
 
- // ==============================
-  // PHẦN 2: XỬ LÝ ĐĂNG NHẬP (LOGIN) - ĐÃ NÂNG CẤP
-  // ==============================
+  // --- XỬ LÝ ĐĂNG NHẬP (QUAN TRỌNG) ---
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
-      // Xóa lệnh cũ
       const newLoginForm = loginForm.cloneNode(true);
       loginForm.parentNode.replaceChild(newLoginForm, loginForm);
 
       newLoginForm.addEventListener('submit', (e) => {
           e.preventDefault();
-          
           const email = document.getElementById('loginUsername').value; 
           const password = document.getElementById('loginPassword').value;
 
-          // --- CẤU HÌNH EMAIL ADMIN TẠI ĐÂY ---
-          const ADMIN_EMAIL = "phatnehihhi@gmail.com"; // <--- Thay bằng email bạn vừa đăng ký
-          // ------------------------------------
+          // EMAIL ADMIN CỦA BẠN
+          const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com"; 
 
           signInWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
-                  const user = userCredential.user;
-                  let welcomeMsg = "🎉 Đăng nhập thành công!";
+                  const firebaseUser = userCredential.user;
                   
-                  // Tạo dữ liệu người dùng để lưu vào máy (cho app chạy được)
-                  const userInfo = {
-                      id: user.uid,
-                      email: user.email,
-                      name: user.email.split('@')[0],
+                  // 1. Tạo object user chuẩn theo format của App cũ
+                  const userData = {
+                      id: firebaseUser.uid,
+                      username: firebaseUser.email,
+                      email: firebaseUser.email,
+                      // Nếu là admin thì set cứng tên, nếu không thì lấy email làm tên tạm
+                      name: firebaseUser.email === ADMIN_EMAIL ? "Quản Trị Viên" : (firebaseUser.displayName || "Người dùng Firebase"),
                       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-                      role: "user",
-                      isAdmin: false,
-                      // Các chỉ số mặc định
-                      stats: { plays: 0, time: 0, playlists: 0, friends: 0 },
+                      // 2. Logic Admin cốt lõi
+                      role: firebaseUser.email === ADMIN_EMAIL ? "admin" : "user",
+                      isAdmin: firebaseUser.email === ADMIN_EMAIL, 
+                      stats: { plays: 0, friends: 0, playlists: 0 },
                       friends: [],
-                      playlists: []
+                      friendRequests: [],
+                      lastLogin: new Date().toISOString(),
+                      isBanned: false,
+                      bio: "Tài khoản Firebase"
                   };
 
-                  // KIỂM TRA QUYỀN ADMIN
-                  if (user.email === ADMIN_EMAIL) {
-                      userInfo.role = "admin";
-                      userInfo.isAdmin = true;
-                      userInfo.name = "Admin Tổng";
-                      welcomeMsg = "👑 Xin chào Quản Trị Viên!";
+                  // 3. Gán vào biến TOÀN CỤC (window) để các hàm cũ nhìn thấy
+                  window.currentUser = userData;
+
+                  // 4. Đồng bộ vào localStorage để App không bị lỗi khi reload
+                  if (typeof window.saveCurrentUser === "function") window.saveCurrentUser();
+                  
+                  // Đảm bảo user này có trong danh sách allUsers để chat/kết bạn hoạt động
+                  if (typeof window.allUsers !== "undefined") {
+                      const exists = window.allUsers.find(u => u.id === userData.id);
+                      if (!exists) {
+                          window.allUsers.push(userData);
+                          if (typeof window.saveAllUsers === "function") window.saveAllUsers();
+                      }
                   }
 
-                  // Lưu vào bộ nhớ máy để các trang khác hiểu đây là ai
-                  localStorage.setItem('currentMusicUser', JSON.stringify(userInfo));
-
-                  alert(welcomeMsg);
+                  // 5. Tải dữ liệu và hiển thị App
+                  if (typeof window.loadUserData === "function") window.loadUserData();
+                  if (typeof window.showApp === "function") window.showApp();
                   
-                  // Vào ứng dụng chính
+                  // 6. KÍCH HOẠT GIAO DIỆN ADMIN
+                  if (userData.isAdmin) {
+                      console.log("Đăng nhập quyền Admin thành công!");
+                      // Gọi hàm hiển thị admin có sẵn trong code cũ
+                      if (typeof window.showAdminFeatures === "function") {
+                          window.showAdminFeatures();
+                      }
+                      // Tải dữ liệu thống kê admin
+                      if (typeof window.loadAdminData === "function") {
+                          window.loadAdminData();
+                      }
+                  }
+
+                  // Ẩn màn hình đăng nhập
                   document.getElementById('loginScreen').style.display = 'none';
                   document.getElementById('appContainer').style.display = 'flex';
                   
-                  // Cập nhật giao diện
-                  document.getElementById('userName').innerHTML = userInfo.isAdmin ? 
-                      userInfo.name + ' <span class="admin-badge">ADMIN</span>' : userInfo.name;
-                  
-                  // Reload trang để tải dữ liệu Admin (nếu cần)
-                  if(userInfo.isAdmin) setTimeout(() => window.location.reload(), 1000);
+                  // Reset form
+                  document.getElementById('loginUsername').value = '';
+                  document.getElementById('loginPassword').value = '';
+
               })
               .catch((error) => {
+                  console.error(error);
                   alert("Đăng nhập thất bại: " + error.message);
               });
       });
-
-      // Nút "Đăng Ký" trên form Đăng nhập
-      const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
-      if(toRegisterBtn) {
-          toRegisterBtn.addEventListener('click', () => {
-              document.getElementById('loginScreen').style.display = 'none';
-              document.getElementById('registerScreen').style.display = 'flex';
-          });
-      }
   }
 </script>
 </body>
