@@ -3185,48 +3185,196 @@
             }
         }
     
-        /* ====== UI POLISH (v3) ====== */
-        .user-table {
+        /* ==========================
+           SOCIAL (FRIENDS + CHAT) UI
+           ========================== */
+        .social-tabs{
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            margin: 10px 0 16px 0;
+        }
+        .social-tab{
+            background: rgba(255,255,255,0.08);
+            color: var(--text-color);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .social-tab.active{
+            background: rgba(0, 255, 200, 0.12);
+            border-color: rgba(0,255,200,0.35);
+        }
+        .social-badge{
+            background: rgba(255, 90, 90, 0.95);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            line-height: 18px;
+            margin-left: 6px;
+        }
+        .social-panels{
+            width:100%;
+        }
+        .social-panel{
+            display:none;
+        }
+        .social-panel.active{
+            display:block;
+        }
+        .social-searchbar{
+            display:flex;
+            gap:10px;
+            align-items:center;
+            flex-wrap:wrap;
+            margin-bottom: 14px;
+        }
+        .social-grid{
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap:14px;
+        }
+        .social-user-card{
+            background: rgba(10,10,20,0.9);
             border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+            display:flex;
+            gap:12px;
+            align-items:flex-start;
         }
-        .user-table thead th{
-            position: sticky;
-            top: 0;
-            z-index: 2;
-            backdrop-filter: blur(14px);
+        .social-user-avatar{
+            width:46px;
+            height:46px;
+            border-radius: 999px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.12);
         }
-        .user-table tbody tr:nth-child(even){
-            background: rgba(255,255,255,0.03);
+        .social-user-info{ flex:1; }
+        .social-user-name{ font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .social-user-meta{ font-size: 12px; color: #b0b3c1; word-break: break-all; }
+        .social-user-actions{ display:flex; gap:8px; margin-top: 10px; flex-wrap:wrap; }
+        .social-two-col{
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
         }
-        .user-table tbody tr:hover{
-            background: rgba(29,185,84,0.08);
+        @media(max-width: 900px){
+            .social-two-col{ grid-template-columns: 1fr; }
         }
-        .user-table td{
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+        .social-card{
+            background: rgba(10,10,20,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.45);
         }
-
-        /* Better focus ring */
-        button:focus-visible,
-        .btn:focus-visible,
-        .login-button:focus-visible,
-        input:focus-visible,
-        textarea:focus-visible{
-            outline: 2px solid rgba(29,185,84,0.55);
-            outline-offset: 2px;
+        .social-card-title{
+            font-weight: 700;
+            margin-bottom: 10px;
+            display:flex;
+            gap:8px;
+            align-items:center;
         }
-
-        /* Slightly more premium buttons */
-        .login-button,
-        .btn,
-        .quick-action-btn,
-        .profile-action-btn,
-        .admin-action-btn{
-            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        .social-list{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            max-height: 460px;
+            overflow:auto;
+            padding-right: 6px;
+        }
+        .social-list-item{
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display:flex;
+            gap:10px;
+            align-items:center;
+        }
+        .social-list-item .meta{
+            flex:1;
+            min-width: 0;
+        }
+        .social-list-item .meta .t1{ font-weight: 600; font-size: 13px; }
+        .social-list-item .meta .t2{ font-size: 12px; color:#b0b3c1; word-break: break-all; }
+        .social-chat-layout{
+            display:grid;
+            grid-template-columns: 320px 1fr;
+            gap: 14px;
+        }
+        @media(max-width: 900px){
+            .social-chat-layout{ grid-template-columns: 1fr; }
+        }
+        .social-chat-left{
+            background: rgba(10,10,20,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+        .social-chat-right{
+            background: rgba(10,10,20,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+            display:flex;
+            flex-direction:column;
+            overflow:hidden;
+        }
+        .social-chat-header{
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+        .social-chat-title{ font-weight: 700; }
+        .social-chat-messages{
+            padding: 14px;
+            height: 460px;
+            overflow:auto;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+        .social-msg{
+            max-width: 78%;
+            padding: 10px 12px;
+            border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.06);
+            line-height: 1.4;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
-        .login-button.secondary{
-            border: 1px solid rgba(255,255,255,0.14);
+        .social-msg.me{
+            margin-left:auto;
+            background: rgba(0,255,200,0.12);
+            border-color: rgba(0,255,200,0.28);
+        }
+        .social-msg .time{
+            display:block;
+            margin-top: 6px;
+            font-size: 11px;
+            color:#b0b3c1;
+        }
+        .social-chat-input{
+            padding: 12px 14px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display:flex;
+            gap:10px;
         }
 
 </style>
@@ -3322,13 +3470,9 @@
                     <i class="fas fa-podcast"></i>
                     <span>Podcast</span>
                 </div>
-                <div class="nav-item" data-section="friends">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Bạn Bè & Chat</span>
-                </div>
-                <div class="nav-item" data-section="group-chat">
+                <div class="nav-item" data-section="social">
                     <i class="fas fa-users"></i>
-                    <span>Phòng Chat Nhóm</span>
+                    <span>Mạng Xã Hội</span>
                 </div>
                 <div class="nav-item" data-section="ai">
                     <i class="fas fa-robot"></i>
@@ -3920,7 +4064,116 @@
                     </div>
                 </div>
                 
-                <!-- Profile Section -->
+        
+        <!-- Social Section -->
+        <div class="section-content" id="socialSection">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Mạng xã hội</h2>
+                    <p class="section-subtitle">Tìm bạn, kết bạn và trò chuyện realtime (đồng bộ mọi thiết bị)</p>
+                </div>
+
+                <div class="social-tabs">
+                    <button class="social-tab active" data-tab="discover" onclick="socialShowTab('discover')">
+                        <i class="fas fa-search"></i> Tìm bạn
+                    </button>
+                    <button class="social-tab" data-tab="requests" onclick="socialShowTab('requests')">
+                        <i class="fas fa-user-plus"></i> Lời mời
+                        <span class="social-badge" id="socialReqBadge" style="display:none">0</span>
+                    </button>
+                    <button class="social-tab" data-tab="chats" onclick="socialShowTab('chats')">
+                        <i class="fas fa-comments"></i> Chat
+                    </button>
+                    <button class="social-tab" data-tab="groups" onclick="socialShowTab('groups')">
+                        <i class="fas fa-users"></i> Chat nhóm
+                    </button>
+                </div>
+
+                <div class="social-panels">
+                    <!-- Discover -->
+                    <div class="social-panel active" id="socialDiscoverPanel">
+                        <div class="social-searchbar">
+                            <input id="socialSearchInput" class="search-input" placeholder="Tìm theo tên / username / email..." />
+                            <button class="btn btn-primary" onclick="socialDoSearch()"><i class="fas fa-search"></i> Tìm</button>
+                            <button class="btn btn-secondary" onclick="socialClearSearch()"><i class="fas fa-times"></i> Xóa</button>
+                        </div>
+
+                        <div class="social-grid" id="socialUsersGrid">
+                            <!-- cards -->
+                        </div>
+                    </div>
+
+                    <!-- Requests -->
+                    <div class="social-panel" id="socialRequestsPanel">
+                        <div class="social-two-col">
+                            <div class="social-card">
+                                <div class="social-card-title"><i class="fas fa-inbox"></i> Lời mời đến</div>
+                                <div id="socialIncomingRequests" class="social-list"></div>
+                            </div>
+                            <div class="social-card">
+                                <div class="social-card-title"><i class="fas fa-paper-plane"></i> Lời mời đã gửi</div>
+                                <div id="socialOutgoingRequests" class="social-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chats -->
+                    <div class="social-panel" id="socialChatsPanel">
+                        <div class="social-chat-layout">
+                            <div class="social-chat-left">
+                                <div class="social-card-title"><i class="fas fa-comment-dots"></i> Cuộc trò chuyện</div>
+                                <div id="socialChatList" class="social-list"></div>
+                            </div>
+
+                            <div class="social-chat-right">
+                                <div class="social-chat-header" id="socialChatHeader">
+                                    <div class="social-chat-title">Chọn 1 người bạn để bắt đầu chat</div>
+                                </div>
+
+                                <div class="social-chat-messages" id="socialChatMessages"></div>
+
+                                <div class="social-chat-input">
+                                    <input id="socialChatInput" class="search-input" placeholder="Nhập tin nhắn..." onkeydown="if(event.key==='Enter'){socialSendMessage();}" />
+                                    <button class="btn btn-primary" onclick="socialSendMessage()"><i class="fas fa-paper-plane"></i> Gửi</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Groups -->
+                    <div class="social-panel" id="socialGroupsPanel">
+                        <div class="social-chat-layout">
+                            <div class="social-chat-left">
+                                <div class="social-card-title"><i class="fas fa-layer-group"></i> Phòng chat</div>
+
+                                <div class="social-searchbar" style="padding: 10px 0;">
+                                    <input id="socialNewRoomName" class="search-input" placeholder="Tên phòng mới..." />
+                                    <button class="btn btn-primary" onclick="socialCreateRoom()"><i class="fas fa-plus"></i> Tạo</button>
+                                </div>
+
+                                <div id="socialRoomList" class="social-list"></div>
+                            </div>
+
+                            <div class="social-chat-right">
+                                <div class="social-chat-header" id="socialRoomHeader">
+                                    <div class="social-chat-title">Chọn phòng để tham gia</div>
+                                </div>
+
+                                <div class="social-chat-messages" id="socialRoomMessages"></div>
+
+                                <div class="social-chat-input">
+                                    <input id="socialRoomInput" class="search-input" placeholder="Nhập tin nhắn trong phòng..." onkeydown="if(event.key==='Enter'){socialSendRoomMessage();}" />
+                                    <button class="btn btn-primary" onclick="socialSendRoomMessage()"><i class="fas fa-paper-plane"></i> Gửi</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
                 <div class="section-content" id="profileSection">
                     <div class="profile-section">
                         <div class="profile-avatar-container">
@@ -5474,6 +5727,761 @@
         // KHỞI TẠO ỨNG DỤNG
         // ==============================================
 
+        
+        // ==============================================
+        // CLOUD SYNC + SOCIAL (Firestore)
+        // NOTE: Cần bật Firestore và rules phù hợp để đọc users/friendRequests/chats.
+        // ==============================================
+        let __cloudUsersUnsub = null;
+        let __cloudReqUnsub = null;
+        let __cloudChatsUnsub = null;
+        let __cloudMessagesUnsub = null;
+        let __cloudRoomsUnsub = null;
+        let __cloudRoomMessagesUnsub = null;
+
+        let socialInitialized = false;
+        let socialActiveChat = null;   // { chatId, peerUid, peerName, peerEmail }
+        let socialActiveRoom = null;   // { roomId, name }
+
+        function cloudIsReady() {
+            return !!(window.__FIREBASE_READY && window.__FIREBASE && window.__FIREBASE.auth && window.__FIREBASE.db);
+        }
+        function cloudGetApis() {
+            const fb = window.__FIREBASE;
+            return { auth: fb.auth, db: fb.db, authApi: fb.authApi, fs: fb.firestore };
+        }
+        function cloudChatId(a, b) { return [a, b].sort().join('_'); }
+
+        async function cloudUpsertUserProfile(fbUser, extra = {}) {
+            if (!cloudIsReady() || !fbUser) return;
+            const { db, fs } = cloudGetApis();
+            const { doc, setDoc, serverTimestamp } = fs;
+
+            const email = fbUser.email || '';
+            const isAdminEmail = email && ADMIN_EMAIL && email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+            const baseName = fbUser.displayName || (email ? email.split('@')[0] : 'Người dùng');
+            const baseUsername = extra.username || (email ? email.split('@')[0] : '');
+
+            const payload = {
+                uid: fbUser.uid,
+                email: email,
+                emailLower: email.toLowerCase(),
+                name: (extra.name || baseName || '').trim(),
+                nameLower: (extra.name || baseName || '').toLowerCase(),
+                username: (baseUsername || '').trim(),
+                usernameLower: (baseUsername || '').toLowerCase(),
+                avatar: extra.avatar || __DEFAULT_AVATAR__,
+                role: isAdminEmail ? 'admin' : 'user',
+                isAdmin: !!isAdminEmail,
+                status: extra.status || 'active',
+                isBanned: !!extra.isBanned,
+                joined: extra.joined || new Date().toISOString(),
+                lastLogin: new Date().toISOString(),
+                updatedAt: serverTimestamp()
+            };
+
+            await setDoc(doc(db, 'users', fbUser.uid), payload, { merge: true });
+        }
+
+        async function cloudResolveEmailFromIdentifier(identifier) {
+            if (!cloudIsReady()) return identifier;
+            if (!identifier) return identifier;
+            const id = identifier.trim();
+            if (id.includes('@')) return id;
+
+            try {
+                const { db, fs } = cloudGetApis();
+                const { collection, query, where, limit, getDocs } = fs;
+                const q = query(collection(db, 'users'), where('usernameLower', '==', id.toLowerCase()), limit(1));
+                const snap = await getDocs(q);
+                if (!snap.empty) return snap.docs[0].data().email;
+            } catch(e) {}
+            return id;
+        }
+
+        async function cloudLogin(identifier, password) {
+            const { auth, authApi } = cloudGetApis();
+            const email = await cloudResolveEmailFromIdentifier(identifier);
+            const cred = await authApi.signInWithEmailAndPassword(auth, email, password);
+            const user = cred.user;
+            await cloudUpsertUserProfile(user, {});
+            await cloudRefreshAllUsersIntoLocal();
+            socialStartRealtime(); // start social subscriptions
+            return user;
+        }
+
+        async function cloudRegister({ name, username, email, password }) {
+            const { auth, authApi } = cloudGetApis();
+            const cred = await authApi.createUserWithEmailAndPassword(auth, email, password);
+            const user = cred.user;
+
+            try { await authApi.updateProfile(user, { displayName: name || username }); } catch(e) {}
+            await cloudUpsertUserProfile(user, { name, username });
+            await cloudRefreshAllUsersIntoLocal();
+            socialStartRealtime();
+            return user;
+        }
+
+        async function cloudSignOut() {
+            const { auth, authApi } = cloudGetApis();
+            try {
+                if (__cloudUsersUnsub) __cloudUsersUnsub();
+                if (__cloudReqUnsub) __cloudReqUnsub();
+                if (__cloudChatsUnsub) __cloudChatsUnsub();
+                if (__cloudMessagesUnsub) __cloudMessagesUnsub();
+                if (__cloudRoomsUnsub) __cloudRoomsUnsub();
+                if (__cloudRoomMessagesUnsub) __cloudRoomMessagesUnsub();
+            } catch(e) {}
+            __cloudUsersUnsub = __cloudReqUnsub = __cloudChatsUnsub = __cloudMessagesUnsub = __cloudRoomsUnsub = __cloudRoomMessagesUnsub = null;
+            socialActiveChat = null;
+            socialActiveRoom = null;
+            await authApi.signOut(auth);
+        }
+
+        async function cloudFetchAllUsersOnce() {
+            if (!cloudIsReady()) return [];
+            const { db, fs } = cloudGetApis();
+            const { collection, getDocs } = fs;
+            const snap = await getDocs(collection(db, 'users'));
+            const out = [];
+            snap.forEach(d => {
+                const data = d.data() || {};
+                out.push({
+                    id: data.uid || d.id,
+                    uid: data.uid || d.id,
+                    name: data.name || (data.email ? data.email.split('@')[0] : 'Người dùng'),
+                    username: data.username || (data.email ? data.email.split('@')[0] : ''),
+                    email: data.email || '',
+                    avatar: data.avatar || __DEFAULT_AVATAR__,
+                    role: data.role || 'user',
+                    isAdmin: !!data.isAdmin,
+                    isBanned: !!data.isBanned || data.status === 'banned',
+                    status: data.status || 'active',
+                    joined: data.joined || null,
+                    lastLogin: data.lastLogin || null
+                });
+            });
+            return out;
+        }
+
+        async function cloudRefreshAllUsersIntoLocal() {
+            try {
+                const cloudUsers = await cloudFetchAllUsersOnce();
+                const byId = new Map();
+                cloudUsers.forEach(u => byId.set(u.id, u));
+                // merge local fallback
+                try { allUsers.forEach(u => { if (!byId.has(u.id)) byId.set(u.id, u); }); } catch(e){}
+                allUsers = Array.from(byId.values());
+                saveAllUsers();
+                return true;
+            } catch(e) {
+                console.warn('cloudRefreshAllUsersIntoLocal failed', e);
+                return false;
+            }
+        }
+
+        function socialShowTab(tab) {
+            document.querySelectorAll('.social-tab').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tab);
+            });
+            document.querySelectorAll('.social-panel').forEach(p => p.classList.remove('active'));
+            const panel = document.getElementById('social' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Panel');
+            if (panel) panel.classList.add('active');
+        }
+
+        function socialEnsureUI() {
+            if (socialInitialized) return;
+            socialInitialized = true;
+
+            // default tab
+            socialShowTab('discover');
+        }
+
+        function socialStartRealtime() {
+            if (!cloudIsReady() || !currentUser || !currentUser.uid) return;
+            socialEnsureUI();
+
+            const { db, fs } = cloudGetApis();
+            const { collection, query, where, onSnapshot, orderBy, limit } = fs;
+
+            // 1) realtime users list
+            try {
+                if (__cloudUsersUnsub) __cloudUsersUnsub();
+                __cloudUsersUnsub = onSnapshot(collection(db, 'users'), (snap) => {
+                    const out = [];
+                    snap.forEach(d => {
+                        const data = d.data() || {};
+                        out.push({
+                            id: data.uid || d.id,
+                            uid: data.uid || d.id,
+                            name: data.name || (data.email ? data.email.split('@')[0] : 'Người dùng'),
+                            username: data.username || (data.email ? data.email.split('@')[0] : ''),
+                            email: data.email || '',
+                            avatar: data.avatar || __DEFAULT_AVATAR__,
+                            role: data.role || 'user',
+                            isAdmin: !!data.isAdmin,
+                            isBanned: !!data.isBanned || data.status === 'banned',
+                            status: data.status || 'active',
+                            joined: data.joined || null,
+                            lastLogin: data.lastLogin || null
+                        });
+                    });
+                    allUsers = out;
+                    saveAllUsers();
+                    socialRenderDiscover(allUsers);
+                    // admin table refresh if admin currently
+                    if (currentUser && (currentUser.isAdmin || currentUser.role === 'admin')) {
+                        try { loadAdminUsersTable(); updateAdminStatsUI(); } catch(e) {}
+                    }
+                });
+            } catch(e) {
+                console.warn('users onSnapshot error', e);
+            }
+
+            // 2) friend requests (incoming + outgoing) realtime
+            try {
+                if (__cloudReqUnsub) __cloudReqUnsub();
+                const reqQ = query(
+                    collection(db, 'friendRequests'),
+                    where('participants', 'array-contains', currentUser.uid),
+                    limit(200)
+                );
+                __cloudReqUnsub = onSnapshot(reqQ, (snap) => {
+                    const incoming = [];
+                    const outgoing = [];
+                    snap.forEach(d => {
+                        const r = d.data() || {};
+                        if (r.status !== 'pending') return;
+                        if (r.toUid === currentUser.uid) incoming.push({ id: d.id, ...r });
+                        if (r.fromUid === currentUser.uid) outgoing.push({ id: d.id, ...r });
+                    });
+                    // sort newest first
+                    const ts = x => (x.createdAt && x.createdAt.seconds) ? x.createdAt.seconds : 0;
+                    incoming.sort((a,b)=> ts(b)-ts(a));
+                    outgoing.sort((a,b)=> ts(b)-ts(a));
+                    socialRenderRequests(incoming, outgoing);
+                    const badge = document.getElementById('socialReqBadge');
+                    if (badge) {
+                        if (incoming.length > 0) { badge.textContent = incoming.length; badge.style.display='inline-block'; }
+                        else { badge.style.display='none'; }
+                    }
+                });
+            } catch(e) {
+                console.warn('friendRequests onSnapshot error', e);
+            }
+
+            // 3) chats realtime (list)
+            try {
+                if (__cloudChatsUnsub) __cloudChatsUnsub();
+                const chatsQ = query(
+                    collection(db, 'chats'),
+                    where('members', 'array-contains', currentUser.uid),
+                    orderBy('lastMessageAt', 'desc'),
+                    limit(200)
+                );
+                __cloudChatsUnsub = onSnapshot(chatsQ, (snap) => {
+                    const out = [];
+                    snap.forEach(d => out.push({ id: d.id, ...(d.data()||{}) }));
+                    socialRenderChatList(out);
+                });
+            } catch(e) {
+                // If index missing for orderBy/where, Firestore will throw. We'll fallback to no orderBy.
+                try {
+                    const chatsQ2 = query(
+                        collection(db, 'chats'),
+                        where('members', 'array-contains', currentUser.uid),
+                        limit(200)
+                    );
+                    __cloudChatsUnsub = onSnapshot(chatsQ2, (snap) => {
+                        const out = [];
+                        snap.forEach(d => out.push({ id: d.id, ...(d.data()||{}) }));
+                        // sort client-side by lastMessageAt
+                        out.sort((a,b) => (b.lastMessageAt?.seconds||0)-(a.lastMessageAt?.seconds||0));
+                        socialRenderChatList(out);
+                    });
+                } catch(e2) {
+                    console.warn('chats onSnapshot error', e2);
+                }
+            }
+
+            // 4) group rooms realtime
+            try {
+                if (__cloudRoomsUnsub) __cloudRoomsUnsub();
+                const roomsQ = query(collection(db, 'groupRooms'), orderBy('updatedAt', 'desc'), limit(200));
+                __cloudRoomsUnsub = onSnapshot(roomsQ, (snap) => {
+                    const rooms = [];
+                    snap.forEach(d => rooms.push({ id: d.id, ...(d.data()||{}) }));
+                    socialRenderRooms(rooms);
+                });
+            } catch(e) {
+                // fallback no order
+                try {
+                    const roomsQ2 = query(collection(db, 'groupRooms'), limit(200));
+                    __cloudRoomsUnsub = onSnapshot(roomsQ2, (snap) => {
+                        const rooms = [];
+                        snap.forEach(d => rooms.push({ id: d.id, ...(d.data()||{}) }));
+                        socialRenderRooms(rooms);
+                    });
+                } catch(e2) {
+                    console.warn('rooms onSnapshot error', e2);
+                }
+            }
+        }
+
+        function socialRenderDiscover(users) {
+            const grid = document.getElementById('socialUsersGrid');
+            if (!grid) return;
+            if (!currentUser) return;
+
+            const term = (document.getElementById('socialSearchInput')?.value || '').toLowerCase().trim();
+            const filtered = (users || []).filter(u => {
+                if (!u || !u.uid) return false;
+                if (u.uid === currentUser.uid) return false;
+                if (u.isBanned || u.status === 'banned') return false;
+                if (!term) return true;
+                return (u.name||'').toLowerCase().includes(term)
+                    || (u.username||'').toLowerCase().includes(term)
+                    || (u.email||'').toLowerCase().includes(term);
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="opacity:0.8">Không tìm thấy người dùng phù hợp.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(u => {
+                const safeName = (u.name || 'Người dùng').replace(/</g,'&lt;');
+                const safeUser = (u.username || '').replace(/</g,'&lt;');
+                const safeEmail = (u.email || '').replace(/</g,'&lt;');
+
+                return `
+                    <div class="social-user-card">
+                        <img class="social-user-avatar" src="${u.avatar || __DEFAULT_AVATAR__}" alt="avatar" />
+                        <div class="social-user-info">
+                            <div class="social-user-name">${safeName}</div>
+                            <div class="social-user-meta">@${safeUser}</div>
+                            <div class="social-user-meta">${safeEmail}</div>
+                            <div class="social-user-actions">
+                                <button class="btn btn-primary" onclick="socialSendFriendRequest('${u.uid}')"><i class="fas fa-user-plus"></i> Kết bạn</button>
+                                <button class="btn btn-secondary" onclick="socialOpenChatWith('${u.uid}')"><i class="fas fa-comment"></i> Nhắn tin</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function socialDoSearch() { socialRenderDiscover(allUsers); }
+        function socialClearSearch() {
+            const inp = document.getElementById('socialSearchInput');
+            if (inp) inp.value = '';
+            socialRenderDiscover(allUsers);
+        }
+
+        async function socialSendFriendRequest(toUid) {
+            if (!cloudIsReady() || !currentUser) return alert('Bạn cần đăng nhập!');
+            if (!toUid || toUid === currentUser.uid) return;
+
+            const { db, fs } = cloudGetApis();
+            const { doc, getDoc, setDoc, serverTimestamp } = fs;
+
+            // deterministic request id to avoid duplicate + no composite index needed
+            const a = currentUser.uid;
+            const b = toUid;
+            const min = [a, b].sort()[0];
+            const max = [a, b].sort()[1];
+            const reqId = 'req_' + min + '_' + max;
+
+            const ref = doc(db, 'friendRequests', reqId);
+            const snap = await getDoc(ref);
+
+            if (snap.exists()) {
+                const existing = snap.data() || {};
+                if (existing.status === 'pending') {
+                    return alert('Đã có lời mời kết bạn đang chờ.');
+                }
+            }
+
+            await setDoc(ref, {
+                fromUid: a,
+                toUid: b,
+                participants: [a, b],
+                status: 'pending',
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+
+            alert('Đã gửi lời mời kết bạn!');
+            socialShowTab('requests');
+        }
+
+
+        function socialUserByUid(uid) {
+            return (allUsers || []).find(u => u.uid === uid || u.id === uid);
+        }
+
+        function socialRenderRequests(incoming, outgoing) {
+            const inBox = document.getElementById('socialIncomingRequests');
+            const outBox = document.getElementById('socialOutgoingRequests');
+            if (!inBox || !outBox) return;
+
+            inBox.innerHTML = (incoming || []).length ? incoming.map(r => {
+                const from = socialUserByUid(r.fromUid) || { name: 'Người dùng', email: r.fromUid };
+                return `
+                    <div class="social-list-item">
+                        <img class="social-user-avatar" src="${from.avatar || __DEFAULT_AVATAR__}" />
+                        <div class="meta">
+                            <div class="t1">${(from.name||'Người dùng').replace(/</g,'&lt;')}</div>
+                            <div class="t2">${(from.email||'').replace(/</g,'&lt;')}</div>
+                        </div>
+                        <button class="btn btn-primary" onclick="socialAcceptRequest('${r.id}','${r.fromUid}')"><i class="fas fa-check"></i></button>
+                        <button class="btn btn-danger" onclick="socialRejectRequest('${r.id}')"><i class="fas fa-times"></i></button>
+                    </div>
+                `;
+            }).join('') : '<div style="opacity:0.8">Chưa có lời mời.</div>';
+
+            outBox.innerHTML = (outgoing || []).length ? outgoing.map(r => {
+                const to = socialUserByUid(r.toUid) || { name: 'Người dùng', email: r.toUid };
+                return `
+                    <div class="social-list-item">
+                        <img class="social-user-avatar" src="${to.avatar || __DEFAULT_AVATAR__}" />
+                        <div class="meta">
+                            <div class="t1">${(to.name||'Người dùng').replace(/</g,'&lt;')}</div>
+                            <div class="t2">${(to.email||'').replace(/</g,'&lt;')}</div>
+                        </div>
+                        <span style="opacity:0.8;font-size:12px">Đang chờ</span>
+                    </div>
+                `;
+            }).join('') : '<div style="opacity:0.8">Bạn chưa gửi lời mời nào.</div>';
+        }
+
+        async function socialAcceptRequest(reqId, fromUid) {
+            if (!cloudIsReady() || !currentUser) return;
+            const { db, fs } = cloudGetApis();
+            const { doc, updateDoc, setDoc, serverTimestamp } = fs;
+
+            // update request
+            await updateDoc(doc(db,'friendRequests',reqId), { status: 'accepted', updatedAt: serverTimestamp() });
+
+            // create friend edges (subcollection)
+            await setDoc(doc(db, 'users', currentUser.uid, 'friends', fromUid), {
+                uid: fromUid,
+                since: serverTimestamp()
+            }, { merge: true });
+            await setDoc(doc(db, 'users', fromUid, 'friends', currentUser.uid), {
+                uid: currentUser.uid,
+                since: serverTimestamp()
+            }, { merge: true });
+
+            alert('Đã kết bạn!');
+        }
+
+        async function socialRejectRequest(reqId) {
+            if (!cloudIsReady() || !currentUser) return;
+            const { db, fs } = cloudGetApis();
+            const { doc, updateDoc, serverTimestamp } = fs;
+            await updateDoc(doc(db,'friendRequests',reqId), { status: 'rejected', updatedAt: serverTimestamp() });
+        }
+
+        function socialRenderChatList(chats) {
+            const list = document.getElementById('socialChatList');
+            if (!list) return;
+            const items = (chats || []).map(c => {
+                const peerUid = (c.members || []).find(x => x !== currentUser.uid) || '';
+                const peer = socialUserByUid(peerUid) || { name: peerUid, email: '' };
+                const last = (c.lastMessage || '').replace(/</g,'&lt;');
+                return `
+                    <div class="social-list-item" style="cursor:pointer" onclick="socialOpenChatWith('${peerUid}')">
+                        <img class="social-user-avatar" src="${peer.avatar || __DEFAULT_AVATAR__}" />
+                        <div class="meta">
+                            <div class="t1">${(peer.name||'Người dùng').replace(/</g,'&lt;')}</div>
+                            <div class="t2">${last || (peer.email||'')}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            list.innerHTML = items.length ? items.join('') : '<div style="opacity:0.8">Chưa có cuộc trò chuyện.</div>';
+        }
+
+        async function socialOpenChatWith(peerUid) {
+            if (!cloudIsReady() || !currentUser) return alert('Bạn cần đăng nhập!');
+            if (!peerUid) return;
+
+            const peer = socialUserByUid(peerUid) || { name: 'Người dùng', email: peerUid };
+            const chatId = cloudChatId(currentUser.uid, peerUid);
+
+            socialActiveChat = { chatId, peerUid, peerName: peer.name, peerEmail: peer.email };
+
+            const header = document.getElementById('socialChatHeader');
+            if (header) {
+                header.innerHTML = `
+                    <div class="social-chat-title">${(peer.name||'Người dùng').replace(/</g,'&lt;')} <span style="opacity:0.75;font-weight:500">(${(peer.email||'').replace(/</g,'&lt;')})</span></div>
+                    <button class="btn btn-secondary" onclick="socialShowTab('discover')"><i class="fas fa-user-plus"></i> Tìm thêm bạn</button>
+                `;
+            }
+
+            socialShowTab('chats');
+            socialSubscribeMessages(chatId);
+        }
+
+        async function socialEnsureChatDoc(chatId, peerUid) {
+            const { db, fs } = cloudGetApis();
+            const { doc, getDoc, setDoc, serverTimestamp } = fs;
+            const ref = doc(db,'chats',chatId);
+            const snap = await getDoc(ref);
+            if (!snap.exists()) {
+                await setDoc(ref, {
+                    members: [currentUser.uid, peerUid],
+                    createdAt: serverTimestamp(),
+                    lastMessage: '',
+                    lastMessageAt: serverTimestamp()
+                }, { merge: true });
+            }
+        }
+
+        function socialSubscribeMessages(chatId) {
+            if (!cloudIsReady()) return;
+            const { db, fs } = cloudGetApis();
+            const { collection, query, orderBy, limit, onSnapshot } = fs;
+
+            const box = document.getElementById('socialChatMessages');
+            if (box) box.innerHTML = '';
+
+            if (__cloudMessagesUnsub) __cloudMessagesUnsub();
+            try {
+                const q = query(collection(db,'chats',chatId,'messages'), orderBy('createdAt','asc'), limit(500));
+                __cloudMessagesUnsub = onSnapshot(q, (snap) => {
+                    const msgs = [];
+                    snap.forEach(d => msgs.push({ id: d.id, ...(d.data()||{}) }));
+                    socialRenderMessages(msgs);
+                });
+            } catch(e) {
+                // fallback no orderBy
+                const q2 = query(collection(db,'chats',chatId,'messages'), limit(500));
+                __cloudMessagesUnsub = onSnapshot(q2, (snap) => {
+                    const msgs = [];
+                    snap.forEach(d => msgs.push({ id: d.id, ...(d.data()||{}) }));
+                    msgs.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+                    socialRenderMessages(msgs);
+                });
+            }
+        }
+
+        function socialRenderMessages(msgs) {
+            const box = document.getElementById('socialChatMessages');
+            if (!box) return;
+
+            box.innerHTML = (msgs||[]).map(m => {
+                const isMe = m.fromUid === currentUser.uid;
+                const text = (m.text || '').replace(/</g,'&lt;');
+                const t = m.createdAt?.toDate ? m.createdAt.toDate() : null;
+                const time = t ? t.toLocaleString() : '';
+                return `<div class="social-msg ${isMe ? 'me' : ''}">${text}<span class="time">${time}</span></div>`;
+            }).join('');
+
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function socialSendMessage() {
+            if (!cloudIsReady() || !currentUser) return;
+            if (!socialActiveChat) return alert('Hãy chọn cuộc trò chuyện.');
+            const input = document.getElementById('socialChatInput');
+            const text = (input?.value || '').trim();
+            if (!text) return;
+
+            const { db, fs } = cloudGetApis();
+            const { collection, addDoc, doc, setDoc, serverTimestamp } = fs;
+
+            const { chatId, peerUid } = socialActiveChat;
+            await socialEnsureChatDoc(chatId, peerUid);
+
+            await addDoc(collection(db,'chats',chatId,'messages'), {
+                fromUid: currentUser.uid,
+                text,
+                createdAt: serverTimestamp()
+            });
+
+            await setDoc(doc(db,'chats',chatId), {
+                lastMessage: text.slice(0, 180),
+                lastMessageAt: serverTimestamp()
+            }, { merge: true });
+
+            if (input) input.value = '';
+        }
+
+        // GROUP ROOMS
+        function socialRenderRooms(rooms) {
+            const list = document.getElementById('socialRoomList');
+            if (!list) return;
+
+            const items = (rooms||[]).map(r => {
+                const name = (r.name || r.id).replace(/</g,'&lt;');
+                const last = (r.lastMessage || '').replace(/</g,'&lt;');
+                return `
+                    <div class="social-list-item" style="cursor:pointer" onclick="socialOpenRoom('${r.id}','${name.replace(/'/g,'\'')}')">
+                        <div class="meta">
+                            <div class="t1">${name}</div>
+                            <div class="t2">${last || 'Nhấn để vào phòng'}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            list.innerHTML = items.length ? items.join('') : '<div style="opacity:0.8">Chưa có phòng nào. Hãy tạo phòng mới.</div>';
+        }
+
+        async function socialCreateRoom() {
+            if (!cloudIsReady() || !currentUser) return alert('Bạn cần đăng nhập!');
+            const name = (document.getElementById('socialNewRoomName')?.value || '').trim();
+            if (!name) return alert('Nhập tên phòng.');
+
+            const { db, fs } = cloudGetApis();
+            const { collection, addDoc, serverTimestamp } = fs;
+
+            await addDoc(collection(db,'groupRooms'), {
+                name,
+                ownerUid: currentUser.uid,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
+                lastMessage: ''
+            });
+
+            const inp = document.getElementById('socialNewRoomName');
+            if (inp) inp.value = '';
+            alert('Đã tạo phòng!');
+        }
+
+        function socialOpenRoom(roomId, name) {
+            if (!cloudIsReady() || !currentUser) return;
+            socialActiveRoom = { roomId, name };
+
+            const header = document.getElementById('socialRoomHeader');
+            if (header) {
+                header.innerHTML = `
+                    <div class="social-chat-title">${(name||roomId).replace(/</g,'&lt;')}</div>
+                    <button class="btn btn-secondary" onclick="socialShowTab('groups')"><i class="fas fa-layer-group"></i> Danh sách phòng</button>
+                `;
+            }
+
+            socialShowTab('groups');
+            socialSubscribeRoomMessages(roomId);
+        }
+
+        function socialSubscribeRoomMessages(roomId) {
+            if (!cloudIsReady()) return;
+            const { db, fs } = cloudGetApis();
+            const { collection, query, orderBy, limit, onSnapshot } = fs;
+
+            const box = document.getElementById('socialRoomMessages');
+            if (box) box.innerHTML = '';
+
+            if (__cloudRoomMessagesUnsub) __cloudRoomMessagesUnsub();
+            try {
+                const q = query(collection(db,'groupRooms',roomId,'messages'), orderBy('createdAt','asc'), limit(500));
+                __cloudRoomMessagesUnsub = onSnapshot(q, (snap) => {
+                    const msgs = [];
+                    snap.forEach(d => msgs.push({ id: d.id, ...(d.data()||{}) }));
+                    socialRenderRoomMessages(msgs);
+                });
+            } catch(e) {
+                const q2 = query(collection(db,'groupRooms',roomId,'messages'), limit(500));
+                __cloudRoomMessagesUnsub = onSnapshot(q2, (snap) => {
+                    const msgs = [];
+                    snap.forEach(d => msgs.push({ id: d.id, ...(d.data()||{}) }));
+                    msgs.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+                    socialRenderRoomMessages(msgs);
+                });
+            }
+        }
+
+        function socialRenderRoomMessages(msgs) {
+            const box = document.getElementById('socialRoomMessages');
+            if (!box) return;
+
+            box.innerHTML = (msgs||[]).map(m => {
+                const isMe = m.fromUid === currentUser.uid;
+                const text = (m.text || '').replace(/</g,'&lt;');
+                const author = (m.fromName || 'User').replace(/</g,'&lt;');
+                const t = m.createdAt?.toDate ? m.createdAt.toDate() : null;
+                const time = t ? t.toLocaleString() : '';
+                return `<div class="social-msg ${isMe ? 'me' : ''}"><b style="opacity:0.85">${author}:</b> ${text}<span class="time">${time}</span></div>`;
+            }).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function socialSendRoomMessage() {
+            if (!cloudIsReady() || !currentUser) return;
+            if (!socialActiveRoom) return alert('Hãy chọn 1 phòng.');
+            const input = document.getElementById('socialRoomInput');
+            const text = (input?.value || '').trim();
+            if (!text) return;
+
+            const { db, fs } = cloudGetApis();
+            const { collection, addDoc, doc, setDoc, serverTimestamp } = fs;
+
+            const roomId = socialActiveRoom.roomId;
+
+            await addDoc(collection(db,'groupRooms',roomId,'messages'), {
+                fromUid: currentUser.uid,
+                fromName: currentUser.name || (currentUser.email||'').split('@')[0] || 'User',
+                text,
+                createdAt: serverTimestamp()
+            });
+
+            await setDoc(doc(db,'groupRooms',roomId), {
+                lastMessage: text.slice(0, 180),
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+
+            if (input) input.value = '';
+        }
+            if (sectionId === 'admin') {
+                if (cloudIsReady()) {
+                    cloudRefreshAllUsersIntoLocal().then(()=>{ try{ loadAdminData(); }catch(e){} });
+                }
+            }
+        }
+
+        // Firebase auth persistent session observer
+        function __setupFirebaseObserver() {
+            if (!cloudIsReady()) return;
+            const { auth, authApi } = cloudGetApis();
+            authApi.onAuthStateChanged(auth, async (fbUser) => {
+                if (!fbUser) return;
+                await cloudUpsertUserProfile(fbUser, {});
+                await cloudRefreshAllUsersIntoLocal();
+
+                const email = fbUser.email || '';
+                const isAdmin = email.toLowerCase() === (ADMIN_EMAIL || '').toLowerCase();
+                currentUser = {
+                    id: fbUser.uid,
+                    uid: fbUser.uid,
+                    email: email,
+                    name: fbUser.displayName || (email ? email.split('@')[0] : 'Người dùng'),
+                    username: (email ? email.split('@')[0] : ''),
+                    avatar: __DEFAULT_AVATAR__,
+                    role: isAdmin ? 'admin' : 'user',
+                    isAdmin: isAdmin
+                };
+
+                saveCurrentUser();
+                loadUserData();
+                showApp();
+                updateProfileUI();
+                socialStartRealtime();
+
+                if (currentUser.isAdmin) {
+                    showAdminFeatures();
+                    try { loadAdminData(); } catch(e){}
+                }
+            });
+        }
+
+        window.addEventListener('firebase-ready', __setupFirebaseObserver);
+        if (cloudIsReady()) __setupFirebaseObserver();
+
+
         document.addEventListener('DOMContentLoaded', function() {
             loadAllUsers();
             checkAutoLogin();
@@ -5791,29 +6799,59 @@ function saveAllUsers() {
             document.getElementById('bannedScreen').style.display = 'none';
         }
 
-        // Xử lý đăng nhập
-         document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // Xử lý đăng nhập (Firebase Auth + fallback local nếu Firebase chưa sẵn sàng)
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const username = document.getElementById('loginUsername').value.trim();
+
+            const identifier = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
-            
-            if (!username || !password) {
+
+            if (!identifier || !password) {
                 alert('Vui lòng nhập đầy đủ thông tin!');
                 return;
             }
-            
-            // Tìm người dùng
-            const user = allUsers.find(u => u.username === username && u.password === password);
-            
+
+            // Ưu tiên Firebase (cross-device)
+            try {
+                if (typeof cloudIsReady === 'function' && cloudIsReady()) {
+                    // Hiển thị loading nếu có
+                    const user = await cloudLogin(identifier, password);
+
+                    // currentUser sẽ được setup bởi auth observer, nhưng set nhanh để UX mượt
+                    const isAdmin = (user.email || '').toLowerCase() === (ADMIN_EMAIL || '').toLowerCase();
+                    currentUser = {
+                        id: user.uid,
+                        uid: user.uid,
+                        email: user.email || '',
+                        name: user.displayName || ((user.email || '').split('@')[0] || 'Người dùng'),
+                        username: ((user.email || '').split('@')[0] || ''),
+                        avatar: __DEFAULT_AVATAR__,
+                        role: isAdmin ? 'admin' : 'user',
+                        isAdmin: isAdmin
+                    };
+
+                    saveCurrentUser();
+                    loadUserData();
+                    showApp();
+                    resetDailyStats();
+                    updateWelcomeMessage();
+                    return;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Đăng nhập thất bại: ' + (err.message || err));
+                return;
+            }
+
+            // Fallback localStorage (chỉ dùng khi Firebase chưa sẵn sàng)
+            const user = allUsers.find(u => (u.username === identifier || u.email === identifier) && u.password === password);
+
             if (user) {
-                // Kiểm tra xem người dùng có bị cấm không
-                const bannedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.BANNED_USERS) || '[]');
-                if (bannedUsers.includes(user.id)) {
+                if (user.isBanned || user.status === 'banned') {
                     showBannedScreen(user);
                     return;
                 }
-                
+
                 currentUser = user;
                 currentUser.lastLogin = new Date().toISOString();
                 saveCurrentUser();
@@ -5825,8 +6863,79 @@ function saveAllUsers() {
                 alert('Tên đăng nhập hoặc mật khẩu không đúng!');
             }
         });
-        // Đăng xuất
+
+        // Xử lý đăng ký (Firebase Auth + fallback local)
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('registerName').value.trim();
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
+
+            if (!name || !username || !email || !password || !confirmPassword) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert('Mật khẩu xác nhận không khớp!');
+                return;
+            }
+            if (password.length < 6) {
+                alert('Mật khẩu phải từ 6 ký tự trở lên!');
+                return;
+            }
+
+            // Ưu tiên Firebase (cross-device)
+            try {
+                if (typeof cloudIsReady === 'function' && cloudIsReady()) {
+                    await cloudRegister({ name, username, email, password });
+                    alert('Đăng ký thành công! Bạn đã được đăng nhập.');
+                    showLogin();
+                    return;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Đăng ký thất bại: ' + (err.message || err));
+                return;
+            }
+
+            // Fallback localStorage
+            if (allUsers.some(u => u.username === username)) {
+                alert('Tên đăng nhập đã tồn tại!');
+                return;
+            }
+            if (allUsers.some(u => u.email === email)) {
+                alert('Email đã được sử dụng!');
+                return;
+            }
+
+            const newUser = {
+                id: 'user_' + Date.now(),
+                name,
+                username,
+                email,
+                password,
+                avatar: __DEFAULT_AVATAR__,
+                role: 'user',
+                isAdmin: false,
+                isBanned: false,
+                status: 'active',
+                joined: new Date().toISOString(),
+                lastLogin: new Date().toISOString(),
+                stats: { plays: 0 }
+            };
+
+            allUsers.push(newUser);
+            saveAllUsers();
+
+            alert('Đăng ký thành công! Vui lòng đăng nhập.');
+            showLogin();
+        });
+// Đăng xuất
         function logout() {
+            try { if (typeof cloudIsReady === "function" && cloudIsReady()) { cloudSignOut().catch(()=>{}); } } catch(e) {}
             if (confirm('Bạn có chắc muốn đăng xuất?')) {
                 // Lưu dữ liệu hiện tại
                 saveUserData();
@@ -8833,6 +9942,25 @@ function saveAllUsers() {
             }
             
             // Cuộn lên đầu trang
+
+            // SOCIAL + ADMIN HOOKS
+            if (sectionId === 'social') {
+                try {
+                    socialEnsureUI();
+                    if (typeof socialStartRealtime === 'function' && cloudIsReady() && currentUser && currentUser.uid) {
+                        socialStartRealtime();
+                    }
+                    socialRenderDiscover(allUsers);
+                } catch (e) { console.warn(e); }
+            }
+            if (sectionId === 'admin') {
+                try {
+                    if (typeof cloudRefreshAllUsersIntoLocal === 'function' && cloudIsReady()) {
+                        cloudRefreshAllUsersIntoLocal().then(()=>{ try { loadAdminData(); } catch(e) {} });
+                    }
+                } catch(e) {}
+            }
+
             window.scrollTo(0, 0);
         }
 
@@ -9501,11 +10629,36 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
     </script>
     <script type="module">
-  // 1. Nhập khẩu đầy đủ công cụ: App, Auth (Đăng ký & Đăng nhập)
+  // Firebase initializer (Auth + Firestore). Exposes API for non-module code.
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    updateProfile,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    getFirestore,
+    collection,
+    doc,
+    setDoc,
+    getDoc,
+    getDocs,
+    updateDoc,
+    addDoc,
+    deleteDoc,
+    query,
+    where,
+    orderBy,
+    limit,
+    onSnapshot,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  // 2. Cấu hình Firebase
+  // KEEP your Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyAmXjoxob3AVYMTmb0SXW_d-Le1beNYvLA",
     authDomain: "giaidieugiacngu-f01bd.firebaseapp.com",
@@ -9516,253 +10669,41 @@ document.querySelectorAll('.nav-item').forEach(item => {
     measurementId: "G-X3Y5SF5K8Y"
   };
 
-  // 3. Khởi động
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  // ==============================
-  // HỖ TRỢ ĐỒNG BỘ TÀI KHOẢN (Firebase -> Local allUsers)
-  // ==============================
-  const __DEFAULT_AVATAR__ = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80";
-
-  function __safeLower(s){ return (s || "").toString().trim().toLowerCase(); }
-
-  function __upsertUserToLocal(userRecord) {
-      try {
-          if (typeof loadAllUsers === "function") loadAllUsers();
-
-          if (!Array.isArray(window.allUsers) && typeof allUsers !== "undefined") {
-              // allUsers là global lexical binding, vẫn dùng trực tiếp
-          }
-
-          const id = userRecord?.id;
-          const email = userRecord?.email;
-
-          const idx = (allUsers || []).findIndex(u =>
-              (id && u?.id === id) ||
-              (email && __safeLower(u?.email) === __safeLower(email)) ||
-              (userRecord?.username && __safeLower(u?.username) === __safeLower(userRecord.username))
-          );
-
-          const now = new Date().toISOString();
-          if (idx === -1) {
-              allUsers.push({
-                  avatar: __DEFAULT_AVATAR__,
-                  role: "user",
-                  isAdmin: false,
-                  status: "active",
-                  isBanned: false,
-                  joined: now,
-                  lastLogin: now,
-                  ...userRecord
-              });
-          } else {
-              const prev = allUsers[idx] || {};
-              allUsers[idx] = {
-                  ...prev,
-                  ...userRecord,
-                  avatar: userRecord.avatar || prev.avatar || __DEFAULT_AVATAR__,
-                  joined: prev.joined || userRecord.joined || now,
-                  lastLogin: userRecord.lastLogin || now
-              };
-          }
-
-          if (typeof saveAllUsers === "function") saveAllUsers();
-      } catch (err) {
-          console.warn("Không thể đồng bộ user vào local allUsers:", err);
-      }
-  }
-
-  function __deriveNameFromEmail(email) {
-      const e = (email || "").toString();
-      if (!e.includes("@")) return e || "Người dùng";
-      const base = e.split("@")[0] || "Người dùng";
-      return base.length > 0 ? base : "Người dùng";
-  }
-
-  console.log("Firebase đã sẵn sàng!");
-
-  // ==============================
-  // PHẦN 1: XỬ LÝ ĐĂNG KÝ (REGISTER)
-  // ==============================
-  const registerForm = document.getElementById('registerForm');
-  if (registerForm) {
-      // Xóa lệnh cũ
-      const newRegisterForm = registerForm.cloneNode(true);
-      registerForm.parentNode.replaceChild(newRegisterForm, registerForm);
-
-      newRegisterForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const email = document.getElementById('registerEmail').value;
-          const name = (document.getElementById('registerName')?.value || '').trim() || 'Người dùng';
-          const username = (document.getElementById('registerUsername')?.value || '').trim() || (email ? email.split('@')[0] : 'user');
-          const password = document.getElementById('registerPassword').value;
-          const confirmPassword = document.getElementById('registerConfirmPassword').value;
-
-          if (password !== confirmPassword) { alert("Mật khẩu không khớp!"); return; }
-          if (password.length < 6) { alert("Mật khẩu phải từ 6 ký tự!"); return; }
-
-          // Gửi lên Firebase
-          createUserWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
-                  const user = userCredential.user;
-                  const now = new Date().toISOString();
-                  __upsertUserToLocal({
-                      id: user.uid,
-                      email: user.email,
-                      name,
-                      username,
-                      avatar: __DEFAULT_AVATAR__,
-                      role: 'user',
-                      isAdmin: false,
-                      status: 'active',
-                      isBanned: false,
-                      joined: now,
-                      lastLogin: now
-                  });
-                  alert("✅ Đăng ký thành công! Hãy quay lại để đăng nhập.");
-                  // Chuyển sang màn hình đăng nhập
-                  document.getElementById('loginScreen').style.display = 'flex';
-                  document.getElementById('registerScreen').style.display = 'none';
-              })
-              .catch((error) => {
-                  alert("Lỗi đăng ký: " + error.message);
-              });
-      });
-
-      // Nút "Quay lại" trên form Đăng ký
-      const backBtn = newRegisterForm.querySelector('.login-button.secondary');
-      if(backBtn) {
-          backBtn.addEventListener('click', () => {
-              document.getElementById('loginScreen').style.display = 'flex';
-              document.getElementById('registerScreen').style.display = 'none';
-          });
-      }
-  }
-
- // ==============================
-  // PHẦN 2: XỬ LÝ ĐĂNG NHẬP (LOGIN) - ĐÃ NÂNG CẤP
-  // ==============================
-  const loginForm = document.getElementById('loginForm');
-  if (loginForm) {
-      // Xóa lệnh cũ
-      const newLoginForm = loginForm.cloneNode(true);
-      loginForm.parentNode.replaceChild(newLoginForm, loginForm);
-
-      newLoginForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          
-          const email = document.getElementById('loginUsername').value; 
-          const password = document.getElementById('loginPassword').value;
-
-          // --- CẤU HÌNH EMAIL ADMIN TẠI ĐÂY ---
-          const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com"; // <--- Thay bằng email bạn vừa đăng ký
-          // -------------------- ----------------
-
-          signInWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
-                  const user = userCredential.user;
-                  const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com";
-
-                  if (user.email === ADMIN_EMAIL) {
-                      currentUser = {
-                          id: "admin_001",
-                          email: user.email,
-                          name: "Quản trị viên",
-                          role: "admin",
-                          isAdmin: true,
-                          stats: { plays: 0 }
-                      };
-
-                      const now = new Date().toISOString();
-                      __upsertUserToLocal({
-                          id: currentUser.id,
-                          email: currentUser.email,
-                          name: currentUser.name,
-                          username: "TRUNGQUANADMIN",
-                          avatar: currentUser.avatar || __DEFAULT_AVATAR__,
-                          role: "admin",
-                          isAdmin: true,
-                          status: "active",
-                          isBanned: false,
-                          joined: currentUser.joined || now,
-                          lastLogin: now,
-                          stats: currentUser.stats || { plays: 0 }
-                      });
-
-
-                      const adminBtn = document.getElementById("adminQuickAction");
-                      if (adminBtn) adminBtn.style.display = "flex";
-
-                      if (typeof loadAdminData === "function") {
-                          loadAdminData();
-                      }
-                  } else {
-                      const now = new Date().toISOString();
-
-                      // Lấy thông tin người dùng đã lưu (để giữ name/username/avatar...)
-                      try { if (typeof loadAllUsers === "function") loadAllUsers(); } catch(e){}
-
-                      const existing = (allUsers || []).find(u =>
-                          (u?.id && u.id === user.uid) ||
-                          (u?.email && u.email.toLowerCase() === (user.email || '').toLowerCase())
-                      ) || {};
-
-                      const merged = {
-                          ...existing,
-                          id: user.uid,
-                          email: user.email,
-                          name: existing.name || __deriveNameFromEmail(user.email),
-                          username: existing.username || __deriveNameFromEmail(user.email),
-                          avatar: existing.avatar || __DEFAULT_AVATAR__,
-                          role: existing.role || "user",
-                          isAdmin: false,
-                          status: existing.status || "active",
-                          isBanned: !!(existing.isBanned || existing.status === "banned"),
-                          lastLogin: now,
-                          stats: existing.stats || { plays: 0 }
-                      };
-
-                      // Nếu bị cấm, hiển thị màn hình banned và dừng
-                      if (merged.isBanned) {
-                          currentUser = merged;
-                          if (typeof saveCurrentUser === "function") saveCurrentUser();
-                          if (typeof showBannedScreen === "function") showBannedScreen(merged);
-                          return;
-                      }
-
-                      currentUser = merged;
-
-                      __upsertUserToLocal({
-                          id: merged.id,
-                          email: merged.email,
-                          name: merged.name,
-                          username: merged.username,
-                          avatar: merged.avatar,
-                          role: merged.role,
-                          isAdmin: false,
-                          status: merged.status,
-                          isBanned: merged.isBanned,
-                          joined: existing.joined || now,
-                          lastLogin: now,
-                          stats: merged.stats
-                      });
-                  }
-
-                  // Không gọi saveAllUsers() trực tiếp nữa (đã nằm trong __upsertUserToLocal)
-
-                  saveCurrentUser();
-                  loadUserData();
-                  showApp();
-
-                  document.getElementById('loginScreen').style.display = 'none';
-                  document.getElementById('appContainer').style.display = 'flex';
-              })
-              .catch((error) => {
-                  alert("Đăng nhập thất bại: " + error.message);
-              });
-      });
-  }
+  window.__FIREBASE = {
+    app,
+    auth,
+    db,
+    authApi: {
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      updateProfile,
+      sendPasswordResetEmail
+    },
+    firestore: {
+      collection,
+      doc,
+      setDoc,
+      getDoc,
+      getDocs,
+      updateDoc,
+      addDoc,
+      deleteDoc,
+      query,
+      where,
+      orderBy,
+      limit,
+      onSnapshot,
+      serverTimestamp
+    }
+  };
+  window.__FIREBASE_READY = true;
+  window.dispatchEvent(new CustomEvent('firebase-ready'));
 </script>
 </body>
 </html>
