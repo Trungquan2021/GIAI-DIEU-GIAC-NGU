@@ -3184,7 +3184,152 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+    
+
+/* ==========================
+   FIX UI: Ẩn tab Âm Thanh
+   ========================== */
+.library-tab[data-library="sounds"],
+#soundsLibrary {
+    display: none !important;
+}
+
+/* ==========================
+   SETTINGS SECTION
+   ========================== */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 10px;
+}
+
+.settings-card {
+    background: rgba(10, 10, 20, 0.9);
+    border-radius: 18px;
+    padding: 18px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.settings-card-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.settings-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.settings-card-desc {
+    font-size: 13px;
+    color: #b0b3c1;
+}
+
+.settings-card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Switch toggle đẹp cho Cài đặt */
+.settings-switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.settings-switch input {
+    display: none;
+}
+
+.settings-switch-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    transition: all 0.2s ease;
+}
+
+.settings-switch-slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    top: 3px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s ease;
+}
+
+.settings-switch input:checked + .settings-switch-slider {
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+}
+
+.settings-switch input:checked + .settings-switch-slider::before {
+    transform: translateX(18px);
+}
+
+/* ==========================
+   NÚT BẤM: đẹp + chuyên nghiệp hơn
+   ========================== */
+button,
+.btn,
+.login-button,
+.quick-action-btn,
+.profile-action-btn,
+.admin-action-btn,
+.library-tab {
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 18px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+button:hover,
+.btn:hover,
+.login-button:hover,
+.quick-action-btn:hover,
+.profile-action-btn:hover,
+.admin-action-btn:hover,
+.library-tab:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+button:active,
+.btn:active,
+.login-button:active,
+.quick-action-btn:active,
+.profile-action-btn:active,
+.admin-action-btn:active,
+.library-tab:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+
+        /* === FIX: Ẩn tab Âm thanh trong Thư viện (giữ nguyên dữ liệu âm thanh ở nơi khác) === */
+        .library-tabs .library-tab[data-tab="sounds"] { display: none !important; }
+        #soundsLibrary { display: none !important; }
+
+</style>
 </head>
 <body>
     <!-- Login Screen -->
@@ -3196,7 +3341,7 @@
             </div>
             
             <form class="login-form" id="loginForm">
-                <input type="text" class="login-input" id="loginUsername" placeholder="Tên đăng nhập" required>
+                <input type="text" class="login-input" id="loginUsername" placeholder="Email dùng để đăng nhập" required>
                 <input type="password" class="login-input" id="loginPassword" placeholder="Mật khẩu" required>
                 <div style="display: flex; gap: 10px;">
                     <button type="submit" class="login-button">Đăng Nhập</button>
@@ -3994,6 +4139,74 @@
                                 </button>
                             </div>
                         </div>
+
+                <!-- Settings Section -->
+                <div class="section-content" id="settingsSection">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Cài đặt</h2>
+                            <p class="section-subtitle">Tuỳ chỉnh giao diện và tài khoản của bạn.</p>
+                        </div>
+
+                        <div class="settings-grid">
+                            <!-- Card 1: Giao diện / night mode -->
+                            <div class="settings-card">
+                                <div class="settings-card-main">
+                                    <div>
+                                        <h3 class="settings-card-title">Chế độ tối (Night Mode)</h3>
+                                        <p class="settings-card-desc">
+                                            Bật / tắt chế độ tối cho toàn bộ ứng dụng.
+                                        </p>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="settingsNightModeToggle" onchange="toggleNightMode()">
+                                        <span class="settings-switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Tài khoản -->
+                            <div class="settings-card">
+                                <div class="settings-card-main">
+                                    <div>
+                                        <h3 class="settings-card-title">Tài khoản của bạn</h3>
+                                        <p class="settings-card-desc">
+                                            Xem nhanh thông tin hồ sơ và thao tác đăng xuất.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="settings-card-footer">
+                                    <button class="btn btn-secondary" onclick="showSection('profile')">
+                                        <i class="fas fa-user"></i> Mở hồ sơ
+                                    </button>
+                                    <button class="btn btn-danger" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: AI Chat -->
+                            <div class="settings-card">
+                                <div class="settings-card-main">
+                                    <div>
+                                        <h3 class="settings-card-title">Trò chuyện cùng AI</h3>
+                                        <p class="settings-card-desc">
+                                            Dr. Harmony sử dụng mô hình DeepSeek để trò chuyện tự nhiên, lắng nghe câu chuyện và
+                                            hỗ trợ cảm xúc cho bạn, không chỉ gợi ý nhạc.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="settings-card-footer">
+                                    <button class="btn btn-primary" onclick="showSection('ai')">
+                                        <i class="fas fa-robot"></i> Bắt đầu nói chuyện với AI
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                     </div>
                 </div>
             </div>
@@ -4345,7 +4558,7 @@
                         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
                             <img id="adminModalAvatar" src="" alt="Avatar" class="user-avatar" style="width: 60px; height: 60px;">
                             <div>
-                                <h4 id="adminModalName">Nguyễn Văn A</h4>
+                                <h4 id="adminModalName">TRUNG QUÂN</h4>
                                 <p id="adminModalEmail" style="color: var(--gray-color); font-size: 14px;">user@example.com</p>
                             </div>
                         </div>
@@ -7819,8 +8032,8 @@ function saveAllUsers() {
             
             // Gửi tin nhắn đến AI (mô phỏng)
             setTimeout(() => {
-                generateAIResponse(messageText);
-            }, 1500);
+                generateAIResponseWithDeepseek(messageText);
+            }, 800);
         }
 
         function sendAISuggestion(suggestion) {
@@ -7882,7 +8095,64 @@ function saveAllUsers() {
             }
         }
 
-        async function generateAIResponse(userMessage) {
+        // Hàm gọi DeepSeek trước, fallback sang generateAIResponse cũ nếu lỗi
+        async function generateAIResponseWithDeepseek(userMessage) {
+            try {
+                const response = await fetch(DEEPSEEK_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + DEEPSEEK_API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek-chat',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'Bạn là Dr. Harmony, một chuyên gia tâm lý nói tiếng Việt, thân thiện, đồng cảm. ' +
+                                    'Bạn có thể trò chuyện tự nhiên, đặt câu hỏi ngược lại cho người dùng, hỗ trợ cảm xúc, ' +
+                                    'và thỉnh thoảng đề xuất nhạc/phát podcast phù hợp, nhưng không chỉ gợi ý nhạc.'
+                            },
+                            {
+                                role: 'user',
+                                content: userMessage
+                            }
+                        ],
+                        temperature: 0.8,
+                        max_tokens: 600
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('DeepSeek API trả về lỗi: ' + response.status);
+                }
+
+                const data = await response.json();
+                const aiText =
+                    data &&
+                    data.choices &&
+                    data.choices[0] &&
+                    data.choices[0].message &&
+                    data.choices[0].message.content
+                        ? data.choices[0].message.content.trim()
+                        : '';
+
+                if (aiText) {
+                    hideAITypingIndicator();
+                    addAIMessage(aiText, 'ai');
+                    return;
+                }
+
+                console.warn('DeepSeek trả về dữ liệu rỗng, dùng fallback offline.');
+            } catch (error) {
+                console.error('Lỗi gọi DeepSeek:', error);
+            }
+
+            // Fallback: dùng logic cũ (generateAIResponse hiện có)
+            generateAIResponse(userMessage);
+        }
+
+function generateAIResponse(userMessage) {
             // Ẩn indicator đang nhập
             hideAITypingIndicator();
             
@@ -8503,7 +8773,7 @@ function saveAllUsers() {
             if (!currentUser) return;
             
             document.getElementById('editName').value = currentUser.name;
-            document.getElementById('editUsername').value = currentUser.username;
+            document.getElementById('editUsername').value = currentUser.username || currentUser.name || (currentUser.email ? currentUser.email.split('@')[0] : '');
             document.getElementById('editEmail').value = currentUser.email;
             document.getElementById('editBio').value = currentUser.bio || '';
             document.getElementById('editPassword').value = '';
@@ -8723,9 +8993,15 @@ function saveAllUsers() {
 
         function updateNightModeButton() {
             const button = document.getElementById('nightModeBtn');
-            if (!button) return;
-            
-            button.innerHTML = isNightMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            if (button) {
+                button.innerHTML = isNightMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            }
+
+            // Đồng bộ với toggle trong tab Cài Đặt (nếu tồn tại)
+            const settingsToggle = document.getElementById('settingsNightModeToggle');
+            if (settingsToggle) {
+                settingsToggle.checked = isNightMode;
+            }
         }
 
         // ==============================================
@@ -9533,65 +9809,58 @@ document.querySelectorAll('.nav-item').forEach(item => {
           const password = document.getElementById('loginPassword').value;
 
           // --- CẤU HÌNH EMAIL ADMIN TẠI ĐÂY ---
-          const ADMIN_EMAIL = "phatnehihhi@gmail.com"; // <--- Thay bằng email bạn vừa đăng ký
-          // ------------------------------------
+          const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com"; // <--- Thay bằng email bạn vừa đăng ký
+          // -------------------- ----------------
 
           signInWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
                   const user = userCredential.user;
-                  let welcomeMsg = "🎉 Đăng nhập thành công!";
-                  
-                  // Tạo dữ liệu người dùng để lưu vào máy (cho app chạy được)
-                  const userInfo = {
-                      id: user.uid,
-                      email: user.email,
-                      name: user.email.split('@')[0],
-                      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-                      role: "user",
-                      isAdmin: false,
-                      // Các chỉ số mặc định
-                      stats: { plays: 0, time: 0, playlists: 0, friends: 0 },
-                      friends: [],
-                      playlists: []
-                  };
+                  const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com";
 
-                  // KIỂM TRA QUYỀN ADMIN
-                  if (user.email === ADMIN_EMAIL) {
-                      userInfo.role = "admin";
-                      userInfo.isAdmin = true;
-                      userInfo.name = "Admin Tổng";
-                      welcomeMsg = "👑 Xin chào Quản Trị Viên!";
+                  if ((user.email || '').toLowerCase() === (ADMIN_EMAIL || '').toLowerCase()) {
+                      currentUser = {
+                          id: "admin_001",
+                          email: user.email,
+                          username: (user.email ? user.email.split('@')[0] : 'admin'),
+                          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+                          name: "Quản trị viên",
+                          role: "admin",
+                          isAdmin: true,
+                          stats: { plays: 0 }
+                      };
+
+                      const adminBtn = document.getElementById("adminQuickAction");
+                      if (adminBtn) adminBtn.style.display = "flex";
+
+                      if (typeof loadAdminData === "function") {
+                          loadAdminData();
+                      }
+                  } else {
+                      currentUser = {
+                          id: user.uid,
+                          email: user.email,
+                          name: (user.displayName || (user.email ? user.email.split('@')[0] : 'Người dùng')),
+                          username: (user.email ? user.email.split('@')[0] : 'user'),
+                          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+                          role: "user",
+                          isAdmin: false,
+                          stats: { plays: 0 }
+                      };
                   }
 
-                  // Lưu vào bộ nhớ máy để các trang khác hiểu đây là ai
-                  localStorage.setItem('currentMusicUser', JSON.stringify(userInfo));
+                  saveAllUsers();
+                  saveCurrentUser();
+                  loadUserData();
+                  showApp();
 
-                  alert(welcomeMsg);
-                  
-                  // Vào ứng dụng chính
                   document.getElementById('loginScreen').style.display = 'none';
                   document.getElementById('appContainer').style.display = 'flex';
-                  
-                  // Cập nhật giao diện
-                  document.getElementById('userName').innerHTML = userInfo.isAdmin ? 
-                      userInfo.name + ' <span class="admin-badge">ADMIN</span>' : userInfo.name;
-                  
-                  // Reload trang để tải dữ liệu Admin (nếu cần)
-                  if(userInfo.isAdmin) setTimeout(() => window.location.reload(), 1000);
               })
               .catch((error) => {
                   alert("Đăng nhập thất bại: " + error.message);
               });
       });
   }
-      // Nút "Đăng Ký" trên form Đăng nhập
-      const toRegisterBtn = newLoginForm.querySelector('.login-button.secondary');
-      if(toRegisterBtn) {
-          toRegisterBtn.addEventListener('click', () => {
-              document.getElementById('loginScreen').style.display = 'none';
-              document.getElementById('registerScreen').style.display = 'flex';
-          });
-      }
 </script>
 </body>
 </html>
