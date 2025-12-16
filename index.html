@@ -3377,26 +3377,174 @@
             gap:10px;
         }
 
+
+        /* AUTH UI ENHANCEMENTS */
+        .auth-card{
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+        }
+        .auth-card::before{
+            content:"";
+            position:absolute;
+            inset:-1px;
+            border-radius: 22px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(29,185,84,0.55), rgba(102,126,234,0.55), rgba(118,75,162,0.55));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events:none;
+            opacity: .9;
+        }
+        .auth-subtitle{
+            margin: -10px 0 18px;
+            color: rgba(255,255,255,0.75);
+            font-size: 14px;
+            text-align:center;
+            line-height: 1.45;
+        }
+        .auth-message{
+            display:none;
+            padding: 12px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.4;
+            margin: 0 0 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.9);
+        }
+        .auth-message.show{ display:block; }
+        .auth-message.success{
+            border-color: rgba(29,185,84,0.45);
+            background: rgba(29,185,84,0.14);
+        }
+        .auth-message.error{
+            border-color: rgba(255,107,107,0.45);
+            background: rgba(255,107,107,0.14);
+        }
+        .auth-message.warning{
+            border-color: rgba(255,193,7,0.35);
+            background: rgba(255,193,7,0.12);
+        }
+        .input-group{
+            position: relative;
+            display:flex;
+            align-items:center;
+        }
+        .input-group > i{
+            position:absolute;
+            left: 14px;
+            color: rgba(255,255,255,0.55);
+            font-size: 15px;
+            pointer-events:none;
+        }
+        .input-group .login-input{
+            padding-left: 44px;
+            padding-right: 44px;
+        }
+        .pw-toggle{
+            position:absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.75);
+            cursor:pointer;
+            transition: all .2s ease;
+        }
+        .pw-toggle:hover{
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-50%) scale(1.03);
+        }
+        .auth-row{
+            display:flex;
+            align-items:center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: -6px;
+        }
+        .checkbox{
+            display:flex;
+            align-items:center;
+            gap: 8px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+            user-select:none;
+        }
+        .checkbox input{
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color);
+        }
+        .auth-link{
+            color: var(--primary-color);
+            font-size: 13px;
+            text-decoration: none;
+            opacity: .95;
+        }
+        .auth-link:hover{ text-decoration: underline; }
+        .login-button{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap: 10px;
+        }
+        .login-hint{
+            font-size: 12px;
+            color: rgba(255,255,255,0.60);
+            margin-top: -10px;
+            text-align:left;
+        }
+
 </style>
 </head>
 <body>
-    <!-- Login Screen -->
+        <!-- Login Screen -->
     <div class="login-screen" id="loginScreen">
-        <div class="login-container">
+        <div class="login-container auth-card">
             <div class="login-logo">
                 <i class="fas fa-moon"></i>
                 <span>Giai Điệu Giấc Ngủ</span>
             </div>
-            
-            <form class="login-form" id="loginForm">
-                <input type="text" class="login-input" id="loginUsername" placeholder="Tên đăng nhập" required>
-                <input type="password" class="login-input" id="loginPassword" placeholder="Mật khẩu" required>
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="login-button">Đăng Nhập</button>
-                    <button type="button" class="login-button secondary" onclick="showRegister()">Đăng Ký</button>
+
+            <div class="auth-subtitle">Đăng nhập để tiếp tục. Bạn có thể dùng <b>email</b> hoặc <b>tên đăng nhập</b>.</div>
+            <div id="loginMessage" class="auth-message" aria-live="polite"></div>
+
+            <form class="login-form" id="loginForm" autocomplete="on">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="login-input" id="loginUsername" placeholder="Email hoặc tên đăng nhập" autocomplete="username" required>
                 </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="login-input" id="loginPassword" placeholder="Mật khẩu" autocomplete="current-password" required>
+                    <button type="button" class="pw-toggle" data-target="loginPassword" aria-label="Hiện/ẩn mật khẩu">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+
+                <div class="auth-row">
+                    <label class="checkbox">
+                        <input type="checkbox" id="rememberMe" checked>
+                        <span>Ghi nhớ đăng nhập</span>
+                    </label>
+                    <a class="auth-link" href="#" onclick="forgotPassword(); return false;">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    <span>Đăng Nhập</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="button" class="login-button secondary" onclick="showRegister()">Tạo tài khoản</button>
             </form>
-            
+
             <div class="login-footer">
                 <p>Bằng việc đăng nhập, bạn đồng ý với <a href="#">Điều khoản sử dụng</a> của chúng tôi</p>
             </div>
@@ -3405,27 +3553,58 @@
 
     <!-- Register Screen -->
     <div class="login-screen" id="registerScreen" style="display: none;">
-        <div class="login-container">
+        <div class="login-container auth-card">
             <div class="login-logo">
                 <i class="fas fa-moon"></i>
                 <span>Đăng Ký Tài Khoản</span>
             </div>
-            
-            <form class="login-form" id="registerForm">
-                <input type="text" class="login-input" id="registerName" placeholder="Họ và tên" required>
-                <input type="text" class="login-input" id="registerUsername" placeholder="Tên đăng nhập" required>
-                <input type="email" class="login-input" id="registerEmail" placeholder="Email" required>
-                <input type="password" class="login-input" id="registerPassword" placeholder="Mật khẩu" required>
-                <input type="password" class="login-input" id="registerConfirmPassword" placeholder="Xác nhận mật khẩu" required>
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="login-button">Đăng Ký</button>
-                    <button type="button" class="login-button secondary" onclick="showLogin()">Quay lại</button>
+
+            <div class="auth-subtitle">Tạo tài khoản mới chỉ mất vài giây.</div>
+            <div id="registerMessage" class="auth-message" aria-live="polite"></div>
+
+            <form class="login-form" id="registerForm" autocomplete="on">
+                <div class="input-group">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" class="login-input" id="registerName" placeholder="Họ và tên" autocomplete="name" required>
                 </div>
+
+                <div class="input-group">
+                    <i class="fas fa-at"></i>
+                    <input type="text" class="login-input" id="registerUsername" placeholder="Tên đăng nhập" autocomplete="username" required>
+                </div>
+                <div class="login-hint">Gợi ý: không dùng dấu cách, nên viết liền để dễ đăng nhập.</div>
+
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" class="login-input" id="registerEmail" placeholder="Email" autocomplete="email" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="login-input" id="registerPassword" placeholder="Mật khẩu (tối thiểu 6 ký tự)" autocomplete="new-password" required>
+                    <button type="button" class="pw-toggle" data-target="registerPassword" aria-label="Hiện/ẩn mật khẩu">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-shield-alt"></i>
+                    <input type="password" class="login-input" id="registerConfirmPassword" placeholder="Xác nhận mật khẩu" autocomplete="new-password" required>
+                    <button type="button" class="pw-toggle" data-target="registerConfirmPassword" aria-label="Hiện/ẩn mật khẩu">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="login-button">
+                    <span>Đăng Ký</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
+                <button type="button" class="login-button secondary" onclick="showLogin()">Quay lại đăng nhập</button>
             </form>
         </div>
     </div>
 
-    <!-- Banned User Screen -->
+<!-- Banned User Screen -->
     <div class="banned-overlay" id="bannedScreen" style="display: none;">
         <div class="banned-icon">
             <i class="fas fa-ban"></i>
@@ -4782,6 +4961,17 @@
 
     <script>
         // ==============================================
+        // CẤU HÌNH & HẰNG SỐ
+        // ==============================================
+
+        // Email admin (phải trùng với email bạn đăng ký trên Firebase Auth)
+        const ADMIN_EMAIL = "TRUNGQUANADMIN@gmail.com";
+
+        // Avatar mặc định (giữ nguyên asset hiện có)
+        const __DEFAULT_AVATAR__ = "music.png";
+        const DEFAULT_AVATAR = __DEFAULT_AVATAR__;
+
+// ==============================================
         // DỮ LIỆU HỆ THỐNG
         // ==============================================
 
@@ -4793,7 +4983,7 @@
                     name: "Phía Sau Em",
                     artist: "Kay Tran & Binz",
                     duration: "4:00",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    audioUrl: "phisauem.mp3",
                     image: "",
                     lyrics: [
                         { time: 0, text: "Có những đêm dài" },
@@ -4810,7 +5000,7 @@
                     name: "Ghé Qua",
                     artist: "Dick, Tofu & PC",
                     duration: "4:20",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    audioUrl: "ghequa.mp3",
                     image: "https://i.ytimg.com/vi/5z5L2Q6K8qk/maxresdefault.jpg",
                     lyrics: [
                         { time: 0, text: "Anh chỉ muốn ghé qua" },
@@ -4851,7 +5041,7 @@
                     name: "Lời tâm sự số 3",
                     artist: "Lãng",
                     duration: "3:53",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    audioUrl: "loitamsuso3.mp3",
                     image: "https://i.ytimg.com/vi/7w5Q5Q5Q5Qk/maxresdefault.jpg",
                     lyrics: [
                         { time: 0, text: "Đêm nay lại một mình" },
@@ -4868,16 +5058,16 @@
                     name: "Chìm Sâu",
                     artist: "MCK & Trung Trần",
                     duration: "5:15",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    audioUrl: "chimsau.mp3",
                     image: "https://i.ytimg.com/vi/9t5J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 6,
-                    name: "Tình Yêu Ngủ Quên",
-                    artist: "Hoàng Dũng",
-                    duration: "3:55",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    name: "Love is",
+                    artist: "Dangrangto",
+                    duration: "4:30",
+                    audioUrl: "loveis.mp3",
                     image: "https://i.ytimg.com/vi/1t5J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
@@ -4947,18 +5137,18 @@
                 {
                     id: 16,
                     name: "Hơn cả nắm tay",
-                    artist: "Sơn Tùng M-TP",
+                    artist: "Harmonie ft. Thế Anh Shinichi",
                     duration: "4:15",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                    audioUrl: "honcanamtay.mp3",
                     image: "https://i.ytimg.com/vi/9t5J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 17,
-                    name: "Em Của Ngày Hôm Qua",
-                    artist: "Sơn Tùng M-TP",
-                    duration: "3:50",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    name: "MOIEM",
+                    artist: "Darangto",
+                    duration: "3:15",
+                    audioUrl: "moiem.mp3",
                     image: "https://i.ytimg.com/vi/0t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
@@ -4973,68 +5163,77 @@
                 },
                 {
                     id: 19,
-                    name: "Chạy Ngay Đi",
-                    artist: "Sơn Tùng M-TP",
+                    name: "Một bài hát không vui mấy",
+                    artist: "T.R.I x @Dangrangto x Donal",
                     duration: "3:50",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+                    audioUrl: "motbaihatkhongvuimay.mp3",
                     image: "https://i.ytimg.com/vi/2t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 20,
-                    name: "Hơn cả nắm tay",
-                    artist: "Harmonie ft. Thế Anh Shinichi",
-                    duration: "3:33",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    name: "1/2",
+                    artist: "Dangrangto,BIG WIND,Lee à",
+                    duration: "4:11",
+                    audioUrl: "1/2.mp3",
                     image: "https://i.ytimg.com/vi/3t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 21,
-                    name: "Cơn Mưa Ngang Qua",
-                    artist: "Sơn Tùng M-TP",
-                    duration: "4:10",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    name: "Đến đây bên anh",
+                    artist: "Dangrangto x MAYTRENTROI",
+                    duration: "4:01",
+                    audioUrl: "dendaybenanh.mp3",
                     image: "https://i.ytimg.com/vi/4t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 22,
-                    name: "Lạc Trôi",
-                    artist: "Sơn Tùng M-TP",
-                    duration: "3:55",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+                    name: "Wrong times",
+                    artist: "Dangrangto & Youngpuppy",
+                    duration: "3:33",
+                    audioUrl: "wrongtime.mp3",
                     image: "https://i.ytimg.com/vi/5t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 23,
-                    name: "Chúng Ta Của Hiện Tại",
-                    artist: "Sơn Tùng M-TP",
-                    duration: "5:00",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+                    name: "Phai",
+                    artist: "Rocky CDE & Chie",
+                    duration: "3:34",
+                    audioUrl: "phai.mp3",
                     image: "https://i.ytimg.com/vi/6t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 24,
-                    name: "Muộn Rồi Mà Sao Còn",
-                    artist: "Sơn Tùng M-TP",
-                    duration: "4:20",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    name: "Thanh Xuân",
+                    artist: "Da LAB",
+                    duration: "4:00",
+                    audioUrl: "thanhxuan.mp3",
                     image: "https://i.ytimg.com/vi/7t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 {
                     id: 25,
-                    name: "Thích Em Hơi Nhiều",
-                    artist: "Sơn Tùng M-TP",
-                    duration: "3:45",
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    name: "Bầu trời mới",
+                    artist: "Da LAB",
+                    duration: "4:50",
+                    audioUrl: "bautroimoi.mp3",
                     image: "https://i.ytimg.com/vi/8t6J2Q6K8qk/maxresdefault.jpg",
                     lyrics: []
                 },
                 // Thêm 20 bài hát mới
+                {
+                    id: 26,
+                    name: "Thức giấc",
+                    artist: "Da LAB",
+                    duration: "5:17",
+                    audioUrl: "thucgiac.mp3",
+                    image: "https://i.ytimg.com/vi/9t6J2Q6K8qk/maxresdefault.jpg",
+                    lyrics: []
+                },
                 {
                     id: 70,
                     name: "Bài Hát Mới 1",
@@ -5744,6 +5943,9 @@
         let socialActiveRoom = null;   // { roomId, name }
 
         function cloudIsReady() {
+            // Khi mở file trực tiếp (file://) thì Firebase Auth thường sẽ lỗi do origin -> ưu tiên localStorage
+            if (location && location.protocol === 'file:') return false;
+
             return !!(window.__FIREBASE_READY && window.__FIREBASE && window.__FIREBASE.auth && window.__FIREBASE.db);
         }
         function cloudGetApis() {
@@ -6436,13 +6638,6 @@
 
             if (input) input.value = '';
         }
-            if (sectionId === 'admin') {
-                if (cloudIsReady()) {
-                    cloudRefreshAllUsersIntoLocal().then(()=>{ try{ loadAdminData(); }catch(e){} });
-                }
-            }
-        }
-
         // Firebase auth persistent session observer
         function __setupFirebaseObserver() {
             if (!cloudIsReady()) return;
@@ -6486,6 +6681,7 @@
             loadAllUsers();
             checkAutoLogin();
             setupEventListeners();
+            setupAuthUI();
             
             loadNightMode();
             initializeAudio();
@@ -6503,9 +6699,7 @@
         if (storedUsers && storedUsers !== "[]") {
             allUsers = JSON.parse(storedUsers);
 
-            const adminExists = allUsers.some(
-                u => u.username === adminUser.username
-            );
+            const adminExists = allUsers.some(u => (u.username || '').toLowerCase() === (adminUser.username || '').toLowerCase());
 
             if (!adminExists) {
                 allUsers.push(adminUser);
@@ -6791,60 +6985,143 @@ function saveAllUsers() {
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('registerScreen').style.display = 'none';
             document.getElementById('bannedScreen').style.display = 'none';
+
+            clearAuthMessage('login');
+            clearAuthMessage('register');
         }
 
         function showRegister() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('registerScreen').style.display = 'flex';
             document.getElementById('bannedScreen').style.display = 'none';
+
+            clearAuthMessage('login');
+            clearAuthMessage('register');
+        }
+
+        // =========================
+        // AUTH UI HELPERS
+        // =========================
+        function setAuthMessage(which, type, message) {
+            const id = which === 'register' ? 'registerMessage' : 'loginMessage';
+            const el = document.getElementById(id);
+            if (!el) { alert(message); return; }
+
+            el.textContent = message;
+            el.className = 'auth-message show ' + (type || '');
+        }
+
+        function clearAuthMessage(which) {
+            const id = which === 'register' ? 'registerMessage' : 'loginMessage';
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            el.textContent = '';
+            el.className = 'auth-message';
+        }
+
+        function setupAuthUI() {
+            // Toggle show/hide password
+            document.addEventListener('click', function(ev) {
+                const btn = ev.target && (ev.target.closest ? ev.target.closest('.pw-toggle') : null);
+                if (!btn) return;
+
+                const targetId = btn.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (!input) return;
+
+                const isHidden = input.type === 'password';
+                input.type = isHidden ? 'text' : 'password';
+
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-eye', !isHidden);
+                    icon.classList.toggle('fa-eye-slash', isHidden);
+                }
+            });
+        }
+
+        async function forgotPassword() {
+            clearAuthMessage('login');
+            const identifier = (document.getElementById('loginUsername').value || '').trim();
+            if (!identifier) {
+                setAuthMessage('login', 'warning', 'Nhập email trước để đặt lại mật khẩu.');
+                return;
+            }
+
+            // Chỉ hỗ trợ khi Cloud sẵn sàng
+            if (typeof cloudIsReady === 'function' && cloudIsReady()) {
+                try {
+                    const { auth, authApi } = cloudGetApis();
+                    const email = await cloudResolveEmailFromIdentifier(identifier);
+                    await authApi.sendPasswordResetEmail(auth, email);
+                    setAuthMessage('login', 'success', 'Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.');
+                } catch (err) {
+                    console.error(err);
+                    setAuthMessage('login', 'error', 'Không thể gửi email đặt lại mật khẩu: ' + (err.message || err));
+                }
+            } else {
+                setAuthMessage('login', 'warning', 'Chức năng này cần Cloud (Firebase). Hãy đăng nhập bằng tài khoản local hoặc bật Cloud.');
+            }
         }
 
         // Xử lý đăng nhập (Firebase Auth + fallback local nếu Firebase chưa sẵn sàng)
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            clearAuthMessage('login');
 
-            const identifier = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
+            const identifier = (document.getElementById('loginUsername').value || '').trim();
+            const password = (document.getElementById('loginPassword').value || '').trim();
+            const remember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : true;
 
             if (!identifier || !password) {
-                alert('Vui lòng nhập đầy đủ thông tin!');
+                setAuthMessage('login', 'error', 'Vui lòng nhập đầy đủ thông tin!');
                 return;
             }
 
-            // Ưu tiên Firebase (cross-device)
-            try {
-                if (typeof cloudIsReady === 'function' && cloudIsReady()) {
-                    // Hiển thị loading nếu có
-                    const user = await cloudLogin(identifier, password);
+            // 1) Ưu tiên Cloud (Firebase) nếu sẵn sàng
+            let triedCloud = false;
+            if (typeof cloudIsReady === 'function' && cloudIsReady()) {
+                triedCloud = true;
+                try {
+                    const fbUser = await cloudLogin(identifier, password);
 
-                    // currentUser sẽ được setup bởi auth observer, nhưng set nhanh để UX mượt
-                    const isAdmin = (user.email || '').toLowerCase() === (ADMIN_EMAIL || '').toLowerCase();
+                    const isAdmin = ((fbUser.email || '').toLowerCase() === (ADMIN_EMAIL || '').toLowerCase());
                     currentUser = {
-                        id: user.uid,
-                        uid: user.uid,
-                        email: user.email || '',
-                        name: user.displayName || ((user.email || '').split('@')[0] || 'Người dùng'),
-                        username: ((user.email || '').split('@')[0] || ''),
+                        id: fbUser.uid,
+                        uid: fbUser.uid,
+                        email: fbUser.email || '',
+                        name: fbUser.displayName || ((fbUser.email || '').split('@')[0] || 'Người dùng'),
+                        username: ((fbUser.email || '').split('@')[0] || ''),
                         avatar: __DEFAULT_AVATAR__,
                         role: isAdmin ? 'admin' : 'user',
-                        isAdmin: isAdmin
+                        joined: new Date().toISOString().split('T')[0],
+                        stats: { plays: 0, time: 0, playlists: 0, friends: 0 },
+                        lastLogin: new Date().toISOString()
                     };
 
-                    saveCurrentUser();
+                    if (remember) saveCurrentUser();
                     loadUserData();
                     showApp();
                     resetDailyStats();
                     updateWelcomeMessage();
+                    setAuthMessage('login', 'success', 'Đăng nhập thành công!');
                     return;
+                } catch (err) {
+                    console.error('Cloud login failed, fallback local:', err);
+                    setAuthMessage('login', 'warning', 'Không thể đăng nhập Cloud, đang thử đăng nhập local...');
+                    // Không return để còn fallback localStorage
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Đăng nhập thất bại: ' + (err.message || err));
-                return;
             }
 
-            // Fallback localStorage (chỉ dùng khi Firebase chưa sẵn sàng)
-            const user = allUsers.find(u => (u.username === identifier || u.email === identifier) && u.password === password);
+            // 2) Fallback localStorage (hoạt động tốt khi chạy file offline / file://)
+            try { loadAllUsers(); } catch (e) {}
+
+            const idLower = identifier.toLowerCase();
+            const user = (allUsers || []).find(u =>
+                (((u.username || '').toLowerCase() === idLower) || ((u.email || '').toLowerCase() === idLower)) &&
+                String(u.password || '') === String(password)
+            );
 
             if (user) {
                 if (user.isBanned || user.status === 'banned') {
@@ -6854,108 +7131,103 @@ function saveAllUsers() {
 
                 currentUser = user;
                 currentUser.lastLogin = new Date().toISOString();
-                saveCurrentUser();
+
+                if (remember) saveCurrentUser();
                 loadUserData();
                 showApp();
                 resetDailyStats();
                 updateWelcomeMessage();
+                setAuthMessage('login', 'success', 'Đăng nhập thành công!');
             } else {
-                alert('Tên đăng nhập hoặc mật khẩu không đúng!');
+                setAuthMessage('login', 'error',
+                    triedCloud
+                        ? 'Đăng nhập thất bại. Hãy kiểm tra lại thông tin hoặc thử lại sau.'
+                        : 'Tên đăng nhập hoặc mật khẩu không đúng!'
+                );
             }
         });
 
         // Xử lý đăng ký (Firebase Auth + fallback local)
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            clearAuthMessage('register');
 
-            const name = document.getElementById('registerName').value.trim();
-            const username = document.getElementById('registerUsername').value.trim();
-            const email = document.getElementById('registerEmail').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
-            const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
+            const name = (document.getElementById('registerName').value || '').trim();
+            const username = (document.getElementById('registerUsername').value || '').trim();
+            const emailRaw = (document.getElementById('registerEmail').value || '').trim();
+            const email = emailRaw.toLowerCase();
+            const password = (document.getElementById('registerPassword').value || '').trim();
+            const confirmPassword = (document.getElementById('registerConfirmPassword').value || '').trim();
 
             if (!name || !username || !email || !password || !confirmPassword) {
-                alert('Vui lòng nhập đầy đủ thông tin!');
+                setAuthMessage('register', 'error', 'Vui lòng nhập đầy đủ thông tin!');
                 return;
             }
             if (password !== confirmPassword) {
-                alert('Mật khẩu xác nhận không khớp!');
+                setAuthMessage('register', 'error', 'Mật khẩu xác nhận không khớp!');
                 return;
             }
             if (password.length < 6) {
-                alert('Mật khẩu phải từ 6 ký tự trở lên!');
+                setAuthMessage('register', 'error', 'Mật khẩu phải từ 6 ký tự trở lên!');
                 return;
             }
 
-            // Ưu tiên Firebase (cross-device)
-            try {
-                if (typeof cloudIsReady === 'function' && cloudIsReady()) {
+            // 1) Ưu tiên Cloud (Firebase) nếu sẵn sàng
+            if (typeof cloudIsReady === 'function' && cloudIsReady()) {
+                try {
                     await cloudRegister({ name, username, email, password });
-                    alert('Đăng ký thành công! Bạn đã được đăng nhập.');
+                    setAuthMessage('register', 'success', 'Đăng ký Cloud thành công! Bạn đã được đăng nhập.');
                     showLogin();
                     return;
+                } catch (err) {
+                    console.error('Cloud register failed, fallback local:', err);
+                    setAuthMessage('register', 'warning', 'Không thể đăng ký Cloud, sẽ lưu tài khoản local trên máy này...');
+                    // Không return để fallback localStorage
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Đăng ký thất bại: ' + (err.message || err));
-                return;
             }
 
-            // Fallback localStorage
-            if (allUsers.some(u => u.username === username)) {
-                alert('Tên đăng nhập đã tồn tại!');
+            // 2) Fallback localStorage
+            try { loadAllUsers(); } catch (e) {}
+            const usernameLower = username.toLowerCase();
+
+            if ((allUsers || []).some(u => (u.username || '').toLowerCase() === usernameLower)) {
+                setAuthMessage('register', 'error', 'Tên đăng nhập đã tồn tại!');
                 return;
             }
-            if (allUsers.some(u => u.email === email)) {
-                alert('Email đã được sử dụng!');
+            if ((allUsers || []).some(u => (u.email || '').toLowerCase() === email)) {
+                setAuthMessage('register', 'error', 'Email đã được sử dụng!');
                 return;
             }
 
             const newUser = {
                 id: 'user_' + Date.now(),
-                name,
-                username,
-                email,
-                password,
+                username: username,
+                usernameLower: usernameLower,
+                password: password,
+                name: name,
+                email: email,
+                emailLower: email,
                 avatar: __DEFAULT_AVATAR__,
+                bio: 'Người dùng mới',
+                joined: new Date().toISOString().split('T')[0],
+                stats: { plays: 0, time: 0, playlists: 0, friends: 0 },
                 role: 'user',
-                isAdmin: false,
-                isBanned: false,
                 status: 'active',
-                joined: new Date().toISOString(),
-                lastLogin: new Date().toISOString(),
-                stats: { plays: 0 }
+                lastLogin: null
             };
 
             allUsers.push(newUser);
             saveAllUsers();
 
-            alert('Đăng ký thành công! Vui lòng đăng nhập.');
+            setAuthMessage('register', 'success', 'Đăng ký thành công! Bạn có thể đăng nhập ngay.');
+            // Prefill login
+            const loginId = document.getElementById('loginUsername');
+            if (loginId) loginId.value = username;
+
             showLogin();
         });
-// Đăng xuất
-        function logout() {
-            try { if (typeof cloudIsReady === "function" && cloudIsReady()) { cloudSignOut().catch(()=>{}); } } catch(e) {}
-            if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                // Lưu dữ liệu hiện tại
-                saveUserData();
-                
-                // Reset biến
-                currentUser = null;
-                localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-                
-                // Hiển thị màn hình đăng nhập
-                document.getElementById('appContainer').style.display = 'none';
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.getElementById('bannedScreen').style.display = 'none';
-                
-                // Reset form
-                document.getElementById('loginUsername').value = '';
-                document.getElementById('loginPassword').value = '';
-            }
-        }
 
-        // ==============================================
+// ==============================================
         // KHỞI TẠO AUDIO & PLAYER
         // ==============================================
 
